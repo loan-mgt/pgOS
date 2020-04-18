@@ -1,0 +1,48 @@
+MDBottomNavigation:
+		##"date_selectionneur" : "date_selectionneur"
+		MDBottomNavigationItem:
+				name: "screnn1"
+				#icon: "duck"
+				icon: 'clipboard-list-outline'
+				FloatLayout:
+						Label:
+								color: (0, 0, 0, 1)
+								font_size: 14
+								
+								text: "List de Pigeon"
+								pos_hint: {'x':0, 'y': 0.2}
+						Button:
+								text: 'Ajouter un Pigeon'
+								size_hint: (0.4, 0.1)
+								font_size: 14
+								
+								pos_hint: {'x': 0.3, 'y': 0.4}
+
+		MDBottomNavigationItem:
+				name: "screnn2"
+				icon: "home-outline"
+				FloatLayout:
+						Label:
+								color: (0, 0, 0, 1)
+								font_size: 35
+								text: "Acceuil"
+								pos_hint: {'x':0, 'y': 0.2}
+		MDBottomNavigationItem:
+				name: "scren3"
+				icon: "calendar"
+				FloatLayout:
+						Label:
+								color: (0, 0, 0, 1)
+								font_size: 14
+								text: "Couvaison"
+								pos_hint: {'x':0, 'y': 0.2}
+						Button:
+								id: "date_selectionneur"
+								text: 'Ajouter une Date'
+								size_hint: (0.4, 0.1)
+								font_size: 14
+								
+								pos_hint: {'x': 0.3, 'y': 0.4}
+								on_release:
+										app.show_datepicker()
+										

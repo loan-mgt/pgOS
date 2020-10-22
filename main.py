@@ -686,6 +686,7 @@ class MainApp(MDApp):
 			self.back_list.dismiss()	
 
 	def download_chosen(self, name):
+		names = name
 		name = name[:len(name)-4]
 		global list_table
 		print("service used")
@@ -710,6 +711,10 @@ class MainApp(MDApp):
 		up_glo_list()
 		table(self)
 		self.back(False)
+		data = {'version':str(names)}
+
+		with open('data.json', 'w') as outfile:
+		    json.dump(data, outfile)
 		try:
 			os.remove(i['name'])
 		except:

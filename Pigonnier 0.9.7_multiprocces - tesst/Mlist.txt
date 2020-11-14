@@ -1,0 +1,1 @@
+{'Maquillé': 'FR 2019 112775', 'Truck': 'FR 2018 127983', 'Cravaté Hollandais': 'NA', 'Culbutant Rouge': 'EEFP719E143', 'Strasser Argenté Barré': 'EEFP1019B4478', 'texan blanc': '', 'Bleu Barré': 'FR 2019 112344', 'blanc x': ''}

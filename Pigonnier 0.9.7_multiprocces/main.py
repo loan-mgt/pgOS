@@ -13,7 +13,7 @@ def up_glo_list():
 				list_table_item.append(temp_list_pig[i])
 import kivy
 from fonction import *
-
+import time
 from zipfile import ZipFile
 import pickle
 import os.path
@@ -301,7 +301,7 @@ WindowManager:
 				        		MDTextField:
 				        				id: mdfield
 				        				pos_hint:{'x': -1.3, 'y': 0.75}
-				        				size_hint: (0.2,0.1)
+				        				size_hint: (0.2,0.09)
 				        				hint_text:"Identifiant"
 				        				
 					
@@ -804,7 +804,7 @@ class MainApp(MDApp):
 					self.screen.ids.LO.ids.mdfield.font_size = font_size_g
 					self.screen.ids.LO.ids.mdfield.pos_hint = {'x': 0.5, 'y': 0.75}
 					#text_in =  MDTextField(font_size = font_size_g ,pos_hint={'x': 0.5, 'y': 0.75},size_hint= (0.2,0.1),hint_text= "text",helper_text= "Identifiant",helper_text_mode= "persistent")
-					btn_ac  = Button(text='Valider',size_hint= (0.1,0.05),pos_hint={'x': 0.55, 'y': 0.7})
+					btn_ac  = Button(text='Valider',size_hint= (0.15,0.05),pos_hint={'x': 0.6, 'y': 0.7})
 					btn_ac.bind(on_release=self.btn_login)
 					#self.screen.ids.LO.ids.lay.add_widget(text_in)
 					self.screen.ids.LO.ids.lay.add_widget(btn_ac)
@@ -815,7 +815,7 @@ class MainApp(MDApp):
 					with open('data.json', 'r') as json_file:
 						self.data= json.load(json_file)
 					
-					btn_ac  = Button(text='Faire une Sauvegarde',size_hint= (0.2,0.05),pos_hint={'x': 0.5, 'y': 0.5})
+					btn_ac  = Button(text='Faire une Sauvegarde',size_hint= (0.4,0.05),pos_hint={'x': 0.5, 'y': 0.5})
 					btn_ac.bind(on_release=self.backup)
 
 					self.screen.ids.LO.ids.lay.add_widget(Label(text = 'Profile:',font_size = font_size_g + 6,pos_hint={'x': -0.3, 'y': 0.4}, color=(0,0,0,1)))
@@ -834,11 +834,11 @@ class MainApp(MDApp):
 					self.screen.ids.LO.ids.lay.add_widget(Label(text = 'Exportation :',font_size = font_size_g + 6,pos_hint={'x': -0.3, 'y': 0.-0.3}, color=(0,0,0,1)))
 					self.screen.ids.LO.ids.lay.add_widget(Label(text = 'Exporter en CSV :',font_size = font_size_g,pos_hint={'x': -0.2, 'y': -0.4}, color=(0.5,0.5,0.5,1)))
 					
-					btn_csv  = Button(text='Exporter',size_hint= (0.1,0.05),pos_hint={'x': 0.5, 'y': 0.075})
+					btn_csv  = Button(text='Exporter',size_hint= (0.15,0.05),pos_hint={'x': 0.6, 'y': 0.075})
 					btn_csv.bind(on_release=self.exp_csv_thread)
 					self.screen.ids.LO.ids.lay.add_widget(btn_csv)					
 
-					btn_ac_val  = Button(text='Charger',size_hint= (0.1,0.05),pos_hint={'x': 0.65, 'y': 0.4})
+					btn_ac_val  = Button(text='Charger',size_hint= (0.15,0.05),pos_hint={'x': 0.6, 'y': 0.34})
 					btn_ac_val.bind(on_release=self.valid_down)
 					if self.data['auto_update'] == 'False':
 						check_LU = MDCheckbox(pos_hint={'x': 0.6, 'y': 0.25}, size_hint = (0.1,0.1))
@@ -853,8 +853,8 @@ class MainApp(MDApp):
 					self.screen.ids.LO.ids.lay.add_widget(btn_ac_val)
 					print(self.screen.ids.LO.ids.btn_drop.pos_hint)
 					
-					self.screen.ids.LO.ids.btn_drop.pos_hint={'x': 0.5, 'y': 0.4}
-					self.screen.ids.LO.ids.btn_drop.size_hint = (0.12,0.05)
+					self.screen.ids.LO.ids.btn_drop.pos_hint={'x': 0.6, 'y': 0.4}
+					self.screen.ids.LO.ids.btn_drop.size_hint = (0.2,0.05)
 					
 					#self.screen.ids.LO.ids.btn_drop.text = 'Selectioner une Sauvegarde'
 					print(self.screen.ids.LO.ids.lay.children)
@@ -898,21 +898,23 @@ class MainApp(MDApp):
 					)
 					self.screen.current="LO"
 			
-	def exp_csv_thread(self):
-		thr.Thread(target = exp_csv).start()
-	def exp_csv(self):
+	def exp_csv_thread(self,instantce):
+		self.event_exp  = Clock.schedule_interval(self.exp_csv, 1)
+		
+	def exp_csv(self,df=1):
 		request_permissions([Permission.READ_EXTERNAL_STORAGE, Permission.WRITE_EXTERNAL_STORAGE])
-		exported = False
-		while exported == False:
-			try:
-				shutil.copy2('data_couv.csv', '/sdcard/Download/'+str(time.time())+'_data_couv.csv')
-				exported = True
+		
+		
+		try:
+			shutil.copy2('data_couv.csv', '/sdcard/Download/'+str(time.time())+'_data_couv.csv')
+			self.Snac("Exportation reussi vers 'Download'")
+			self.event_exp.cancel()
 
 
 
-			except Exception as e:
-				print('waiting',e)
-		self.Snac("Exportation reussi vers 'Download'")
+		except Exception as e:
+			print('waiting',e)
+		
 	
 	def auto_update_status(self, instance= None):
 		print(self, instance)

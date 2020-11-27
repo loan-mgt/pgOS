@@ -145,12 +145,9 @@ def testdict(dic,key):
     return False
 d={'a':1,'b':2,'c':3}
 
-def updatelist(fflist,fmlist):
-        #import os
-        #global fflist
-        #global fmlist
-        try:
-                        
+def updatelist():
+       
+        try:        
                 ff= open("Flist.txt","r+")
                 fm=open("Mlist.txt","r+")
                
@@ -159,23 +156,14 @@ def updatelist(fflist,fmlist):
                 ff= open("Flist.txt","w+")
                
 
-        #if os.stat("Flist.txt").st_size == 0:
-         #       ff.write('{"none":"none"}')
-          #      ff.close()
-           #     ff= open("Flist.txt","r+")
-        #if os.stat("Mlist.txt").st_size == 0:
-         #       fm.write('{"none":"none"}')
-          #      fm.close()
-           #     fm=open("Mlist.txt","r+")
+       
         fmreader = fm.readlines()
-        for row in fmreader:
-                fmlist = row
-        fmlist = eval(fmlist)
+        
+        fmlist = eval(fmreader[0])
         
         ffreader = ff.readlines()
-        for row in ffreader:
-                fflist = row
-        fflist = eval(fflist)
+
+        fflist = eval(ffreader[0])
         return fflist, fmlist
 
 def convertdict(dic):
@@ -426,77 +414,60 @@ def list_to_drop_down_zip(liste):
         retur.append({'text':i['name'][:len(i)-5]})
 
     return retur
-def list_write(M_F, name, num):
+def list_write(M_F, name, num, PF, PM, NBP=[]):
     if M_F == "M":
         file = open("Mlist.txt", "r")
         reader = file.readlines()
-        try:
-            save = reader[0]
-            #print(save)
-        except:
-            save = {}
+        save = reader[0]
         file.close()
-        #print(save)
         save = eval(save)
-        #print(save, type(save), "save")
-        save[name] = num
+        save.append({'name':name, 'num':num, 'PF':PF, 'PM':PM, 'NBP':NBP})
+    
         
         file = open("Mlist.txt", "w")
         file.write(str(save))
-        file.close
+        file.close()
     if M_F == "F":
         file = open("Flist.txt", "r")
         reader = file.readlines()
-        try:
-            save = reader[0]
-            #print(save)
-        except:
-            save = {}
+        save = reader[0]
         file.close()
-        #print(save)
         save = eval(save)
-        #print(save, type(save), "save")
-        save[name] = num
+        save.append({'name':name, 'num':num,'PF':PF, 'PM':PM,'NBP':NBP})
         
         file = open("Flist.txt", "w")
         file.write(str(save))
-        file.close
+        file.close()
 def list_remove(M_F, name, num):
     if M_F == "M":
         file = open("Mlist.txt", "r")
         reader = file.readlines()
-        try:
-            save = reader[0]
-            #print(save)
-        except:
-            save = {}
+        save = reader[0]
         file.close()
-        #print(save)
         save = eval(save)
-        #print(save, type(save), "save")
-        del save[name]
+        for i in save:
+            if i['name'] == name and i['num'] == num:
+                break
+        save.remove(i)
+        
         
         file = open("Mlist.txt", "w")
         file.write(str(save))
-        file.close
+        file.close()
     if M_F == "F":
         file = open("Flist.txt", "r")
         reader = file.readlines()
-        try:
-            save = reader[0]
-            #print(save)
-        except:
-            save = {}
+        save = reader[0]
         file.close()
-        #print(save)
         save = eval(save)
-        #print(save, type(save), "save")
-        del save[name]
+        for i in save:
+            if i['name'] == name and i['num'] == num:
+                break
+        save.remove(i)
         
         file = open("Flist.txt", "w")
         file.write(str(save))
-        file.close
-
+        file.close()
 
 
 

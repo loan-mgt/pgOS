@@ -412,7 +412,7 @@ def table(self):
 						label2 = Label(font_size=font_size_g,color=(0,0,0,1),pos_hint={'x': 0, 'y': 0.15},halign = "left", size_hint=(1, None),text =list_table[i][1]+"  /  "+list_table[i][2])
 						wid.add_widget(lbl1)
 						if tempp < 0:
-							add  = MDIconButton(icon= "plus-thick",pos_hint= {"center_x": .85, "center_y": .5})
+							add  = MDIconButton(icon= "plus-thick",pos_hint= {"center_x": .5, "center_y": .5})
 							add.bind(on_release=self.add_petit)
 							self.add_nb_petit[add] = i
 							wid.add_widget(add)

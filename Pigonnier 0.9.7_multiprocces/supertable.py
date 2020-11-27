@@ -77,7 +77,7 @@ class SuperTable():
 		print(len(kwargs))
 		if len(kwargs) >0:
 			raise Exception("[ERROR] argument enter not accpeted")
-		self.IP = InfoPopup(self.address)
+		self.IP = InfoPopup(self.address, font_size = self.font_size)
 	def update_data (self, table ):
 		self.table = table
 		

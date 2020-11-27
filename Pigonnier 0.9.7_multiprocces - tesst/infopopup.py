@@ -110,7 +110,7 @@ class InfoPopup(FloatLayout):
 		Nb_petits_ans = Label(text='Petits par ans',font_size=self.font_size-5, pos_hint= {'center_x': .45, 'center_y': .3},color=(0,0,0,0.8) )
 
 		
-		modifier = Button(pos_hint={'x': 0.7, 'y': 0.8}, size_hint=(0.1, 0.1),text ="MODIFIER",background_normal ='',color=(0,0,0,1), background_color=(1,1,1,0))
+		modifier = Button(pos_hint={'x': 0.55, 'y': 0.8}, size_hint=(0.1, 0.1),text ="MODIFIER",background_normal ='',color=(0,0,0,1), background_color=(1,1,1,0))
 		modifier.bind(on_release=self.edit)
 		
 		self.f.add_widget(back)

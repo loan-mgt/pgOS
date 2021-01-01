@@ -74,7 +74,7 @@ class SuperTable():
 		self.pos_hint = kwargs.pop('pos_hint', {'x':0,'y':0})
 		self.size_hint = kwargs.pop('size_hint', (1,1))
 		self.color = kwargs.pop('color', (0.8,0.2,0.5,1))
-		print(len(kwargs))
+		#print((len(kwargs))
 		if len(kwargs) >0:
 			raise Exception("[ERROR] argument enter not accpeted")
 		self.IP = InfoPopup(self.address, font_size = self.font_size)
@@ -96,7 +96,7 @@ class SuperTable():
 		self.pos_hint = kwargs.pop('pos_hint', {'x':0,'y':0})
 		self.size_hint = kwargs.pop('size_hint', (1,1))
 		self.color = kwargs.pop('color', (0,0,0,1))
-		print(kwargs,len(kwargs))
+		#print((kwargs,len(kwargs))
 		
 		if len(kwargs) >0:
 			raise Exception("[ERROR] argument enter not accpeted ")
@@ -116,7 +116,7 @@ class SuperTable():
 				self.get = {}
 				for i in range(len(self.table[0])):
 
-					print(1-i*self.ligne_size, i*self.ligne_size)
+					#print((1-i*self.ligne_size, i*self.ligne_size)
 					base = FloatLayout(pos_hint={'y':1-i*1/longueur - 1/longueur },size_hint=(1,1/longueur))
 					fond = Button(pos_hint={'x': 0, 'y': 0}, size_hint=(1, 1),text ="",background_normal ='',color=(0,0,0,1), background_color=self.color)
 					fond.bind(on_release = self.showpopup)
@@ -131,8 +131,8 @@ class SuperTable():
 				self.address.add_widget(view)
 
 	def showpopup(self, instance):
-		print(self.get)
-		print(self.get[instance])
+		#print((self.get)
+		#print((self.get[instance])
 		f  = updatelist()[0]
 		found = False
 		for i in range(len(f)):
@@ -169,7 +169,7 @@ class SuperTable():
 			coordonne = [[-0.05],[-0.3,0.2],[-0.3,-0.1,0.1]]
 
 			for i in range(len(self.table[0])):
-				print(1-i*self.ligne_size, i*self.ligne_size)
+				#print((1-i*self.ligne_size, i*self.ligne_size)
 				base = FloatLayout(pos_hint={'y':1-i*1/longueur - 1/longueur },size_hint=(1,1/longueur))
 				fond = Button(pos_hint={'x': 0, 'y': 0}, size_hint=(1, 1),text ="",background_normal ='',color=(0,0,0,1), background_color=self.color)
 				fond.bind(on_release=self.checker)
@@ -223,7 +223,7 @@ class SuperTable():
 
 		for i  in range(len(self.table[0])) :
 			for z in range(len(self.table)):
-				print(self.getCheckerRes()[i], i,self.getCheckerRes() )
+				#print((self.getCheckerRes()[i], i,self.getCheckerRes() )
 				if self.getCheckerRes()[i]  == False:
 
 					new[z].append(self.table[z][i]) 
@@ -263,12 +263,12 @@ class MainApp(MDApp):
 	def callback_table_pg_list(self):
 		self.menu_list.show()
 	def set_item_list_pg(self, instance):
-		print(self, instance, instance.text)
+		#print((self, instance, instance.text)
 		if instance.text == 'update':
 			self.table.update_data([['quatre','cinq','six']])
 			self.table.build()
 		elif 'checkall' == instance.text:
-			print(self.table.getCheckerRes())
+			#print((self.table.getCheckerRes())
 		elif 'edit' == instance.text:
 			self.table.build_edit()
 		elif 'delete' == instance.text:

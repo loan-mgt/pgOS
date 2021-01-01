@@ -47,8 +47,6 @@ FloatLayout:
 '''
 
 
-
-        
 class InfoPopup(FloatLayout):
 	def __init__(self, address,  **kwargs):
 		self.ad = address
@@ -60,13 +58,13 @@ class InfoPopup(FloatLayout):
 			self.ffList = updatelist()[0]
 			self.fmList = updatelist()[1]	
 
-		print(len(kwargs))
+		
 		if len(kwargs) >0:
 			raise Exception("[ERROR] argument enter not accpeted")
 
 	def show(self, source):
 		self.source = source
-		print("source ",source)
+		#print("source ",source)
 		self.f = FloatLayout()
 		back = Button(disabled = True,pos_hint={'x': 0, 'y': 0}, size_hint=(1, 1),text ="",background_normal ='', background_color=(0,0,0,0.5))
 		back.background_disabled_normal= ''
@@ -75,7 +73,7 @@ class InfoPopup(FloatLayout):
 		layer_w.background_disabled_normal= ''
 		layer_w.disabled_color=(0,0,1,1)
 
-		Parents =  Label(text='Parents',font_size=self.font_size-5, pos_hint= {'center_x': .2, 'center_y': .85},color=(0,0,0,1) )
+		Parents =  Label(text='Parents',font_size=self.font_size+1, pos_hint= {'center_x': .2, 'center_y': .85},color=(0,0,0,1) )
 		
 		PM = Button(pos_hint={'x': 0.2, 'y': 0.5}, size_hint=(0.3, 0.3),text ="",background_normal ='', background_color=(0,0,1,0.6))
 		PM.bind( on_release =self.show_caller_inner)
@@ -92,7 +90,7 @@ class InfoPopup(FloatLayout):
 		Genre_data = 'Femmelle'
 
 		for i in range(len(self.fmList)):
-				print(self.fmList[i]['name'] ,'vs', self.source['name'] ,'and', self.fmList[i]['num'] ,'vs', self.source['num'])
+				#print(self.fmList[i]['name'] ,'vs', self.source['name'] ,'and', self.fmList[i]['num'] ,'vs', self.source['num'])
 				if self.fmList[i]['name'] == self.source['name'] and self.fmList[i]['num'] == self.source['num']:
 					Genre_data = 'Mâle'
 					break
@@ -100,17 +98,17 @@ class InfoPopup(FloatLayout):
 
 
 
-		Nom = Label(text=source['name'],font_size=self.font_size, pos_hint= {'center_x': .35, 'center_y': .45},color=(0,0,0,1) )
-		Num =  Label(text=source['num'],font_size=self.font_size-5, pos_hint= {'center_x': .3, 'center_y': .4},color=(0,0,0,1) )
-		Genre =  Label(text=Genre_data,font_size=self.font_size-5, pos_hint= {'center_x': .7, 'center_y': .4},color=(0,0,0,1) )
-		Nom_i = Label(text='Nom',font_size=self.font_size-8, pos_hint= {'center_x': .15, 'center_y': .45},color=(0,0,0,0.8) )
-		Num_i =  Label(text='Num',font_size=self.font_size-5-8, pos_hint= {'center_x': .15, 'center_y': .4},color=(0,0,0,0.8) )
-		Genre_i =  Label(text='Genre',font_size=self.font_size-5-8, pos_hint= {'center_x': .53, 'center_y': .4},color=(0,0,0,0.8) )
-		Nb_petits = Label(text='Total petits',font_size=self.font_size-5, pos_hint= {'center_x': .2, 'center_y': .3},color=(0,0,0,0.8) )
-		Nb_petits_ans = Label(text='Petits par ans',font_size=self.font_size-5, pos_hint= {'center_x': .45, 'center_y': .3},color=(0,0,0,0.8) )
+		Nom = Label(text=source['name'],font_size=self.font_size, pos_hint= {'center_x': .4, 'center_y': .45},color=(0,0,0,1) )
+		Num =  Label(text=source['num'],font_size=self.font_size-1, pos_hint= {'center_x': .35, 'center_y': .4},color=(0,0,0,1) )
+		Genre =  Label(text=Genre_data,font_size=self.font_size-1, pos_hint= {'center_x': .7, 'center_y': .4},color=(0,0,0,1) )
+		Nom_i = Label(text='Nom',font_size=self.font_size-1, pos_hint= {'center_x': .15, 'center_y': .45},color=(0,0,0,0.8) )
+		Num_i =  Label(text='Num',font_size=self.font_size-1, pos_hint= {'center_x': .15, 'center_y': .4},color=(0,0,0,0.8) )
+		Genre_i =  Label(text='Genre',font_size=self.font_size-1, pos_hint= {'center_x': .55, 'center_y': .4},color=(0,0,0,0.8) )
+		Nb_petits = Label(text='Total petits',font_size=self.font_size, pos_hint= {'center_x': .25, 'center_y': .3},color=(0,0,0,0.8) )
+		Nb_petits_ans = Label(text='Petits par ans',font_size=self.font_size, pos_hint= {'center_x': .5, 'center_y': .3},color=(0,0,0,0.8) )
 
 		
-		modifier = Button(pos_hint={'x': 0.55, 'y': 0.8}, size_hint=(0.1, 0.1),text ="MODIFIER",background_normal ='',color=(0,0,0,1), background_color=(1,1,1,0))
+		modifier = Button(pos_hint={'x': 0.55, 'y': 0.8},font_size = self.font_size, size_hint=(0.1, 0.1),text ="MODIFIER",background_normal ='',color=(0,0,0,1), background_color=(1,1,1,0))
 		modifier.bind(on_release=self.edit)
 		
 		self.f.add_widget(back)
@@ -120,33 +118,33 @@ class InfoPopup(FloatLayout):
 		self.f.add_widget(PF)
 		if 'PM' in source and source['PM'] != 'Aucun':
 			Nom_PM = Label(text=str(source['PM']['name']),font_size=self.font_size, pos_hint= {'center_x': .3, 'center_y': .7},color=(0,0,0,1) )
-			Num_PM =  Label(text=str(source['PM']['num']),font_size=self.font_size-5, pos_hint= {'center_x': .3, 'center_y': .6},color=(0,0,0,1) )
+			Num_PM =  Label(text=str(source['PM']['num']),font_size=self.font_size-1, pos_hint= {'center_x': .35, 'center_y': .6},color=(0,0,0,1) )
 		
 			self.f.add_widget(Nom_PM)
 			self.f.add_widget(Num_PM)
 		else:
 			Nom_PM = Label(text='Aucun',font_size=self.font_size, pos_hint= {'center_x': .3, 'center_y': .7},color=(0,0,0,1) )
-			Num_PM =  Label(text='',font_size=self.font_size-5, pos_hint= {'center_x': .3, 'center_y': .6},color=(0,0,0,1) )
+			Num_PM =  Label(text='',font_size=self.font_size-1, pos_hint= {'center_x': .3, 'center_y': .6},color=(0,0,0,1) )
 		
 			self.f.add_widget(Nom_PM)
 			self.f.add_widget(Num_PM)
 
 		if 'PF' in source  and source['PF'] != 'Aucun':
 			Nom_PF = Label(text=str(source['PF']['name']),font_size=self.font_size, pos_hint= {'center_x': .6, 'center_y': .7},color=(0,0,0,1) )
-			Num_PF =  Label(text=str(source['PF']['num']),font_size=self.font_size-5, pos_hint= {'center_x': .6, 'center_y': .6},color=(0,0,0,1) )
+			Num_PF =  Label(text=str(source['PF']['num']),font_size=self.font_size-1, pos_hint= {'center_x': .65, 'center_y': .6},color=(0,0,0,1) )
 		
 			self.f.add_widget(Nom_PF)
 			self.f.add_widget(Num_PF)
 		else:
 			Nom_PF = Label(text='Aucun',font_size=self.font_size, pos_hint= {'center_x': .6, 'center_y': .7},color=(0,0,0,1) )
-			Num_PF =  Label(text='',font_size=self.font_size-5, pos_hint= {'center_x': .6, 'center_y': .55},color=(0,0,0,1) )
+			Num_PF =  Label(text='',font_size=self.font_size-1, pos_hint= {'center_x': .6, 'center_y': .55},color=(0,0,0,1) )
 		
 			self.f.add_widget(Nom_PF)
 			self.f.add_widget(Num_PF)
 
 		
 		if 'NBP' in source  and source['NBP'] != []:
-			print("scollview", len(source['NBP']), 'size', len(source['NBP'])*0.25 )
+			#print("scollview", len(source['NBP']), 'size', len(source['NBP'])*0.25 )
 			s = ScrollView(size_hint =(0.5,0.1) ,do_scroll_y=False,do_scroll_x=True, pos_hint=  {'center_x': .6, 'center_y': .2})
 			sizex = 0.25 
 			g = FloatLayout( size_hint=(len(source['NBP'])*0.25,1))
@@ -179,7 +177,7 @@ class InfoPopup(FloatLayout):
 		source = self.source
 		self.source_old = self.source
 
-		print("source ",source)
+		#print("source ",source)
 		self.f = FloatLayout()
 		back = Button(disabled = True,pos_hint={'x': 0, 'y': 0}, size_hint=(1, 1),text ="",background_normal ='', background_color=(0,0,0,0.5))
 		back.background_disabled_normal= ''
@@ -188,7 +186,7 @@ class InfoPopup(FloatLayout):
 		layer_w.background_disabled_normal= ''
 		layer_w.disabled_color=(0,0,1,1)
 
-		Parents =  Label(text='Parents',font_size=self.font_size-5, pos_hint= {'center_x': .2, 'center_y': .85},color=(0,0,0,1) )
+		Parents =  Label(text='Parents',font_size=self.font_size+1, pos_hint= {'center_x': .2, 'center_y': .85},color=(0,0,0,1) )
 		
 		PM = Button(pos_hint={'x': 0.2, 'y': 0.5}, size_hint=(0.3, 0.3),text ="",background_normal ='', background_color=(0,0,1,0.6))
 		
@@ -203,7 +201,7 @@ class InfoPopup(FloatLayout):
 		Genre_data = 'Femmelle'
 
 		for i in range(len(self.fmList)):
-				print(self.fmList[i]['name'] ,'vs', self.source['name'] ,'and', self.fmList[i]['num'] ,'vs', self.source['num'])
+				#print(self.fmList[i]['name'] ,'vs', self.source['name'] ,'and', self.fmList[i]['num'] ,'vs', self.source['num'])
 				if self.fmList[i]['name'] == self.source['name'] and self.fmList[i]['num'] == self.source['num']:
 					Genre_data = 'Mâle'
 					break
@@ -211,10 +209,10 @@ class InfoPopup(FloatLayout):
 
 		self.genre_old = Genre_data
 
-		self.Nom = MDTextField(text=source['name'],font_size=self.font_size, size_hint=(0.2,0.1),pos_hint= {'center_x': .35, 'center_y': .45})
-		self.Num =  MDTextField(text=source['num'],font_size=self.font_size-5,size_hint=(0.1,0.1), pos_hint= {'center_x': .25, 'center_y': .4} )
+		self.Nom = MDTextField(text=source['name'],font_size=self.font_size, size_hint=(0.4,0.1),pos_hint= {'center_x': .4, 'center_y': .45})
+		self.Num =  MDTextField(text=source['num'],font_size=self.font_size,size_hint=(0.32,0.1), pos_hint= {'center_x': .36, 'center_y': .4} )
 		
-		Genre = MDDropDownItem(font_size=self.font_size-5, pos_hint= {'center_x': .7, 'center_y': .4})
+		Genre = MDDropDownItem(font_size=self.font_size-3, pos_hint= {'center_x': .76, 'center_y': .405})
 		Genre.text=Genre_data
 
 		self.Genre =Genre
@@ -229,14 +227,14 @@ class InfoPopup(FloatLayout):
 		)
 		Genre.bind(on_release=self.menuG_open)
 
-		Nom_i = Label(text='Nom',font_size=self.font_size-8, pos_hint= {'center_x': .15, 'center_y': .45},color=(0,0,0,0.8) )
-		Num_i =  Label(text='Num',font_size=self.font_size-5-8, pos_hint= {'center_x': .15, 'center_y': .4},color=(0,0,0,0.8) )
-		Genre_i =  Label(text='Genre',font_size=self.font_size-5-8, pos_hint= {'center_x': .53, 'center_y': .4},color=(0,0,0,0.8) )
-		Nb_petits = Label(text='Total petits',font_size=self.font_size-5, pos_hint= {'center_x': .2, 'center_y': .3},color=(0,0,0,0.8) )
-		Nb_petits_ans = Label(text='Petits par ans',font_size=self.font_size-5, pos_hint= {'center_x': .45, 'center_y': .3},color=(0,0,0,0.8) )
+		Nom_i = Label(text='Nom',font_size=self.font_size-1, pos_hint= {'center_x': .15, 'center_y': .45},color=(0,0,0,0.8) )
+		Num_i =  Label(text='Num',font_size=self.font_size-1, pos_hint= {'center_x': .15, 'center_y': .4},color=(0,0,0,0.8) )
+		Genre_i =  Label(text='Genre',font_size=self.font_size-1, pos_hint= {'center_x': .59, 'center_y': .4},color=(0,0,0,0.8) )
+		Nb_petits = Label(text='Total petits',font_size=self.font_size, pos_hint= {'center_x': .25, 'center_y': .35},color=(0,0,0,0.8) )
+		Nb_petits_ans = Label(text='Petits par ans',font_size=self.font_size, pos_hint= {'center_x': .5, 'center_y': .35},color=(0,0,0,0.8) )
 
 		
-		modifier = Button(pos_hint={'x': 0.55, 'y': 0.8}, size_hint=(0.1, 0.1),text ="VALIDER",background_normal ='',color=(0,0,0,1), background_color=(1,1,1,0))
+		modifier = Button(pos_hint={'x': 0.55, 'y': 0.8},font_size = self.font_size, size_hint=(0.1, 0.1),text ="VALIDER",background_normal ='',color=(0,0,0,1), background_color=(1,1,1,0))
 		modifier.bind(on_release=self.edit_valider)
 		
 		self.f.add_widget(back)
@@ -252,7 +250,7 @@ class InfoPopup(FloatLayout):
 		
 		DM.bind(on_release = self.DM_OPEN)
 
-		print('drpo male',[{'text':str(self.fmList[i]['name'])+'\n'+str(self.fmList[i]['num'])} for i in range(len(self.fmList))])
+		#print('drpo male',[{'text':str(self.fmList[i]['name'])+'\n'+str(self.fmList[i]['num'])} for i in range(len(self.fmList))])
 		item = [{'text':str(self.fmList[i]['name'])+'\n'+str(self.fmList[i]['num'])} for i in range(len(self.fmList))]
 		item.append({'text':'Aucun'})
 		self.menuM = MDDropdownMenu(
@@ -271,7 +269,7 @@ class InfoPopup(FloatLayout):
 		
 		DF.bind(on_release = self.DF_OPEN)
 		self.DF = DF
-		print([{'text':str(self.ffList[i]['name'])+'\n'+str(self.ffList[i]['num'])} for i in range(len(self.ffList))])
+		#print([{'text':str(self.ffList[i]['name'])+'\n'+str(self.ffList[i]['num'])} for i in range(len(self.ffList))])
 		item = [{'text':str(self.ffList[i]['name'])+'\n'+str(self.ffList[i]['num'])} for i in range(len(self.ffList))]
 		item.append({'text':'Aucun'})
 		self.menuF = MDDropdownMenu(
@@ -285,9 +283,9 @@ class InfoPopup(FloatLayout):
 
 
 
-		self.anne = MDTextField(size_hint=(0.09,0.1),font_size=self.font_size-8, pos_hint= {'center_x': .8, 'center_y': .3} )
+		self.anne = MDTextField(size_hint=(0.2,0.1),font_size=self.font_size-2, pos_hint= {'center_x': .65, 'center_y': .29} )
 		self.anne.hint_text='Année'
-		self.nb =  MDTextField(size_hint=(0.09,0.1),font_size=self.font_size-8, pos_hint= {'center_x': .65, 'center_y': .3} )
+		self.nb =  MDTextField(size_hint=(0.2,0.1),font_size=self.font_size-2, pos_hint= {'center_x': .3, 'center_y': .29} )
 		self.nb.hint_text='Nombre'
 		add  = MDIconButton(icon= "plus",pos_hint= {"center_x": .875, "center_y": .3})
 		add.bind(on_release=self.add_NBP)
@@ -319,14 +317,14 @@ class InfoPopup(FloatLayout):
 		#if 'NBP' in source  and source['NBP'] != []:
 		self.s.clear_widgets()
 		if 'NBP' in source  :
-			print("scollview", len(source['NBP']), 'size', len(source['NBP'])*0.25 )
+			#print("scollview", len(source['NBP']), 'size', len(source['NBP'])*0.25 )
 			sizex = 0.25 
 			g = FloatLayout( size_hint=(len(source['NBP'])*0.25,1))
 			COUNT = 0
 			self.cross = {}
 			for i in range(len(source['NBP'])):
 				COUNT += int(source['NBP'][i]['nombre'])
-				print(sizex*i,sizex)
+				#print(sizex*i,sizex)
 
 				y = MDIconButton(icon= 'close-outline', pos_hint = {'x':1/len(self.source['NBP'])*i+0.15, 'y':-0.15}, size_hint =(1/len(source['NBP']),1) )
 				y.bind(on_release=  self.delete_date)
@@ -379,7 +377,7 @@ class InfoPopup(FloatLayout):
 		
 		source = {'name':'','num':'','PF': 'Aucun', 'PM': 'Aucun', 'NBP':[] }
 		self.source =source
-		print("source ",source)
+		#print("source ",source)
 		self.f = FloatLayout()
 		back = Button(disabled = True,pos_hint={'x': 0, 'y': 0}, size_hint=(1, 1),text ="",background_normal ='', background_color=(0,0,0,0.5))
 		back.background_disabled_normal= ''
@@ -388,7 +386,7 @@ class InfoPopup(FloatLayout):
 		layer_w.background_disabled_normal= ''
 		layer_w.disabled_color=(0,0,1,1)
 
-		Parents =  Label(text='Parents',font_size=self.font_size-5, pos_hint= {'center_x': .2, 'center_y': .85},color=(0,0,0,1) )
+		Parents =  Label(text='Parents',font_size=self.font_size+1, pos_hint= {'center_x': .2, 'center_y': .85},color=(0,0,0,1) )
 		
 		PM = Button(pos_hint={'x': 0.2, 'y': 0.5}, size_hint=(0.3, 0.3),text ="",background_normal ='', background_color=(0,0,1,0.6))
 		
@@ -406,7 +404,7 @@ class InfoPopup(FloatLayout):
 
 
 		self.Nom = MDTextField(text=source['name'],font_size=self.font_size, size_hint=(0.2,0.1),pos_hint= {'center_x': .35, 'center_y': .45})
-		self.Num =  MDTextField(text=source['num'],font_size=self.font_size-5,size_hint=(0.1,0.1), pos_hint= {'center_x': .25, 'center_y': .4} )
+		self.Num =  MDTextField(text=source['num'],font_size=self.font_size,size_hint=(0.1,0.1), pos_hint= {'center_x': .25, 'center_y': .4} )
 		
 		Genre = MDDropDownItem(font_size=self.font_size-5, pos_hint= {'center_x': .7, 'center_y': .4})
 		Genre.text=Genre_data
@@ -423,11 +421,11 @@ class InfoPopup(FloatLayout):
 		)
 		Genre.bind(on_release=self.menuG_open)
 
-		Nom_i = Label(text='Nom',font_size=self.font_size-8, pos_hint= {'center_x': .15, 'center_y': .45},color=(0,0,0,0.8) )
-		Num_i =  Label(text='Num',font_size=self.font_size-5-8, pos_hint= {'center_x': .15, 'center_y': .4},color=(0,0,0,0.8) )
-		Genre_i =  Label(text='Genre',font_size=self.font_size-5-8, pos_hint= {'center_x': .53, 'center_y': .4},color=(0,0,0,0.8) )
-		Nb_petits = Label(text='Total petits',font_size=self.font_size-5, pos_hint= {'center_x': .2, 'center_y': .3},color=(0,0,0,0.8) )
-		Nb_petits_ans = Label(text='Petits par ans',font_size=self.font_size-5, pos_hint= {'center_x': .45, 'center_y': .3},color=(0,0,0,0.8) )
+		Nom_i = Label(text='Nom',font_size=self.font_size-1, pos_hint= {'center_x': .15, 'center_y': .45},color=(0,0,0,0.8) )
+		Num_i =  Label(text='Num',font_size=self.font_size-1, pos_hint= {'center_x': .15, 'center_y': .4},color=(0,0,0,0.8) )
+		Genre_i =  Label(text='Genre',font_size=self.font_size-1, pos_hint= {'center_x': .53, 'center_y': .4},color=(0,0,0,0.8) )
+		Nb_petits = Label(text='Total petits',font_size=self.font_size, pos_hint= {'center_x': .2, 'center_y': .3},color=(0,0,0,0.8) )
+		Nb_petits_ans = Label(text='Petits par ans',font_size=self.font_size, pos_hint= {'center_x': .45, 'center_y': .3},color=(0,0,0,0.8) )
 
 		
 		modifier = Button(pos_hint={'x': 0.55, 'y': 0.8}, size_hint=(0.1, 0.1),text ="VALIDER",background_normal ='',color=(0,0,0,1), background_color=(1,1,1,0))
@@ -446,7 +444,7 @@ class InfoPopup(FloatLayout):
 		
 		DM.bind(on_release = self.DM_OPEN)
 
-		print('drpo male',[{'text':str(self.fmList[i]['name'])+'\n'+str(self.fmList[i]['num'])} for i in range(len(self.fmList))])
+		#print('drpo male',[{'text':str(self.fmList[i]['name'])+'\n'+str(self.fmList[i]['num'])} for i in range(len(self.fmList))])
 		item = [{'text':str(self.fmList[i]['name'])+'\n'+str(self.fmList[i]['num'])} for i in range(len(self.fmList))]
 		item.append({'text':'Aucun'})
 		self.menuM = MDDropdownMenu(
@@ -465,7 +463,7 @@ class InfoPopup(FloatLayout):
 		
 		DF.bind(on_release = self.DF_OPEN)
 		self.DF = DF
-		print([{'text':str(self.ffList[i]['name'])+'\n'+str(self.ffList[i]['num'])} for i in range(len(self.ffList))])
+		#print([{'text':str(self.ffList[i]['name'])+'\n'+str(self.ffList[i]['num'])} for i in range(len(self.ffList))])
 		item = [{'text':str(self.ffList[i]['name'])+'\n'+str(self.ffList[i]['num'])} for i in range(len(self.ffList))]
 		item.append({'text':'Aucun'})
 		self.menuF = MDDropdownMenu(
@@ -479,9 +477,9 @@ class InfoPopup(FloatLayout):
 
 
 
-		self.anne = MDTextField(size_hint=(0.09,0.1),font_size=self.font_size-8, pos_hint= {'center_x': .8, 'center_y': .3} )
+		self.anne = MDTextField(size_hint=(0.09,0.1),font_size=self.font_size, pos_hint= {'center_x': .8, 'center_y': .3} )
 		self.anne.hint_text='Année'
-		self.nb =  MDTextField(size_hint=(0.09,0.1),font_size=self.font_size-8, pos_hint= {'center_x': .65, 'center_y': .3} )
+		self.nb =  MDTextField(size_hint=(0.09,0.1),font_size=self.font_size, pos_hint= {'center_x': .65, 'center_y': .3} )
 		self.nb.hint_text='Nombre'
 		add  = MDIconButton(icon= "plus",pos_hint= {"center_x": .875, "center_y": .3})
 		add.bind(on_release=self.add_NBP)
@@ -501,14 +499,14 @@ class InfoPopup(FloatLayout):
 		#if 'NBP' in source  and source['NBP'] != []:
 		self.s.clear_widgets()
 		if 'NBP' in source  :
-			print("scollview", len(source['NBP']), 'size', len(source['NBP'])*0.25 )
+			#print("scollview", len(source['NBP']), 'size', len(source['NBP'])*0.25 )
 			sizex = 0.25 
 			g = FloatLayout( size_hint=(len(source['NBP'])*0.25,1))
 			COUNT = 0
 			self.cross = {}
 			for i in range(len(source['NBP'])):
 				COUNT += int(source['NBP'][i]['nombre'])
-				print(sizex*i,sizex)
+				#print(sizex*i,sizex)
 
 				y = MDIconButton(icon= 'close-outline', pos_hint = {'x':1/len(self.source['NBP'])*i+0.15, 'y':-0.15}, size_hint =(1/len(source['NBP']),1) )
 				y.bind(on_release=  self.delete_date)
@@ -555,18 +553,18 @@ class InfoPopup(FloatLayout):
 		self.ad.add_widget(self.f)
 
 	def delete_date(self, instance):
-		print(self.cross[instance])
+		#print(self.cross[instance])
 		self.source['NBP'].pop(self.cross[instance])
 		s =self.s
 		s.clear_widgets()
 		sizex = 0.25 
-		print(len(self.source['NBP']),len(self.source['NBP'])*0.25, )
+		#print(len(self.source['NBP']),len(self.source['NBP'])*0.25, )
 		g = FloatLayout( size_hint=(len(self.source['NBP'])*0.25,1))
 		COUNT =0
 		self.cross = {}
 		for i in range(len(self.source['NBP'])):
 			COUNT += int(self.source['NBP'][i]['nombre'])
-			print(sizex*i,sizex)
+			#print(sizex*i,sizex)
 			y = MDIconButton(icon= 'close-outline', pos_hint = {'x':1/len(self.source['NBP'])*i+0.2*(1/len(self.source['NBP'])), 'y':-0.15}, size_hint =(1/len(self.source['NBP']),1) )
 			y.bind(on_release=  self.delete_date)
 
@@ -585,7 +583,7 @@ class InfoPopup(FloatLayout):
 		if 'NBP' not in self.source:
 			self.source['NBP'] =[]
 		for i in range(len(self.source['NBP'])):
-			print('NBP' in self.source, int(self.anne.text) == self.source['NBP'][i]['anne'])
+			#print('NBP' in self.source, int(self.anne.text) == self.source['NBP'][i]['anne'])
 			if 'NBP' in self.source and int(self.anne.text) == self.source['NBP'][i]['anne']:
 				self.source['NBP'][i]['nombre'] += int(self.nb.text)
 				found = True
@@ -598,13 +596,13 @@ class InfoPopup(FloatLayout):
 		s =self.s
 		s.clear_widgets()
 		sizex = 0.25 
-		print(len(self.source['NBP']),len(self.source['NBP'])*0.25, )
+		#print(len(self.source['NBP']),len(self.source['NBP'])*0.25, )
 		g = FloatLayout( size_hint=(len(self.source['NBP'])*0.25,1))
 		COUNT =0
 		self.cross = {}
 		for i in range(len(self.source['NBP'])):
 			COUNT += int(self.source['NBP'][i]['nombre'])
-			print(sizex*i,sizex)
+			#print(sizex*i,sizex)
 			y = MDIconButton(icon= 'close-outline', pos_hint = {'x':1/len(self.source['NBP'])*i+0.2*(1/len(self.source['NBP'])), 'y':-0.15}, size_hint =(1/len(self.source['NBP']),1) )
 			y.bind(on_release=  self.delete_date)
 
@@ -642,7 +640,7 @@ class InfoPopup(FloatLayout):
 			NBP = self.source['NBP']
 		else: 
 			NBP =[]
-		print('new',(M_F, name, num, PF, PM, NBP))
+		#print('new',(M_F, name, num, PF, PM, NBP))
 		list_write(M_F, name, num, PF, PM, NBP)
 		self.fermer()
 		self.ffList = updatelist()[0]
@@ -650,8 +648,8 @@ class InfoPopup(FloatLayout):
 		self.up.update_t()
 
 	def edit_valider(self, instance=None):
-		print('old', self.genre_old, self.source_old)
-		print('new', self.Nom.text , self.Num.text, self.DF.text, self.DM.text, self.Genre.text)
+		#print('old', self.genre_old, self.source_old)
+		#print('new', self.Nom.text , self.Num.text, self.DF.text, self.DM.text, self.Genre.text)
 		if self.genre_old == 'Mâle':
 			M_F = 'M'
 		else:
@@ -690,24 +688,24 @@ class InfoPopup(FloatLayout):
 		self.menuM.open()
 
 	def DF_OPEN(self, instance):
-		print('open f')
+		
 		self.menuF.open()
 	def DF_SEL(self, instance):
-		print(instance.text)
+		
 		self.DF.text = instance.text
 		self.menuF.dismiss()
 
 	def DM_SEL(self, instance):
 		self.DM.text = instance.text
 		self.menuM.dismiss()
-		print(instance.text)
+		
 
 
 		
 
 	def fermer(self, instance=None):
 
-		print(instance)
+		
 		self.f.clear_widgets()
             
    
@@ -719,28 +717,28 @@ class InfoPopup(FloatLayout):
 	def menuG_open(self, instance=None):
 		self.menuG.open()
 	def GS(self, instance=None):
-		print(self, instance)
+		
 		self.Genre.text=instance.text
 
 	def show_caller_inner(self, instance):
 		if instance == self.Button_ID['M']:
-			print('m')
-			print(self.source['PM'])
-			if self.source['PM'] != 'Aucun':
+			#print('m')
+			#print(self.source['PM'])
+			if 'PM' in self.source:
 				for i in range(len(self.fmList)):
-					print(self.fmList[i]['name'] ,'vs', self.source['PM']['name'] ,'and', self.fmList[i]['num'] ,'vs', self.source['PM']['num'])
+					#print(self.fmList[i]['name'] ,'vs', self.source['PM']['name'] ,'and', self.fmList[i]['num'] ,'vs', self.source['PM']['num'])
 					if self.fmList[i]['name'] == self.source['PM']['name'] and self.fmList[i]['num'] == self.source['PM']['num']:
-						print("break")
+						#print("break")
 						break
 				self.fermer()
 				self.show(self.fmList[i])
 		else:
-			print(self.source['PF'])
-			if self.source['PF'] != 'Aucun':
+
+			if 'PF' in self.source:
 				for i in range(len(self.ffList)):
-					print(self.ffList[i]['name'] ,'vs', self.source['PF']['name'] ,'and', self.ffList[i]['num'] ,'vs', self.source['PF']['num'])
+					#print(self.ffList[i]['name'] ,'vs', self.source['PF']['name'] ,'and', self.ffList[i]['num'] ,'vs', self.source['PF']['num'])
 					if self.ffList[i]['name'] == self.source['PF']['name'] and self.ffList[i]['num'] == self.source['PF']['num']:
-						print("break")
+						#print("break")
 						break
 				self.fermer()
 				self.show(self.ffList[i])

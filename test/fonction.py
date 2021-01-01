@@ -1,5 +1,4 @@
-
-
+import csv
 def num(nbr):
     nbr = str(nbr)
     liste = ["0","1", "2", "3", "4", "5", "6", "7", "8", "9"]
@@ -14,8 +13,58 @@ def num(nbr):
         return True
     else:
         return False
+def write_NBP(date,M,F,NDP):
+    print("[INFO   ] [write_NBP   ] ",date, M, F, NDP)
+    
+   
+    original = open("data_couv.csv", "r")
+    reader = csv.reader(original)
+    file_list = []
+    done = False
+    start = 0
+    for row in reader:
+        if start == 0:
+            header = row
+            start =1
+        #print(row)
+
+
+        print(date ,row[2] , row[4] , M , row[6],F)
+        if done == False and date ==row[2] and row[4] == M and row[6]==F:
+            #print(len(row))
+            if len(row) >= 5:
+                #print("1")
+                row[8] = str(NDP)
+            else:
+                #print("2")
+                row.append(str(NDP))
+            done = True
+        
+        file_list.append(row)
+   
+    
+    #print(file_list)
+        
+        
+
+    original.close()
+    print("[INFO   ] [MOI         ] ",file_list, done)
+
+    new = open("data_couv.csv", "w")
+    
+    for i in file_list:
+
+        print(','.join(i))
+        new.write(','.join(i)+"\n")
+   
+
+
+
+
+
 
 def verif(nbr):
+    
     liste = ["\\","/"]
     barre1= 0
     barre2= 0
@@ -39,6 +88,7 @@ def verif(nbr):
             for z in range(0,2):
                 if nbr[barre2]==liste[z]:
                     return True
+    
     return False
 def sommedate(date,temp):
     mois_en_j=dict({"01":31,"02":28,"03":31,"04":30,"05":31,"06":30,"07":31,"08":31,"09":30,"10":31,"11":30,"12":31})
@@ -110,6 +160,9 @@ def read(x,y):
 
 
 def verifV():
+    pass
+    '''
+    print("[INFO   ] [MOI         ] start")
     nbr = 0
     import csv
 
@@ -117,33 +170,29 @@ def verifV():
     f = open('data_couv.csv', 'r')
     
     reader = csv.reader(f)
-    for row in reader:
-        for e in row:
-            nbr += 1
-    nbr= nbr/6
+    print(reader)
     liste = []
-    y = 2
-    B = True
-    while y < nbr+1:
-        try:
-            if read(4,y) == "V":
-                liste.append(y)
-        except:
-            B = False
-        y += 1
+    x=1
+    for row in reader:
+
+        if row[4] == 'V':
+            liste.append(x)
+        
+        x+=1
+  
     return liste
 
 
 
-
-
+verifV()
+'''
 
 
 def testdict(dic,key):
     if key in dic:
         return True
     return False
-d={'a':1,'b':2,'c':3}
+
 
 def updatelist():
        
@@ -201,9 +250,10 @@ def convertdict(dic):
 
 
 def dic_to_str(dic):
-    import csv
+    
     rep=""
-    rep = dic["Date"]+","+dic["Dure"]+","+dic["Fin"]+","+dic["Valide"]+","+dic["M"]+","+dic["F"]+"\n"
+    print("[INFO   ] [MOI         ] ", dic)
+    rep = dic["Date"]+","+dic["Dure"]+","+dic["Fin"]+","+dic["Valide"]+","+dic["M"]+","+dic["F"]+dic['NDP']+"\n"
 
 
     return rep
@@ -211,6 +261,7 @@ def dic_to_str(dic):
 
 
 def update_cvs_to_F(csv_name, y, valide):
+    print("[INFO   ] [MOI         ] ",csv_name,y,valide)
     import csv
     y =y-1
     file = str(csv_name)+".csv"
@@ -238,11 +289,12 @@ def update_cvs_to_F(csv_name, y, valide):
 
 
     original.close()
+    print("[INFO   ] [MOI         ] ",new_file_list)
     
     new_file = str(csv_name)+".csv"
     
     new = open(file, "w")
-    fieldnames ="Date,Duré,Fin,Valide,M,F\n"
+    fieldnames ="Date,Duré,Fin,Valide,M,F,NBP\n"
     
     
     new.write(fieldnames)
@@ -258,6 +310,8 @@ def update_cvs_to_F(csv_name, y, valide):
 
 
 def update_csv(csv_name):
+    pass
+    """
     import csv
     file = str(csv_name)+".csv"
     
@@ -294,19 +348,25 @@ def update_csv(csv_name):
 
 #update_csv("Data_couv")
 
-
+    """
 
 def list_for_tabel():
+    print("[INFO   ] [MOI         ] list_for_tabel run")
     #print(verifV())
     list_tabel =[]
-    list_verif = verifV()
-    #tableaucouv.insert_row([read(3,liste[z-1]),read(5,liste[z-1]),read(6,liste[z-1])])
-    z =1
-    for i in list_verif:
-       
-        list_tabel.append([read(3,i),read(5,i),read(6,i)])
-        
+    f = open('data_couv.csv', 'r')
+    
+    reader = csv.reader(f)
+
+    for row in reader:
+        #print(row)
+        if row[3] == 'V':
+
+            list_tabel.append([row[2],row[4],row[6],row[8],row[5], row[7] ])
+    print("[INFO   ] [MOI         ] list_for_tabel finish")
+    f.close()
     return list_tabel
+#print(list_for_tabel())
             
 def temps_restant(date): 
     import datetime
@@ -333,49 +393,31 @@ def CLE_Fin(ligne):
     return int( temps_restant(ligne['Fin']))
 
 def ranger_csv(csv_name):
-    import csv
-    file = str(csv_name)+".csv"
+    f = open('data_couv.csv', 'r')
     
-    file_list=[]
-
-    original = open(file, "r")
-    reader = csv.DictReader(original , delimiter = ',')
+    reader = csv.reader(f)
+    LD = []
+    x = 0
+    header = None
     for row in reader:
-        
-        file_list.append(row)
-    original.close()
-    ################### edition
-    new_file_list=[]
-   
-    ordre= {}
+        if x != 0:
+            #print(row[2],int( temps_restant(row[2])))
+            if int( temps_restant(row[2]))<=-7:
+                row[3] = 'F'
+            LD.append({'time':row[2],'row':row})
+        else:
+            header = row
+            x=1
+    f.close()
+    LD =  sorted(LD, key=lambda k: int( temps_restant(k['time'])))
 
-    for i in range(len(file_list)):
-        file_listi=file_list[i]
-       
-        #if temps_restant(file_listi["Fin"]) > -8:
-        up = {i:temps_restant(file_listi["Fin"])}
-        ordre.update(up)
-           
-    for i in ordre:
-        new_file_list.append(file_list[i])
-   
-    new_file_list = sorted(new_file_list, key=CLE_Fin, reverse = False)
-  
-    
-            
-            
-    
-    ##########réecriture
-    new_file = str(csv_name)+".csv"
-    
-    new = open(file, "w")
-    fieldnames ="Date,Dure,Fin,Valide,M,F\n"
-    
-    
-    new.write(fieldnames)
-    for i in new_file_list:
+    new = open('data_couv.csv', "w")
+    new.write(','.join(header)+'\n')
+    for i in LD:
         
-        new.write(dic_to_str(dict(i)))
+        new.write(','.join(i['row'])+'\n')
+    new.close()
+
 
 #ranger_csv("D:\pgOS\data_couv")
 def cleandate(indate):
@@ -384,7 +426,7 @@ def cleandate(indate):
 
     return dateclean
 
-def write_csv(indate,M,F):
+def write_csv(indate,M,F,NM, NF):
 
     from datetime import date
 
@@ -395,7 +437,7 @@ def write_csv(indate,M,F):
 
     file = open("data_couv.csv", "a")
 
-    file.write(str(cleandate(today))+","+str(18)+","+sommedate((dateclean),int(18))+","+"V"+','+str(M)+","+str(F)+"\n")
+    file.write(str(cleandate(today))+","+str(18)+","+sommedate((dateclean),int(18))+","+"V"+','+str(M)+","+str(NM)+","+str(F)+","+str(NF)+','+''+"\n")
     file.flush()
     file.close()
 
@@ -415,13 +457,15 @@ def list_to_drop_down_zip(liste):
 
     return retur
 def list_write(M_F, name, num, PF, PM, NBP=[]):
+    print("[INFO   ] [MOI         ] ", M_F, name, num, PF, PM, NBP)
     if M_F == "M":
         file = open("Mlist.txt", "r")
         reader = file.readlines()
         save = reader[0]
         file.close()
         save = eval(save)
-        save.append({'name':name, 'num':num, 'PF':PF, 'PM':PM, 'NBP':NBP})
+        xx = {'name':name, 'num':num, 'PF':PF, 'PM':PM, 'NBP':NBP}
+        save = [xx]+save
     
         
         file = open("Mlist.txt", "w")
@@ -433,7 +477,8 @@ def list_write(M_F, name, num, PF, PM, NBP=[]):
         save = reader[0]
         file.close()
         save = eval(save)
-        save.append({'name':name, 'num':num,'PF':PF, 'PM':PM,'NBP':NBP})
+        xx = {'name':name, 'num':num, 'PF':PF, 'PM':PM, 'NBP':NBP}
+        save = [xx]+save
         
         file = open("Flist.txt", "w")
         file.write(str(save))
@@ -473,3 +518,4 @@ def list_remove(M_F, name, num):
 
 
 
+#write_NBP('15/12/2020','Culbutant Rouge','Culbutant Jaune',0)

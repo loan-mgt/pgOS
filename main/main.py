@@ -5,9 +5,9 @@ def up_glo_list():
 		list_table_item = []
 		temp_list_pig = updatelist()[0] + updatelist()[1]
 		
-		print('list',temp_list_pig)
+		#print('list',temp_list_pig)
 		for i in range(len(temp_list_pig)):
-				print(i)
+				#print(i)
 				list_table.append(temp_list_pig[i]['name'])
 				list_table_item.append(temp_list_pig[i]['num'])
 import kivy
@@ -23,6 +23,7 @@ from googleapiclient.http import MediaIoBaseDownload
 import io
 
 from supertable import SuperTable
+from SimplePopup import Popups
 #### attention
 import urllib.request
 import json
@@ -62,12 +63,18 @@ from kivymd.toast import toast
 from kivymd.uix.snackbar import Snackbar
 from kivy.properties import StringProperty
 from kivy.clock import Clock
+from kivymd.uix.button import MDFlatButton
+
+
+from kivy.uix.boxlayout import BoxLayout
 
 import os
 import csv
 Window.clearcolor = (1, 1, 1, 1)
 
 KV = '''
+#: import font_size_g __main__.font_size_g
+
 WindowManager:
 		MainWin:
 				id:main
@@ -144,14 +151,14 @@ WindowManager:
 								FloatLayout:
 										Label:
 												color: (0, 0, 0, 1)
-												font_size: 40
+												font_size: font_size_g+15
 												text: "Couvaison"
 												pos_hint: {'x':0, 'y': 0.3}
 										Button:
 												id: date_selectionneur
 												text: 'Date de Ponte'
 												size_hint: (0.4, 0.1)
-												font_size: 40
+												font_size: font_size_g
 												
 												pos_hint: {'x': 0.3, 'y': 0.45}
 												on_release:
@@ -163,25 +170,25 @@ WindowManager:
 												id: valide_couv
 												text: 'Valider'
 												pos_hint: {'center_x': 0.5, "center_y": 0.2}
-												font_size: 40
+												font_size: font_size_g
 												size_hint: (0.4, 0.1)
 												on_release:
-														app.write_csv_classe(app.label_date,app.fm_select,app.ff_select)
-														app.Snac("Date ajouter")
+														app.add_couv(app.label_date,app.fm_select,app.ff_select)
+														
 														
 
 										MDDropDownItem:
 												id: field
 												text: ""
-												font_size: 40
-												pos_hint: {'center_x': 0.3, 'center_y': 0.35}
+												font_size: font_size_g
+												pos_hint: {'center_x': 0.3, 'center_y': 0.3}
 												dropdown_bg: [1, 1, 1, 1]
 												on_release: app.menu.open()
 										MDDropDownItem:
 												id: field2
 												text: ""
-												font_size: 40
-												pos_hint: {'center_x': 0.6, 'center_y': 0.35}
+												font_size: font_size_g
+												pos_hint: {'center_x': 0.6, 'center_y': 0.4}
 												dropdown_bg: [1, 1, 1, 1]
 												on_release: app.menu2.open()
 
@@ -273,7 +280,7 @@ WindowManager:
 								pos_hint: {'center_x': .55, 'center_y': .4}
 								on_active:
 										app.F_call(self.active)
-										print(self.active)
+										#print(self.active)
 						Label:
 								color: (0, 0, 0, 1)
 								text:"Femmelle"
@@ -342,7 +349,7 @@ WindowManager:
 
 
 
-									
+						
 								
 '''
 
@@ -350,7 +357,7 @@ WindowManager:
 #ADMIN_UPDATE
 
 
-print("platform", platform)
+print("[INFO   ] [MOI         ]","Platform", platform)
 if platform != "win":
 	size_g = 0.16
 	font_size_g = 45
@@ -358,7 +365,11 @@ if platform != "win":
 else:
 
 	size_g = 0.16
-	font_size_g = 15
+	font_size_g = 14
+	sx = 350
+	Window.top = 25
+	Window.size = (sx,sx*(2129/1080))
+
 
 
 ####"
@@ -377,23 +388,24 @@ def table(self):
 		global size_g
 		global font_size_g
 		self.screen.ids.main.ids.scroll_main.clear_widgets() 
-		print("yesssssssssssssssssssssssssssssssssssssssssssssssssssss")
+		print("[INFO   ] [MOI         ] Tableau construit")
 		list_table = list_for_tabel()
-		print(list_table)
+		#print(list_table)
 		if len(list_table)!=0:
 
 				conv_size = 1/len(list_table)
 				#print(self.screen.ids.main.ids.grid.size_hint)
 				grif =  FloatLayout(pos_hint={'x': 0, 'y': 0},size_hint = (1,size_g/conv_size),id='grid_pg')
-				print(grif.size_hint)
+				#print(grif.size_hint)
 				self.add_nb_petit ={}
 				
 				for i in range(len(list_table)):
-						print([list_table[i]])
-					
+						#print([list_table[i]])
+						
 						colorr = (0.8,0.8,0.8,1)
 						tempp = int((temps_restant(list_table[i][0])))
-						print(tempp)
+						#print(tempp)
+						
 						if tempp < 0:
 								colorr = (0,0,0,0.4)
 
@@ -412,13 +424,24 @@ def table(self):
 						label2 = Label(font_size=font_size_g,color=(0,0,0,1),pos_hint={'x': 0, 'y': 0.15},halign = "left", size_hint=(1, None),text =list_table[i][1]+"  /  "+list_table[i][2])
 						wid.add_widget(lbl1)
 						if tempp < 0:
-							add  = MDIconButton(icon= "plus",pos_hint= {"center_x": .5, "center_y": .5})
-							add.bind(on_release=self.add_petit)
-							self.add_nb_petit[add] = i
-							wid.add_widget(add)
+							print(list_table[i][3],list_table[i] )
+							if list_table[i][3] != "":
+								print('1')
+								b= MDFlatButton(text=list_table[i][3], font_size= font_size_g,pos_hint={'x': 0.89, 'y': 0.5}, size_hint=(0.05, 0.25))
+								b.bind(on_release=self.PopC)
+								self.add_nb_petit[b] = {'id':i,'D':list_table[i][0],'M':list_table[i][1],'F':list_table[i][2]}
+								wid.add_widget(b)
+								
+							else:
+								print("2")
+								add  = MDIconButton(icon= "plus",pos_hint= {'x': 0.85, 'y': 0.5})
+								add.bind(on_release=self.PopC)
+								self.add_nb_petit[add] = {'id':i,'D':list_table[i][0],'M':list_table[i][1],'F':list_table[i][2], 'NM':list_table[i][4], 'NF':list_table[i][5]}
+								wid.add_widget(add) 
+								
 
 						#label3 = Label(font_size=font_size_g,color=(0,0,0,1),pos_hint={'x': 0.3, 'y': 0.2}, size_hint=(1, None),text =list_table[i][2])
-						
+							
 						wid.add_widget(label)
 						wid.add_widget(label2)
 						#wid.add_widget(label3)
@@ -460,7 +483,7 @@ class MainApp(MDApp):
 	
 
 	def tread_update(self, df=1):
-		print("try")
+		print("[INFO   ] [MOI         ] Verification mise a jour")
 		with open('data.json', 'r') as json_file:
 			data = json.load(json_file)
 		if data['auto_update'] == 'True':
@@ -469,11 +492,11 @@ class MainApp(MDApp):
 			id_folder =  data['id_folder']
 
 			if id_folder != "None":
-				print('id_folder != None',id_folder)
+				#print('id_folder != None',id_folder)
 				try :
 					urllib.request.urlopen('http://www.guimp.com')
 					#id_folder
-					print("updateing")
+					print("[INFO   ] [MOI         ] Mise a jour trouvé")
 
 					global creds
 					with open('token.pickle', 'rb') as token:
@@ -485,16 +508,16 @@ class MainApp(MDApp):
 					rep = service.files().list(q="'"+str(id_folder)+"' in parents", fields="files(name,id)").execute()['files']
 					
 
-					print("choisi",rep[0]['name'],'from',rep)
+					#print("choisi",rep[0]['name'],'from',rep)
 
 					name = rep[0]['name']
-					print(name)
+					#print(name)
 					
 					
 					
 					
 					
-					print("est a jour?", data['version'],name)
+					#print("est a jour?", data['version'],name)
 					if data['version'] != name:
 
 					
@@ -507,7 +530,7 @@ class MainApp(MDApp):
 						done = False
 						while done is False:
 						      	status, done = downloader.next_chunk()
-						print("finish downloade",id)
+						#print("finish downloade",id)
 
 						zip = ZipFile(name)
 						zip.extractall()
@@ -517,7 +540,7 @@ class MainApp(MDApp):
 						try:
 							os.remove(i['name'])
 						except:
-							print("coundt remove")
+							print("[FAIL   ][MOI         ] Suppression annulé")
 
 						self.ret_value_value = 1.0
 						data['version']=str(name)
@@ -525,10 +548,10 @@ class MainApp(MDApp):
 						with open('data.json', 'w') as outfile:
 						    json.dump(data, outfile)
 					else:
-						print('id_folder == None',id_folder)
+						#print('id_folder == None',id_folder)
 						self.ret_value_value = 3.0
 				except Exception as e:
-					print('e',e)
+					print('[ERREUR ][MOI         ] ',e)
 					
 			else:
 				self.ret_value_value = 4.0
@@ -540,7 +563,7 @@ class MainApp(MDApp):
 		    with open('token.pickle', 'rb') as token:
 		        creds = pickle.load(token)
 		    
-		    print("service used")
+		    #print("service used")
 		    service = build('drive', 'v3', credentials=creds)
 		    file_id = str(id)
 		    request = service.files().get_media(fileId=file_id)
@@ -549,8 +572,8 @@ class MainApp(MDApp):
 		    done = False
 		    while done is False:
 		        	status, done = downloader.next_chunk()
-		    print("finish downloade",id)
-
+		    #print("finish downloade",id)
+	'''
 	def back(self,force):
 			print("rebuild")
 			#up_glo_list()
@@ -594,28 +617,34 @@ class MainApp(MDApp):
 	                callback=self.set_item_list_pg,
 	                width_mult=4,
 	            	)
-
+	'''
 	def add_petit(self, instance):
+		
 		print(self, instance)
 		print(self.add_nb_petit[instance])
+		############################################################## ca sert a quoi?
 	
 			
 	def boot(self,df=1):
+		print("[INFO   ] [MOI         ] Boot run")
 		self.creds = None
 		self.service = None
+		self.dialog = None
 		##date_selectionneur= ObjectProperty(None)
 		up_glo_list()
 		ranger_csv("data_couv")
-
+		print("[INFO   ] [MOI         ] Boot ranger")
+		
 		self.ffList = updatelist()[0]
 		self.fmList = updatelist()[1]
+		print("[INFO   ] [MOI         ] update_data")
 		self.list_table = list_for_tabel()
 		self.label_accueil = StringProperty('')
 		self.label_date = StringProperty('')
 		self.ffList_0= StringProperty('')
 		self.fmList_0= StringProperty('')
-		print(self.fmList,self.ffList)
-
+		#print(self.fmList,self.ffList)
+		print("[INFO   ] [MOI         ] start")
 		self.PM_select = 'Aucun'
 		self.PF_select = 'Aucun'
 
@@ -623,17 +652,17 @@ class MainApp(MDApp):
 			self.ff_select = "Aucun Pigeon"
 
 		else: 
-			self.ff_select = self.ffList[0]['name']+' '+ self.ffList[0]['num']
+			self.ff_select = self.ffList[0]['name']+'\n'+ self.ffList[0]['num']
 
 		if len(self.fmList) == 0:
 			self.fm_select = "Aucun Pigeon"
 		else: 
-			self.fm_select = self.fmList[0]['name']+' '+ self.fmList[0]['num']
+			self.fm_select = self.fmList[0]['name']+'\n'+ self.fmList[0]['num']
 
 		self.screen.ids.main.ids.field.text = self.fm_select
 		self.screen.ids.main.ids.field2.text = self.ff_select
 
-		
+		print("[INFO   ] [MOI         ] 1/2")
 		
 		self.M_F = None
 		self.login_name=None
@@ -648,31 +677,40 @@ class MainApp(MDApp):
 			self.login_name = self.data['login_name']
 			self.login_satus = [{"text":"Sauvegarde"}]
 			self.id_folder = self.data['id_folder']
+		global font_size_g
+		global size_g
 
 
+		self.add_nb_petit_instance = None
+		self.FF = MDTextField( pos_hint={'x':0.2,'y':0.7},hint_text= "Nombre",size_hint=(0.6,0.1), font_size=font_size_g)
+		V = Button(text='VALIDER', pos_hint={'x':0.5,'y':0.5}, size_hint=(0.2,0.05), font_size= font_size_g)
+		V.bind(on_release=self.PopCB)
+		L = Button(text='Nombre De Petits',bold=True,disabled=True,color=(0,0,0,1), pos_hint={'x':0.2,'y':0.85}, size_hint=(0.2,0.05), font_size=font_size_g)
+		L.background_disabled_normal= ''
+		L.background_disabled_color=(0,0,0,0)
+		L.disabled_color=(0,0,0,1)
+		self.P = Popups(self.screen.ids.main, widget=[self.FF,V,L])#, UOC=table
 
 
+		#print("login_satus",self.login_satus,",","login_name",self.login_name)
 
 		
-
-
-		print("login_satus",self.login_satus,",","login_name",self.login_name)
-
 		
-		
-		print(self.screen.ids.main.ids.MDN.current)
+		#print(self.screen.ids.main.ids.MDN.current)
 		self.ret_value_value = 0
 		#self.screen.ids.main.ids.MDN.refresh_tabs()
+		print("[INFO   ] [MOI         ] Befor table")
 		table(self)
+		print("[INFO   ] [MOI         ] Table build")
 		self.screen.transition = FadeTransition(duration=0.1)
 		fmList =self.fmList 
 		ffList = self.ffList
 		if fmList != {}:
-			menu_items = [{'text': fmList[i]['name']+' '+fmList[i]['num']} for i in range(len(fmList))]
+			menu_items = [{'text': fmList[i]['name']+'\n'+fmList[i]['num']} for i in range(len(fmList))]
 		else:
 			menu_items = list_to_drop_down(dic_to_list({"Aucun Pigeon":""}))
 		if ffList != {}:
-			menu_items2 = [{'text': ffList[i]['name']+' '+ffList[i]['num']} for i in range(len(ffList))]
+			menu_items2 = [{'text': ffList[i]['name']+'\n'+ffList[i]['num']} for i in range(len(ffList))]
 		else:
 			menu_items2 = list_to_drop_down(dic_to_list({"Aucun Pigeon":""}))
 		self.menu2 = MDDropdownMenu(
@@ -680,14 +718,14 @@ class MainApp(MDApp):
 			items=menu_items2,
 			position="auto",
 			callback=self.set_item2,
-			width_mult=4,
+			width_mult=20,
 		)
 		self.menu = MDDropdownMenu(
 			caller=self.screen.ids.main.ids.field,
 			items=menu_items,
 			position="auto",
 			callback=self.set_item,
-			width_mult=4,
+			width_mult=20,
 		)
 		self.menu_list_ac = MDDropdownMenu(
 			caller=self.screen.ids.main.ids.Home_tool,
@@ -724,17 +762,17 @@ class MainApp(MDApp):
 
 		ta = updatelist()[0]+updatelist()[1]
 		ta = [[i['name']  for i in ta],[i['num']  for i in ta]]
-		global font_size_g
-		global size_g
+		
 		self.ST = SuperTable( address= self.screen.ids.main.ids.scroll_pg, table= ta, font_size=font_size_g , ligne_size= size_g,
 			pos_hint = {'x': 0, 'y': 0}, size_hint = (1,1), color=(0.8,0.8,0.8,1))
 
 		#self.back(False)
 		self.ST.build()
 
+
 		########"tread upodate"
 
-		
+		print("[INFO   ] [MOI         ] Boot finish")
 		thr.Thread(target = self.tread_update).start()
 		self.event  = Clock.schedule_interval(self.Boot_updater, 1)
 
@@ -742,9 +780,99 @@ class MainApp(MDApp):
 			super().__init__(**kwargs)
 			self.screen = Builder.load_string(KV)
 			thr.Thread(target = self.boot).start()
+	def add_couv(self,label_date,fm_select, ff_select):
+		print(label_date)
+		if type(label_date) != type(StringProperty('')):
+			print(label_date)
+			self.write_csv_classe(label_date,fm_select,ff_select)
+			self.Snac("Date ajouter")	
+		else:
+			self.Snac("Veuillez choisir une date")	
+	def PopC (self, instance=None):
+		try: 
+			if instance.text != '':
+
+				self.FF.text = instance.text
+			
+			else:
+				self.FF.text = ''
+		except:
+			self.FF.text = ''
+		self.P.show()
+
+
+		print(instance,self.add_nb_petit[instance])
+		self.add_nb_petit_instance = instance
+	def add_NDP_TOOL(self, source,D, N):
+		print("[INFO   ] [MOI         ] ", source, D, N)
+		found = False
+		if 'NBP' not in source:
+			source['NBP'] =[]
+		for i in range(len(source['NBP'])):
+			#print('NBP' in source, int(self.anne.text) == source['NBP'][i]['anne'])
+			if  int(D) == source['NBP'][i]['anne']:
+				source['NBP'][i]['nombre'] += int(N)
+				found = True
+				break
+		if 'NBP' in source and found == False:
+			source['NBP'].append({'anne':int(D),'nombre':int(N)})
+		elif found == False: 
+			source['NBP']=[{'anne':int(D),'nombre':int(N)}]
+		return source
+
+
+	def add_NDP(self, source, N):
+		M = source['M']
+		NM = source['NM']
+		F = source['F']
+		NF = source['NF']
+		print('M',M,'NM', NM,'F', F,'NF', NF)
+		#print(self.ffList) 
+		#for i in self.fmList:
+		#	print(i['name'] , M , i['num'] , NM)
+		#	print(( i['name'] == M and i['num'] == NM))
+		erreur = False
+		try:
+			Msource = next(item for item in self.fmList if item['name'] == M and item['num'] == NM)
+			Fsource = next(item for item in self.ffList if item['name'] == F and item['num'] == NF)
+		except Exception as e :
+			print(e, "verssion ansicein pigeon pas touver")
+			self.Snac("Erreur version ancienne")
+			erreur = True
+		if erreur == False:
+			new_Msource = self.add_NDP_TOOL(Msource,int(source['D'][6:]), N)
+
+			
+			new_Fsource  = self.add_NDP_TOOL(Fsource,int(source['D'][6:]), N)
+			
+			list_remove('M', M, NM)
+			if 'PF' not in new_Msource:
+				new_Msource['PF'] = 'Aucun'
+			if 'PM' not in new_Msource:
+				new_Msource['PM'] = 'Aucun'
 			
 			
+			list_write('M', new_Msource['name'], new_Msource['num'], new_Msource['PF'], new_Msource['PM'], new_Msource['NBP'])
+			list_remove('F', F, NF)
+			if 'PF' not in new_Fsource:
+				new_Msource['PF'] = 'Aucun'
+			if 'PM' not in new_Fsource:
+				new_Msource['PM'] = 'Aucun'
+			list_write('F', new_Fsource['name'], new_Fsource['num'], new_Fsource['PF'], new_Fsource['PM'], new_Fsource['NBP'])
+			self.ffList = updatelist()[0]
+			self.fmList = updatelist()[1]
+		
+
+
 			
+	def PopCB(self, instance=None):
+		x = self.add_nb_petit[self.add_nb_petit_instance]
+		print(x['D'],x['M'],x['F'],self.FF.text)
+		write_NBP(x['D'],x['M'],x['F'],self.FF.text)
+		table(self)
+		self.P.close()
+		self.add_NDP(x,self.FF.text )
+		
 
 
 	def Boot_updater(self,df):
@@ -757,7 +885,8 @@ class MainApp(MDApp):
 				print("updating lyout")
 				up_glo_list()
 				table(self)
-				self.back(False)
+				#self.back(False)
+				self.ST.build()
 			elif self.ret_value_value == 3.0:
 				print("allreday ûptodat")
 	def temp_Snac(self,df=1):
@@ -776,27 +905,28 @@ class MainApp(MDApp):
 	
 			
 	def select_back(self, instance):
-			print(instance.text)
+			#print(instance.text)
 			self.screen.ids.LO.ids.btn_drop.text = instance.text
 			#print(self.screen.ids.LO.ids.btn_drop.pos_hint)
 			self.back_list.dismiss()	
 
 	def download_chosen(self, name):
+		print("[INFO   ] [MOI         ] Download start")
 		names = name
 		name = name[:len(name)-4]
 		global list_table
-		print("service used")
+		#print("service used")
 		rep = service.files().list(q="'"+str(self.id_folder)+"' in parents", fields="files(name, id)").execute()['files']
 		found = False
 		for i in rep:
 			
-			print(i['name'][:len(i)-6], (' vs '),name)
+			#print(i['name'][:len(i)-6], (' vs '),name)
 
 			if i['name'][:len(i)-6] == name:
-				print('found')
+				print('[INFO   ] [MOI         ] Found')
 				found = True
 				break
-		print(i)
+		#print(i)
 		self.down(i['id'],i['name'])
 		zip = ZipFile(i['name'])
 		zip.extractall()
@@ -819,22 +949,22 @@ class MainApp(MDApp):
 		try:
 			os.remove(i['name'])
 		except:
-			print("coundt remove")
+			print("[FAIL   ][MOI         ] suppression annulé")
 
 	def valid_down(self, instance):
 		global list_table
-		print("service used")
+		#print("service used")
 		rep = service.files().list(q="'"+str(self.id_folder)+"' in parents", fields="files(name, id)").execute()['files']
 		found = False
 		for i in rep:
 			
-			print(i['name'][:len(i)-6])
+			#print(i['name'][:len(i)-6])
 
 			if i['name'][:len(i)-6] == self.screen.ids.LO.ids.btn_drop.text:
-				print('found')
+				#print('found')
 				found = True
 				break
-		print(i)
+		#print(i)
 		self.down(i['id'],i['name'])
 		zip = ZipFile(i['name'])
 		zip.extractall()
@@ -852,19 +982,20 @@ class MainApp(MDApp):
 		self.Snac('Charger!')
 		up_glo_list()
 		table(self)
-		self.back(False)
+		#self.back(False)
+		self.ST.build()
 		try:
 			os.remove(i['name'])
 		except:
-			print("coundt remove")
+			print("[FAIL   ][MOI         ] Suppression annulé")
 
 	def set_item_list_pg(self, instance):
 
         #time.sleep(0.05)
 	        self.menu_list.dismiss()
 	        if instance.text == 'edit':
-		            print(self.screen)
-		            print("ici",self.screen.current)
+		            #print(self.screen)
+		            #print("ici",self.screen.current)
 		            self.screen.current="LP"
 		            #self.screen.transition = FadeTransition(duration=0.5)
 		            self.edit()
@@ -874,8 +1005,8 @@ class MainApp(MDApp):
 
 	def set_item_ac(self, instance):
 			global font_size_g
-			print("service used")
-			print("self.login_satus",self.login_satus)
+			#print("service used")
+			#print("self.login_satus",self.login_satus)
 			if self.login_satus==[{"text":"se connecter"}]:
 					self.screen.ids.LO.ids.mdfield.font_size = font_size_g
 					self.screen.ids.LO.ids.mdfield.pos_hint = {'x': 0.5, 'y': 0.75}
@@ -927,13 +1058,13 @@ class MainApp(MDApp):
 					self.screen.ids.LO.ids.lay.add_widget(btn_ac)
 					
 					self.screen.ids.LO.ids.lay.add_widget(btn_ac_val)
-					print(self.screen.ids.LO.ids.btn_drop.pos_hint)
+					#print(self.screen.ids.LO.ids.btn_drop.pos_hint)
 					
 					self.screen.ids.LO.ids.btn_drop.pos_hint={'x': 0.6, 'y': 0.4}
 					self.screen.ids.LO.ids.btn_drop.size_hint = (0.2,0.05)
 					
 					#self.screen.ids.LO.ids.btn_drop.text = 'Selectioner une Sauvegarde'
-					print(self.screen.ids.LO.ids.lay.children)
+					#print(self.screen.ids.LO.ids.lay.children)
 					
 					
 
@@ -956,8 +1087,8 @@ class MainApp(MDApp):
 			service = build('drive', 'v3', credentials=creds)
 		       
 			if instance.text == 'se connecter':
-					print(self.screen)
-					print("ici",self.screen.current)
+					#print(self.screen)
+					#print("ici",self.screen.current)
 					self.screen.current="LO"
 
 			if instance.text == 'Sauvegarde':
@@ -968,7 +1099,7 @@ class MainApp(MDApp):
 						self.screen.ids.LO.ids.btn_drop.text= str('None')
 
 					
-					print("ici",self.screen.current)
+					#print("ici",self.screen.current)
 					self.back_list = MDDropdownMenu(
 						caller=self.screen.ids.LO.ids.lay.children[1],
 						items=list_to_drop_down_zip(load),
@@ -993,12 +1124,12 @@ class MainApp(MDApp):
 
 
 		except Exception as e:
-			print('waiting',e)
+			print("[INFO   ] [MOI         ] ",'waiting',e)
 		
 	
 	def auto_update_status(self, instance= None):
-		print(self, instance)
-		print(instance.active)
+		#print(self, instance)
+		#print(instance.active)
 		self.data['auto_update'] = str(instance.active)
 		with open('data.json', 'w') as outfile:
 			json.dump(self.data, outfile)
@@ -1079,12 +1210,12 @@ class MainApp(MDApp):
 	        global ALL_Check_Status
 
 
-	        print("checked "+str(instance.id))
-	        print(instance)
+	        #print("checked "+str(instance.id))
+	        #print(instance)
 	        id_selct = str(instance.id)
 	        id_selct = int(id_selct[1:])
 
-	        print(len(self.screen.ids.LP.ids.scroll_edit.children[0].children), id_selct)
+	        #print(len(self.screen.ids.LP.ids.scroll_edit.children[0].children), id_selct)
 	        id_selct_rev = (len(self.screen.ids.LP.ids.scroll_edit.children[0].children)-1)-id_selct
 	        if self.screen.ids.LP.ids.scroll_edit.children[0].children[id_selct_rev].children[0].active == False:
 	            self.screen.ids.LP.ids.scroll_edit.children[0].children[id_selct_rev].children[0].active = True
@@ -1092,8 +1223,8 @@ class MainApp(MDApp):
 	        else:
 	            self.screen.ids.LP.ids.scroll_edit.children[0].children[id_selct_rev].children[0].active = False
 	            ALL_Check_Status[id_selct]= False
-	        print(self.screen.ids.LP.ids.scroll_edit.children[0].children[id_selct_rev].children[0].active)
-	        print(ALL_Check_Status)
+	        #print(self.screen.ids.LP.ids.scroll_edit.children[0].children[id_selct_rev].children[0].active)
+	        #print(ALL_Check_Status)
 	        self.check_selected = 0
 	        for z in ALL_Check_Status:
 	            if z == True:
@@ -1135,14 +1266,14 @@ class MainApp(MDApp):
 					items=menu_items2,
 					position="auto",
 					callback=self.set_item2,
-					width_mult=4,
+					width_mult=20,
 				)
 		self.menu = MDDropdownMenu(
 					caller=self.screen.ids.main.ids.field,
 					items=menu_items,
 					position="auto",
 					callback=self.set_item,
-					width_mult=4,
+					width_mult=20,
 				)
 		self.menu_PF = MDDropdownMenu(
 			caller=self.screen.ids.AP.ids.PF,
@@ -1178,13 +1309,13 @@ class MainApp(MDApp):
 		picker.open()
 
 	def got_date(self, the_date):
-		print(the_date)
+		print("[INFO   ] [MOI         ] Date ", the_date)
 		self.label_date = str(the_date)
 		self.screen.ids.main.ids.date_selectionneur.text = self.label_date
-		self.screen.ids.main.ids.MDN.switch_tab("screnn2")
+		#self.screen.ids.main.ids.MDN.switch_tab("screnn2")
 	def btn_login(self,instance):
-		print("service used")
-		print(self.screen.ids.LO.ids.mdfield.text)
+		print("[INFO   ] [MOI         ] Boutton login")
+		#print(self.screen.ids.LO.ids.mdfield.text)
 		with open('data.json', 'r') as json_file:
 			self.data= json.load(json_file)
 		self.data['login_name'] = str(self.screen.ids.LO.ids.mdfield.text)
@@ -1193,7 +1324,7 @@ class MainApp(MDApp):
 		results = service.files().list(
         	pageSize=10, fields="files(id, name)").execute()
 		for i in results['files']:
-			print(i['name'])
+			#print(i['name'])
 			if i['name'] ==self.screen.ids.LO.ids.mdfield.text:
 				found = True
 
@@ -1201,7 +1332,7 @@ class MainApp(MDApp):
 				print("found",self.id_folder)
 
 		if found== False:
-			print("ni found")
+			print("[INFO   ] [MOI         ] Nouveau compte")
 			file_metadata = {
 	            'name':str(self.screen.ids.LO.ids.mdfield.text),
 	            'mimeType': 'application/vnd.google-apps.folder'
@@ -1219,10 +1350,10 @@ class MainApp(MDApp):
 			)
 		self.login_satus=[{"text":"Sauvegarde"}]
 		self.currentLO("main")
-		print(self.screen.ids.LO.ids.btn_drop.pos_hint)
+		#print(self.screen.ids.LO.ids.btn_drop.pos_hint)
 		self.screen.ids.LO.ids.btn_drop.pos_hint={'x': 0.6, 'y': 0.6}
 		self.screen.ids.LO.ids.btn_drop.text = 'Selectioner une Sauvegarde'
-		print(self.screen.ids.LO.ids.btn_drop.pos_hint)
+		#print(self.screen.ids.LO.ids.btn_drop.pos_hint)
 		
 		self.data['login_satus'] = 'True'
 		
@@ -1232,7 +1363,7 @@ class MainApp(MDApp):
 		self.screen.ids.LO.ids.mdfield.pos_hint = {'x': -1.3, 'y': 0.75}
 		self.Snac("connecter")
 	def currentLO(self, text):
-		print(self.screen.ids.LO.ids.lay.children)
+		#print(self.screen.ids.LO.ids.lay.children)
 		self.screen.current=text
 		self.screen.ids.LO.ids.lay.clear_widgets()
 		#.screen.ids.LO.ids.lay.children[0].size_hint = (0,0)
@@ -1243,14 +1374,14 @@ class MainApp(MDApp):
 		#self.screen.ids.LO.ids.lay.add_widget(btn_ac)
 
 	def backup(self, instance=None):
-		print("service used")
-		print(date.today())
+		print("[INFO   ] [MOI         ] Backup")
+		
 		zip_back = ZipFile(str(date.today())+'.zip','w')
 		zip_back.write('data_couv.csv')
 		zip_back.write('Flist.txt')
 		zip_back.write('Mlist.txt')
 		zip_back.close()
-		print(self.id_folder)
+		
 		file_metadata = {'name': str(date.today())+'.zip', 'parents':[self.id_folder]}	
 		media = MediaFileUpload(str(date.today())+'.zip', mimetype='file/zip')
 		file = service.files().create(body=file_metadata,
@@ -1269,15 +1400,15 @@ class MainApp(MDApp):
 			ffList = self.ffList
 			PF_select = 'Aucun'
 			PM_select =  'Aucun'
-			print(self.PM_select, self.PF_select)
+			#print(self.PM_select, self.PF_select)
 			for i in range(len(fmList)):
-				print(fmList[i]['name']+' '+fmList[i]['num'], 'vs', self.PM_select)
+				#print(fmList[i]['name']+' '+fmList[i]['num'], 'vs', self.PM_select)
 				if fmList[i]['name']+' '+fmList[i]['num'] == self.PM_select:
 					PM_select = {'name': fmList[i]['name'], 'num': fmList[i]['num']}
 					break
 
 			for i in range(len(ffList)):
-				print(ffList[i]['name']+' '+ffList[i]['num'] ,'vs',self.PF_select)
+				#print(ffList[i]['name']+' '+ffList[i]['num'] ,'vs',self.PF_select)
 				if ffList[i]['name']+' '+ffList[i]['num']  == self.PF_select:
 					PF_select =  {'name': ffList[i]['name'], 'num': ffList[i]['num']}
 					break
@@ -1290,7 +1421,7 @@ class MainApp(MDApp):
 			self.ffList = ffList
 			self.fmList = fmList
 
-			print("M_F",M_F,"name", self.screen.ids.AP.ids.nom.text, "email", self.screen.ids.AP.ids.num.text)
+			print("[INFO   ] [MOI         ] Pigeon ajouté")
 			if fmList != []:
 				menu_items = [{'text': fmList[i]['name']+' '+fmList[i]['num']} for i in range(len(fmList))]
 			else:
@@ -1299,20 +1430,20 @@ class MainApp(MDApp):
 				menu_items2 = [{'text': ffList[i]['name']+' '+ffList[i]['num']} for i in range(len(ffList))]
 			else:
 				menu_items2 = list_to_drop_down(dic_to_list([{"Aucun Pigeon":""}]))
-			print("recall")
+			
 			self.menu2 = MDDropdownMenu(
 					caller=self.screen.ids.main.ids.field,
 					items=menu_items2,
 					position="auto",
 					callback=self.set_item2,
-					width_mult=4,
+					width_mult=20,
 				)
 			self.menu = MDDropdownMenu(
 					caller=self.screen.ids.main.ids.field,
 					items=menu_items,
 					position="auto",
 					callback=self.set_item,
-					width_mult=4,
+					width_mult=20,
 				)
 			self.menu_PF = MDDropdownMenu(
 			caller=self.screen.ids.AP.ids.PF,
@@ -1332,16 +1463,17 @@ class MainApp(MDApp):
 			)
 			self.screen.ids.AP.ids.nom.text = ''
 			self.screen.ids.AP.ids.num.text = ''
-			self.screen.ids.AP.ids.check_F.active = False
+			self.screen.ids.AP.ids.checpk_F.active = False
 			self.screen.ids.AP.ids.check_M.active = False
 			self.Snac("Un Pigeon a était Ajouter")
 			up_glo_list()
-			self.back(False)
+			self.ST.build()
+			#self.back(False)
 			try:
 				#thr.Thread(target = self.backup).start()
 				pass
 			except:
-				print("hors conection")
+				print("[INFO   ] [MOI         ] Hors conection")
 		
 		
 
@@ -1350,16 +1482,20 @@ class MainApp(MDApp):
 
 	
 	def write_csv_classe(self,date,M,F):
+		MI = M.find('\n')
+		FI = F.find('\n')
 
 
-		write_csv(date,M,F)
+
+		write_csv(date,M[:MI],F[:FI], M[MI+1:], F[FI+1:])
 		
 		table(self)
 		self.Snac("L'événement a été ajouté")
+		self.screen.ids.main.ids.MDN.switch_tab("screnn2")
 		try:
 			thr.Thread(target = self.backup).start()
 		except:
-			print("hors conection")
+			print("[INFO   ] [MOI         ] Hors conection")
 
 	
 
@@ -1367,12 +1503,12 @@ class MainApp(MDApp):
 		if statue == True:
 			global M_F
 			M_F = "M"
-			print(M_F)
+			#print(M_F)
 	def F_call(self,statue):
 		if statue == True:
 			global M_F
 			M_F = "F"
-			print(M_F)
+			#print(M_F)
 
 
 
@@ -1385,7 +1521,7 @@ class MainApp(MDApp):
 	
 
 	def build(self):
-		print("build")
+		print("[INFO   ] [MOI         ] Build")
 		
 		
 		return self.screen

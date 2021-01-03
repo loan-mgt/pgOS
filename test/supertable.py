@@ -77,7 +77,7 @@ class SuperTable():
 		#print((len(kwargs))
 		if len(kwargs) >0:
 			raise Exception("[ERROR] argument enter not accpeted")
-		self.IP = InfoPopup(self.address, font_size = self.font_size)
+		self.IP = InfoPopup(self.address, font_size = self.font_size, root=self)
 	def update_data (self, table ):
 		self.table = table
 		
@@ -173,7 +173,7 @@ class SuperTable():
 				base = FloatLayout(pos_hint={'y':1-i*1/longueur - 1/longueur },size_hint=(1,1/longueur))
 				fond = Button(pos_hint={'x': 0, 'y': 0}, size_hint=(1, 1),text ="",background_normal ='',color=(0,0,0,1), background_color=self.color)
 				fond.bind(on_release=self.checker)
-				check = MDCheckbox(disabled = True,pos_hint={'x': 0.8, 'y': 0.2}, size_hint=(0, None))
+				check = MDCheckbox(disabled = True,pos_hint={'x': 0.9, 'y': 0.2}, size_hint=(0, None))
 				check.background_disabled_normal= ''
 				check.disabled_color=(0,0,1,1)
 				base.add_widget(fond)

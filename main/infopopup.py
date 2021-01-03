@@ -54,6 +54,7 @@ class InfoPopup(FloatLayout):
 		self.dic = kwargs.pop('dic', None)
 		self.ffList = kwargs.pop('ffList', None)
 		self.fmList = kwargs.pop('fmList', None)
+		self.root = kwargs.pop('root', None)
 		if self.ffList == None:
 			self.ffList = updatelist()[0]
 			self.fmList = updatelist()[1]	
@@ -640,7 +641,7 @@ class InfoPopup(FloatLayout):
 			NBP = self.source['NBP']
 		else: 
 			NBP =[]
-		#print('new',(M_F, name, num, PF, PM, NBP))
+		print('new',(M_F, name, num, PF, PM, NBP))
 		list_write(M_F, name, num, PF, PM, NBP)
 		self.fermer()
 		self.ffList = updatelist()[0]
@@ -683,6 +684,8 @@ class InfoPopup(FloatLayout):
 		self.fermer()
 		self.ffList = updatelist()[0]
 		self.fmList = updatelist()[1]
+		self.root.update_t()
+		#self.ad.ST.build()
 
 	def DM_OPEN(self, instance):
 		self.menuM.open()

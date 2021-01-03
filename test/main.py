@@ -350,16 +350,7 @@ WindowManager:
 		        		id:lay_drop_scroll
 		        		FloatLayout:
 		        				id: lay_drop
-				        		Button:
-				        				id: btn_drop
-				        				text:'Selectioner une Sauvegarde'
-				        				size_hint: (0.3,0.1)
-				        				#pos_hint:{'x': -0.6, 'y': 0.6}
-				        				pos_hint:{'x': -0.6, 'y': 0.6}
-				        				color:(0,0,0,1)
-				        				background_normal :''
-				        				background_color:(0.8,0.8,0.8,1)
-				        				on_release: app.back_list.open()
+				        		
 				        		MDTextField:
 				        				id: mdfield
 				        				pos_hint:{'x': -1.3, 'y': 0.75}
@@ -1024,7 +1015,7 @@ class MainApp(MDApp):
 			
 	def select_back(self, instance):
 			#print(instance.text)
-			self.screen.ids.LO.ids.btn_drop.text = instance.text
+			self.but_back_list.text = instance.text
 			#print(self.screen.ids.LO.ids.btn_drop.pos_hint)
 			self.back_list.dismiss()	
 
@@ -1050,13 +1041,14 @@ class MainApp(MDApp):
 		zip.extractall()
 
 		#self.screen.ids.LO.ids.btn_drop.text = 'Selectioner une Sauvegarde'
-
+		
 		self.Snac('Charger!')
 		up_glo_list()
 		table(self)
 		ta = updatelist()[0]+updatelist()[1]
 		ta = [[i['name']  for i in ta],[i['num']  for i in ta]]
-		self.ST.update_data(ta)
+		print("check if loader work", "ta",ta)
+		self.ST.update_t()
 		self.ST.build()
 		with open('data.json', 'r') as json_file:
 			data= json.load(json_file)
@@ -1070,6 +1062,7 @@ class MainApp(MDApp):
 			print("[FAIL   ][MOI         ] suppression annulé")
 
 	def valid_down(self, instance):
+		print("valid_down")
 		global list_table
 		#print("service used")
 		rep = service.files().list(q="'"+str(self.id_folder)+"' in parents", fields="files(name, id)").execute()['files']
@@ -1078,7 +1071,7 @@ class MainApp(MDApp):
 			
 			#print(i['name'][:len(i)-6])
 
-			if i['name'][:len(i)-6] == self.screen.ids.LO.ids.btn_drop.text:
+			if i['name'][:len(i)-6] == self.but_back_list.text:
 				#print('found')
 				found = True
 				break
@@ -1101,6 +1094,7 @@ class MainApp(MDApp):
 		up_glo_list()
 		table(self)
 		#self.back(False)
+		self.ST.update_t()
 		self.ST.build()
 		try:
 			os.remove(i['name'])
@@ -1120,12 +1114,21 @@ class MainApp(MDApp):
 		            #self.back(False)
 	        if instance.text == "add":
 		            self.ST.addPP()
+	def back_list_open(self, instance=None):
+		self.back_list.open()
 
 	def set_item_ac(self, instance):
 			global font_size_g
+			global creds
+			with open('token.pickle', 'rb') as token:
+				creds = pickle.load(token)
+			    
+			global service
+			service = build('drive', 'v3', credentials=creds)
 			#print("service used")
 			#print("self.login_satus",self.login_satus)
 			if self.login_satus==[{"text":"se connecter"},{"text":"edit"}]:
+
 					self.screen.ids.LO.ids.mdfield.font_size = font_size_g
 					self.screen.ids.LO.ids.mdfield.pos_hint = {'x': 0.5, 'y': 0.75}
 					#text_in =  MDTextField(font_size = font_size_g ,pos_hint={'x': 0.5, 'y': 0.75},size_hint= (0.2,0.1),hint_text= "text",helper_text= "Identifiant",helper_text_mode= "persistent")
@@ -1178,12 +1181,32 @@ class MainApp(MDApp):
 					self.screen.ids.LO.ids.lay.add_widget(btn_ac_val)
 					#print(self.screen.ids.LO.ids.btn_drop.pos_hint)
 					
-					self.screen.ids.LO.ids.btn_drop.pos_hint={'x': 0.6, 'y': 0.4}
-					self.screen.ids.LO.ids.btn_drop.size_hint = (0.2,0.05)
+					#self.screen.ids.LO.ids.btn_drop.pos_hint={'x': 0.6, 'y': 0.4}
+					#self.screen.ids.LO.ids.btn_drop.size_hint = (0.2,0.05)
 					
-					#self.screen.ids.LO.ids.btn_drop.text = 'Selectioner une Sauvegarde'
-					#print(self.screen.ids.LO.ids.lay.children)
+					load = service.files().list(q="'"+str(self.id_folder)+"' in parents", fields="files(name)").execute()['files']
+					if len(load) !=0:
+						btn_drop_text= str(load[0]['name'][:-4])
+					else:
+						btn_drop_text= str('None')
+
+					print(self.screen.ids.LO.ids.lay.children)
+					#print("ici",self.screen.current)
+					but_back_list = Button(id= 'btn_drop',text=btn_drop_text,size_hint=(0.2,0.05),pos_hint={'x': 0.6, 'y': 0.4},color=(0,0,0,1))
+					but_back_list.background_normal=''
+					but_back_list.background_color:(0.8,0.8,0.8,1)
+					but_back_list.bind(on_release= self.back_list_open)
+					self.but_back_list = but_back_list
 					
+					self.screen.ids.LO.ids.lay.add_widget(but_back_list)
+				
+					self.back_list = MDDropdownMenu(
+						caller=but_back_list,
+						items=list_to_drop_down_zip(load),
+						position="auto",
+						callback=self.select_back,
+						width_mult=4,
+					)
 					
 
 					#btn_ac_drop  = Button(text='Selectioner une Sauvegarde',size_hint= (0.3,0.1),pos_hint={'x': 0.6, 'y': 0.6}, color=(0,0,0,1),background_normal ='', background_color=(0.8,0.8,0.8,1))
@@ -1197,34 +1220,18 @@ class MainApp(MDApp):
 		
 
 			self.menu_list_ac.dismiss()
-			global creds
-			with open('token.pickle', 'rb') as token:
-				creds = pickle.load(token)
-			    
-			global service
-			service = build('drive', 'v3', credentials=creds)
+			
 		       
 			if instance.text == 'se connecter':
+					
 					#print(self.screen)
 					#print("ici",self.screen.current)
 					self.screen.current="LO"
 
 			if instance.text == 'Sauvegarde':
-					load = service.files().list(q="'"+str(self.id_folder)+"' in parents", fields="files(name)").execute()['files']
-					if len(load) !=0:
-						self.screen.ids.LO.ids.btn_drop.text= str(load[0]['name'][:-4])
-					else:
-						self.screen.ids.LO.ids.btn_drop.text= str('None')
 
-					print(self.screen.ids.LO.ids.lay.children)
-					#print("ici",self.screen.current)
-					self.back_list = MDDropdownMenu(
-						caller=self.screen.ids.LO.ids.lay.children[1],
-						items=list_to_drop_down_zip(load),
-						position="auto",
-						callback=self.select_back,
-						width_mult=4,
-					)
+					
+					
 					self.screen.current="LO"
 			if instance.text == 'edit':
 				edit_table(self)
@@ -1463,16 +1470,16 @@ class MainApp(MDApp):
 		#open('id.'+str(self.id_folder),'w')
 		self.menu_list_ac = MDDropdownMenu(
 				caller=self.screen.ids.main.ids.Home_tool,
-				items=[{"text":"Sauvegarde"}],
+				items=[{"text":"Sauvegarde"},{"text":"edit"}],
 				position="auto",
 				callback=self.set_item_ac,
 				width_mult=4,
 			)
-		self.login_satus=[{"text":"Sauvegarde"}]
+		self.login_satus=[{"text":"Sauvegarde"},{"text":"edit"}]
 		self.currentLO("main")
 		#print(self.screen.ids.LO.ids.btn_drop.pos_hint)
-		self.screen.ids.LO.ids.btn_drop.pos_hint={'x': 0.6, 'y': 0.6}
-		self.screen.ids.LO.ids.btn_drop.text = 'Selectioner une Sauvegarde'
+		#self.screen.ids.LO.ids.btn_drop.pos_hint={'x': 0.6, 'y': 0.6}
+		#self.screen.ids.LO.ids.btn_drop.text = 'Selectioner une Sauvegarde'
 		#print(self.screen.ids.LO.ids.btn_drop.pos_hint)
 		
 		self.data['login_satus'] = 'True'

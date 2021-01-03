@@ -365,8 +365,9 @@ def list_for_tabel():
             list_tabel.append([row[2],row[4],row[6],row[8],row[5], row[7] ])
     print("[INFO   ] [MOI         ] list_for_tabel finish")
     f.close()
+    print(list_tabel)
     return list_tabel
-#print(list_for_tabel())
+print(list_for_tabel())
             
 def temps_restant(date): 
     import datetime
@@ -400,14 +401,15 @@ def ranger_csv(csv_name):
     x = 0
     header = None
     for row in reader:
-        if x != 0:
-            #print(row[2],int( temps_restant(row[2])))
-            if int( temps_restant(row[2]))<=-7:
-                row[3] = 'F'
-            LD.append({'time':row[2],'row':row})
-        else:
-            header = row
-            x=1
+        if len(row) == 9:
+            if x != 0:
+                #print(row[2],int( temps_restant(row[2])))
+                if int( temps_restant(row[2]))<=-7:
+                    row[3] = 'F'
+                LD.append({'time':row[2],'row':row})
+            else:
+                header = row
+                x=1
     f.close()
     LD =  sorted(LD, key=lambda k: int( temps_restant(k['time'])))
 
@@ -420,6 +422,48 @@ def ranger_csv(csv_name):
 
 
 #ranger_csv("D:\pgOS\data_couv")
+
+def remove_csv(L):
+    print('L', L)
+    f = open('data_couv.csv', 'r')
+    
+    reader = csv.reader(f)
+    LD = []
+    x = 0
+    header = None
+    for row in reader:
+        if len(row) == 9:
+            if x != 0:
+                #print(row[2],int( temps_restant(row[2])))
+                if int( temps_restant(row[2]))<=-7:
+                    row[3] = 'F'
+                LD.append({'time':row[2],'row':row})
+            else:
+                header = row
+                x=1
+    f.close()
+    print('LD',LD)
+    for i in L:
+        for z in range(len(LD)-1):
+           
+            w = LD[z]['row']
+            
+            if w[2] == i['D'] and w[4]==i['M'] and w[5]==i['NM'] and w[6]==i['F'] and w[7]==i['NF']:
+                print(w[2], i['D'] and w[4],i['M'] and w[5],i['NM'] and w[6],i['F'] and w[7],i['NF'])
+                LD.pop(z)
+                break
+
+    LD =  sorted(LD, key=lambda k: int( temps_restant(k['time'])))
+    print(LD)
+    new = open('data_couv.csv', "w")
+    new.write(','.join(header)+'\n')
+    for i in LD:
+        
+        new.write(','.join(i['row'])+'\n')
+    new.close()
+remove_csv([])
+
+
 def cleandate(indate):
     
     dateclean = str(indate)[8:10]+"/"+str(indate)[5:7]+"/"+str(indate)[0:4]

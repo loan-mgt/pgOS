@@ -30,6 +30,7 @@ import json
 
 import threading as thr
 
+from kivy.uix.scrollview import ScrollView
 
 import shutil
 
@@ -84,6 +85,9 @@ WindowManager:
 				id: AP
 		Login:
 				id:LO
+		TablePige:
+	    		id:TPG
+
 
 <MainWin>:
 		name:"main"
@@ -307,6 +311,26 @@ WindowManager:
 			            pos_hint: {'x': 0, 'y': 0}
 			            size_hint: 1, 0.93
 			            id:scroll_edit
+<TablePige>:
+	    name: "TPG"
+	    FloatLayout:
+		        id: FLAY
+		        
+		        orientation: "vertical"
+
+		        MDToolbar:
+			            id: edit_menu
+			            pos_hint: {'x': 0, 'y': 0.93}
+			            title: "Liste des Couvaison"
+			            left_action_items: [["window-close", lambda x: app.back_TPG()]]
+			            right_action_items: [["trash-can-outline", lambda x: app.Deleter_TPG()]]
+			            md_bg_color: (0.5,0.5,0.5,1)
+
+
+		        FloatLayout:
+			            pos_hint: {'x': 0, 'y': 0}
+			            size_hint: 1, 0.93
+			            id:scroll_edit
 <Login>:
 	    name: "LO"
 	    FloatLayout:
@@ -318,7 +342,7 @@ WindowManager:
 			            id: tool__log
 			            pos_hint: {'x': 0, 'y': 0.93}
 			            title: "Régalge"
-			            left_action_items: [["window-close", lambda x: app.currentLO("main")]]
+			            left_action_items: [["window-close", lambda x:app.currentLO("main") ]]
 			            md_bg_color: (0.5,0.5,0.5,1)
 			    ScrollView:
 			            pos_hint: {'x': 0, 'y': 0}
@@ -429,7 +453,7 @@ def table(self):
 								print('1')
 								b= MDFlatButton(text=list_table[i][3], font_size= font_size_g,pos_hint={'x': 0.89, 'y': 0.5}, size_hint=(0.05, 0.25))
 								b.bind(on_release=self.PopC)
-								self.add_nb_petit[b] = {'id':i,'D':list_table[i][0],'M':list_table[i][1],'F':list_table[i][2]}
+								self.add_nb_petit[b] = {'id':i,'D':list_table[i][0],'M':list_table[i][1],'F':list_table[i][2], 'NM':list_table[i][4], 'NF':list_table[i][5]}
 								wid.add_widget(b)
 								
 							else:
@@ -447,6 +471,69 @@ def table(self):
 						#wid.add_widget(label3)
 						grif.add_widget(wid) 
 				self.screen.ids.main.ids.scroll_main.add_widget(grif)
+def edit_table(self):
+		global size_g
+		global font_size_g
+		self.screen.ids.TPG.ids.scroll_edit.clear_widgets() 
+		print("[INFO   ] [MOI         ] Tableau construit")
+		list_table = list_for_tabel()
+		print('list_table', list_table)
+		#print(list_table)
+		if len(list_table)!=0:
+
+				conv_size = 1/len(list_table)
+				#print(self.screen.ids.main.ids.grid.size_hint)
+				grif =  FloatLayout(pos_hint={'x': 0, 'y': 0},size_hint = (1,size_g/conv_size),id='grid_pg')
+				#print(grif.size_hint)
+				self.add_nb_petit_TPG ={}
+				self.tp_Delete_TPG = []
+				
+				for i in range(len(list_table)):
+						#print([list_table[i]])
+						
+						colorr = (0.8,0.8,0.8,1)
+						tempp = int((temps_restant(list_table[i][0])))
+						#print(tempp)
+						
+						if tempp < 0:
+								colorr = (0,0,0,0.4)
+
+						elif tempp <= 3:
+								colorr = (1,0.8,0.8,1)
+						elif tempp <= 6:
+								colorr = (1,1,0.8,1)
+						else:
+								colorr = (0.8,1,0.8,1)
+
+
+
+						wid = FloatLayout(size_hint=(1,conv_size),pos_hint={'y':1-conv_size*(i+1) }, id= str(i)+"float")
+						lbl1 = Button(pos_hint={'x': 0, 'y': 0}, size_hint=(1, 1),text ="",background_normal ='',color=(0,0,0,1), background_color=colorr)
+						lbl1.bind(on_release=self.checker_TPG)
+						label = Label(font_size=font_size_g,color=(0,0,0,1), bold = True ,pos_hint={'x': -0.3, 'y': 0.3}, size_hint=(1, None),text =list_table[i][0])
+						label2 = Label(font_size=font_size_g,color=(0,0,0,1),pos_hint={'x': 0, 'y': 0.15},halign = "left", size_hint=(1, None),text =list_table[i][1]+"  /  "+list_table[i][2])
+						wid.add_widget(lbl1)
+						check = MDCheckbox(disabled = True,pos_hint={'x': 0.9, 'y': 0.2}, size_hint=(0, None))
+						check.background_disabled_normal= ''
+						check.disabled_color=(0,0,1,1)
+						self.add_nb_petit_TPG[lbl1] = {'check_status':False,'check':check,'id':i,'D':list_table[i][0],'M':list_table[i][1],'F':list_table[i][2], 'NM':list_table[i][4], 'NF':list_table[i][5]}
+								
+								
+
+						#label3 = Label(font_size=font_size_g,color=(0,0,0,1),pos_hint={'x': 0.3, 'y': 0.2}, size_hint=(1, None),text =list_table[i][2])
+						
+						
+						wid.add_widget(check)
+						wid.add_widget(label)
+						wid.add_widget(label2)
+						#wid.add_widget(label3)
+						grif.add_widget(wid) 
+				ss = ScrollView(size_hint=(1,1))
+				ss.add_widget(grif)
+				self.screen.ids.TPG.ids.scroll_edit.add_widget(ss)#ids.scroll_edit.
+				self.screen.current="TPG"
+
+
 
 class WindowManager(ScreenManager):
      pass
@@ -462,6 +549,8 @@ class AddPige(Screen):
 class Login(Screen):
 	pass
 
+class TablePige(Screen):
+	pass
 
 
 
@@ -672,10 +761,10 @@ class MainApp(MDApp):
 			self.data= json.load(json_file)
 
 		if self.data['login_satus'] == 'False':
-			self.login_satus=[{"text":"se connecter"}]
+			self.login_satus=[{"text":"se connecter"},{"text":"edit"}]
 		else:
 			self.login_name = self.data['login_name']
-			self.login_satus = [{"text":"Sauvegarde"}]
+			self.login_satus = [{"text":"Sauvegarde"},{"text":"edit"}]
 			self.id_folder = self.data['id_folder']
 		global font_size_g
 		global size_g
@@ -780,6 +869,31 @@ class MainApp(MDApp):
 			super().__init__(**kwargs)
 			self.screen = Builder.load_string(KV)
 			thr.Thread(target = self.boot).start()
+	def checker_TPG(self, instance):
+		print(self, instance)
+		print(self.add_nb_petit_TPG[instance])
+		if self.add_nb_petit_TPG[instance]['check_status'] == False:
+			self.add_nb_petit_TPG[instance]['check'].active= True
+			self.add_nb_petit_TPG[instance]['check_status'] = True
+			self.tp_Delete_TPG.append(self.add_nb_petit_TPG[instance])
+		else:
+			self.add_nb_petit_TPG[instance]['check'].active= False
+			self.add_nb_petit_TPG[instance]['check_status'] = False
+			print('before',self.tp_Delete_TPG)
+			self.tp_Delete_TPG.remove(self.add_nb_petit_TPG[instance])
+			print('after',self.tp_Delete_TPG)
+	def back_TPG(self, instance=None):
+		print("back")
+		
+		self.screen.current="main"
+		table(self)
+
+	def Deleter_TPG(self, instance=None):
+		print(self, instance)
+		print('self.tp_Delete_TPG',self.tp_Delete_TPG)
+
+		remove_csv(self.tp_Delete_TPG)
+		edit_table(self)
 	def add_couv(self,label_date,fm_select, ff_select):
 		print(label_date)
 		if type(label_date) != type(StringProperty('')):
@@ -827,11 +941,14 @@ class MainApp(MDApp):
 		F = source['F']
 		NF = source['NF']
 		print('M',M,'NM', NM,'F', F,'NF', NF)
+		self.ffList = updatelist()[0]
+		self.fmList = updatelist()[1]
 		#print(self.ffList) 
 		#for i in self.fmList:
 		#	print(i['name'] , M , i['num'] , NM)
 		#	print(( i['name'] == M and i['num'] == NM))
 		erreur = False
+
 		try:
 			Msource = next(item for item in self.fmList if item['name'] == M and item['num'] == NM)
 			Fsource = next(item for item in self.ffList if item['name'] == F and item['num'] == NF)
@@ -855,9 +972,9 @@ class MainApp(MDApp):
 			list_write('M', new_Msource['name'], new_Msource['num'], new_Msource['PF'], new_Msource['PM'], new_Msource['NBP'])
 			list_remove('F', F, NF)
 			if 'PF' not in new_Fsource:
-				new_Msource['PF'] = 'Aucun'
+				new_Fsource['PF'] = 'Aucun'
 			if 'PM' not in new_Fsource:
-				new_Msource['PM'] = 'Aucun'
+				new_Fsource['PM'] = 'Aucun'
 			list_write('F', new_Fsource['name'], new_Fsource['num'], new_Fsource['PF'], new_Fsource['PM'], new_Fsource['NBP'])
 			self.ffList = updatelist()[0]
 			self.fmList = updatelist()[1]
@@ -872,6 +989,7 @@ class MainApp(MDApp):
 		table(self)
 		self.P.close()
 		self.add_NDP(x,self.FF.text )
+		self.ST.build()
 		
 
 
@@ -1007,7 +1125,7 @@ class MainApp(MDApp):
 			global font_size_g
 			#print("service used")
 			#print("self.login_satus",self.login_satus)
-			if self.login_satus==[{"text":"se connecter"}]:
+			if self.login_satus==[{"text":"se connecter"},{"text":"edit"}]:
 					self.screen.ids.LO.ids.mdfield.font_size = font_size_g
 					self.screen.ids.LO.ids.mdfield.pos_hint = {'x': 0.5, 'y': 0.75}
 					#text_in =  MDTextField(font_size = font_size_g ,pos_hint={'x': 0.5, 'y': 0.75},size_hint= (0.2,0.1),hint_text= "text",helper_text= "Identifiant",helper_text_mode= "persistent")
@@ -1018,7 +1136,7 @@ class MainApp(MDApp):
 					self.screen.ids.LO.ids.lay.add_widget(Label(text = 'Profile :',font_size = font_size_g + 6,pos_hint={'x': -0.3, 'y': 0.4}, color=(0,0,0,1)))
 					self.screen.ids.LO.ids.lay.add_widget(Label(text = 'Identifiant :',font_size = font_size_g ,pos_hint={'x': -0.2, 'y': 0.3}, color=(0.5,0.5,0.5,1)))
 		
-			if self.login_satus==[{"text":"Sauvegarde"}]:
+			if self.login_satus==[{"text":"Sauvegarde"},{"text":"edit"}]:
 					with open('data.json', 'r') as json_file:
 						self.data= json.load(json_file)
 					
@@ -1098,7 +1216,7 @@ class MainApp(MDApp):
 					else:
 						self.screen.ids.LO.ids.btn_drop.text= str('None')
 
-					
+					print(self.screen.ids.LO.ids.lay.children)
 					#print("ici",self.screen.current)
 					self.back_list = MDDropdownMenu(
 						caller=self.screen.ids.LO.ids.lay.children[1],
@@ -1108,6 +1226,8 @@ class MainApp(MDApp):
 						width_mult=4,
 					)
 					self.screen.current="LO"
+			if instance.text == 'edit':
+				edit_table(self)
 			
 	def exp_csv_thread(self,instantce):
 		self.event_exp  = Clock.schedule_interval(self.exp_csv, 1)
@@ -1374,20 +1494,27 @@ class MainApp(MDApp):
 		#self.screen.ids.LO.ids.lay.add_widget(btn_ac)
 
 	def backup(self, instance=None):
-		print("[INFO   ] [MOI         ] Backup")
-		
-		zip_back = ZipFile(str(date.today())+'.zip','w')
-		zip_back.write('data_couv.csv')
-		zip_back.write('Flist.txt')
-		zip_back.write('Mlist.txt')
-		zip_back.close()
-		
-		file_metadata = {'name': str(date.today())+'.zip', 'parents':[self.id_folder]}	
-		media = MediaFileUpload(str(date.today())+'.zip', mimetype='file/zip')
-		file = service.files().create(body=file_metadata,
-	                                        media_body=media,
-	                                        fields='id').execute()
-		self.Snac("Sauvegarde Effectué")
+		if self.data['login_satus'] == 'True':
+			print("[INFO   ] [MOI         ] Backup")
+			global creds
+			with open('token.pickle', 'rb') as token:
+				creds = pickle.load(token)
+				    
+			global service
+			service = build('drive', 'v3', credentials=creds)
+			
+			zip_back = ZipFile(str(date.today())+'.zip','w')
+			zip_back.write('data_couv.csv')
+			zip_back.write('Flist.txt')
+			zip_back.write('Mlist.txt')
+			zip_back.close()
+			
+			file_metadata = {'name': str(date.today())+'.zip', 'parents':[self.id_folder]}	
+			media = MediaFileUpload(str(date.today())+'.zip', mimetype='file/zip')
+			file = service.files().create(body=file_metadata,
+		                                        media_body=media,
+		                                        fields='id').execute()
+			self.Snac("Sauvegarde Effectué")
 	    
 
 	def btn_valide(self):

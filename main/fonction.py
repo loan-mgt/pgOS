@@ -437,6 +437,9 @@ def remove_csv(L):
                 #print(row[2],int( temps_restant(row[2])))
                 if int( temps_restant(row[2]))<=-7:
                     row[3] = 'F'
+                else: 
+                    row[3] = 'V'
+
                 LD.append({'time':row[2],'row':row})
             else:
                 header = row
@@ -444,24 +447,25 @@ def remove_csv(L):
     f.close()
     print('LD',LD)
     for i in L:
-        for z in range(len(LD)-1):
+        for z in range(len(LD)):
            
             w = LD[z]['row']
-            
-            if w[2] == i['D'] and w[4]==i['M'] and w[5]==i['NM'] and w[6]==i['F'] and w[7]==i['NF']:
-                print(w[2], i['D'] and w[4],i['M'] and w[5],i['NM'] and w[6],i['F'] and w[7],i['NF'])
+            print("i",i)
+            print("\n","i ",w[2], i['D'] , w[4],i['M'] , w[5],i['NM'] , w[6],i['F'] , w[7],i['NF'])
+            if w[2] == i['D'] and w[4]==i['M'] and w[5]==i['NM'] and w[6]==i['F'] and w[7]==i['NF'] and w[3] == 'V':
+                print("\n","i founnnnnnnnnnd",w[2], i['D'] and w[4],i['M'] and w[5],i['NM'] and w[6],i['F'] and w[7],i['NF'])
                 LD.pop(z)
                 break
 
     LD =  sorted(LD, key=lambda k: int( temps_restant(k['time'])))
-    print(LD)
+    #print(LD)
     new = open('data_couv.csv', "w")
     new.write(','.join(header)+'\n')
     for i in LD:
         
         new.write(','.join(i['row'])+'\n')
     new.close()
-remove_csv([])
+#remove_csv([])
 
 
 def cleandate(indate):

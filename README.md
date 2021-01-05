@@ -5,8 +5,8 @@ Pigeon OS
 Avant de commencer je voudrai vous remercier de vous intéresser à ce projet
 
 
-## Pour commencer comment télécharger l’application:
-	a partir de ce [lien](github.com/Qypol342/pgOS) cliquez sur le fichier .apk
+## Comment télécharger l’application:
+	Cliquez sur le fichier .apk si vous etes sur mobile vous devez d'abord cliquer sur 'voir code'/'view code'
 	une fois dessus cliquez télécharger
 	une fois l’application téléchargée navigué à vos téléchargement et exécuter le fichier .apk
 	

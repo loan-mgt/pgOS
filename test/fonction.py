@@ -442,7 +442,7 @@ def remove_csv(L):
                 header = row
                 x=1
     f.close()
-    #print('LD',LD)
+    print('LD',LD)
     for i in L:
         for z in range(len(LD)-1):
            
@@ -454,14 +454,14 @@ def remove_csv(L):
                 break
 
     LD =  sorted(LD, key=lambda k: int( temps_restant(k['time'])))
-    #print(LD)
+    print(LD)
     new = open('data_couv.csv', "w")
     new.write(','.join(header)+'\n')
     for i in LD:
         
         new.write(','.join(i['row'])+'\n')
     new.close()
-
+remove_csv([])
 
 
 def cleandate(indate):

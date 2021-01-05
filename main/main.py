@@ -24,6 +24,7 @@ import io
 
 from supertable import SuperTable
 from SimplePopup import Popups
+from loading import Loading
 #### attention
 import urllib.request
 import json
@@ -349,26 +350,14 @@ WindowManager:
 			            size_hint: 1, 0.93
 		        		id:lay_drop_scroll
 		        		FloatLayout:
-		        				id: lay_drop
-				        		Button:
-				        				id: btn_drop
-				        				text:'Selectioner une Sauvegarde'
-				        				size_hint: (0.3,0.1)
-				        				#pos_hint:{'x': -0.6, 'y': 0.6}
-				        				pos_hint:{'x': -0.6, 'y': 0.6}
-				        				color:(0,0,0,1)
-				        				background_normal :''
-				        				background_color:(0.8,0.8,0.8,1)
-				        				on_release: app.back_list.open()
-				        		MDTextField:
-				        				id: mdfield
-				        				pos_hint:{'x': -1.3, 'y': 0.75}
-				        				size_hint: (0.2,0.09)
-				        				hint_text:"Identifiant"
+		        				id: lay
+				        		
+				        		
+				        				
 				        				
 					
-				        		FloatLayout:
-				        				id:lay
+				        		#FloatLayout:
+				        				#id:lay
 					
 
 
@@ -419,7 +408,7 @@ def table(self):
 
 				conv_size = 1/len(list_table)
 				#print(self.screen.ids.main.ids.grid.size_hint)
-				grif =  FloatLayout(pos_hint={'x': 0, 'y': 0},size_hint = (1,size_g/conv_size),id='grid_pg')
+				grif =  FloatLayout(pos_hint={'x': 0, 'y': 0},size_hint = (1,size_g/conv_size),id='grid_pg')#
 				#print(grif.size_hint)
 				self.add_nb_petit ={}
 				
@@ -715,6 +704,7 @@ class MainApp(MDApp):
 	
 			
 	def boot(self,df=1):
+		thr.Thread(target = self.build_login).start()
 		print("[INFO   ] [MOI         ] Boot run")
 		self.creds = None
 		self.service = None
@@ -863,6 +853,7 @@ class MainApp(MDApp):
 
 		print("[INFO   ] [MOI         ] Boot finish")
 		thr.Thread(target = self.tread_update).start()
+		
 		self.event  = Clock.schedule_interval(self.Boot_updater, 1)
 
 	def __init__(self, **kwargs):
@@ -1024,7 +1015,7 @@ class MainApp(MDApp):
 			
 	def select_back(self, instance):
 			#print(instance.text)
-			self.screen.ids.LO.ids.btn_drop.text = instance.text
+			self.btn_drop.text = instance.text
 			#print(self.screen.ids.LO.ids.btn_drop.pos_hint)
 			self.back_list.dismiss()	
 
@@ -1078,7 +1069,7 @@ class MainApp(MDApp):
 			
 			#print(i['name'][:len(i)-6])
 
-			if i['name'][:len(i)-6] == self.screen.ids.LO.ids.btn_drop.text:
+			if i['name'][:len(i)-6] == self.btn_drop.text:
 				#print('found')
 				found = True
 				break
@@ -1101,6 +1092,8 @@ class MainApp(MDApp):
 		up_glo_list()
 		table(self)
 		#self.back(False)
+		self.ST.update_t()
+		
 		self.ST.build()
 		try:
 			os.remove(i['name'])
@@ -1120,51 +1113,60 @@ class MainApp(MDApp):
 		            #self.back(False)
 	        if instance.text == "add":
 		            self.ST.addPP()
+	def back_list_open(self, instance=None):
+		print("self.back_list.open()")
+		self.back_list.open()
 
-	def set_item_ac(self, instance):
-			global font_size_g
-			#print("service used")
-			#print("self.login_satus",self.login_satus)
-			if self.login_satus==[{"text":"se connecter"},{"text":"edit"}]:
-					self.screen.ids.LO.ids.mdfield.font_size = font_size_g
-					self.screen.ids.LO.ids.mdfield.pos_hint = {'x': 0.5, 'y': 0.75}
-					#text_in =  MDTextField(font_size = font_size_g ,pos_hint={'x': 0.5, 'y': 0.75},size_hint= (0.2,0.1),hint_text= "text",helper_text= "Identifiant",helper_text_mode= "persistent")
-					btn_ac  = Button(text='Valider',size_hint= (0.15,0.05),pos_hint={'x': 0.6, 'y': 0.7})
-					btn_ac.bind(on_release=self.btn_login)
-					#self.screen.ids.LO.ids.lay.add_widget(text_in)
-					self.screen.ids.LO.ids.lay.add_widget(btn_ac)
-					self.screen.ids.LO.ids.lay.add_widget(Label(text = 'Profile :',font_size = font_size_g + 6,pos_hint={'x': -0.3, 'y': 0.4}, color=(0,0,0,1)))
-					self.screen.ids.LO.ids.lay.add_widget(Label(text = 'Identifiant :',font_size = font_size_g ,pos_hint={'x': -0.2, 'y': 0.3}, color=(0.5,0.5,0.5,1)))
+	def build_login(self, instance=None):
+		self.new_connection = FloatLayout()
 		
-			if self.login_satus==[{"text":"Sauvegarde"},{"text":"edit"}]:
+		self.mdfield = MDTextField(hint_text="Identifiant",size_hint= (0.2,0.09),font_size = font_size_g,pos_hint = {'x': 0.5, 'y': 0.75} )
+		
+		       				
+		btn_ac  = Button(text='Valider',size_hint= (0.15,0.05),pos_hint={'x': 0.6, 'y': 0.7})
+		btn_ac.bind(on_release=self.btn_login)
+					
+		self.new_connection.add_widget(btn_ac)
+		self.new_connection.add_widget(self.mdfield)
+		self.new_connection.add_widget(Label(text = 'Profile :',font_size = font_size_g + 6,pos_hint={'x': -0.3, 'y': 0.4}, color=(0,0,0,1)))
+		self.new_connection.add_widget(Label(text = 'Identifiant :',font_size = font_size_g ,pos_hint={'x': -0.2, 'y': 0.3}, color=(0.5,0.5,0.5,1)))
+		
+
+		self.normal_connection = FloatLayout()
+		btn_ac  = Button(text='Faire une Sauvegarde',size_hint= (0.4,0.05),pos_hint={'x': 0.5, 'y': 0.5})
+		btn_ac.bind(on_release=self.backup)
+		self.normal_connection.add_widget(Label(text = 'Profile:',font_size = font_size_g + 6,pos_hint={'x': -0.3, 'y': 0.4}, color=(0,0,0,1)))
+		self.normal_connection.add_widget(Label(text = 'Sauvegarde:',font_size = font_size_g + 6,pos_hint={'x': -0.3, 'y': 0.2}, color=(0,0,0,1)))
+		self.normal_connection.add_widget(Label(text = 'Identifiant :',font_size = font_size_g ,pos_hint={'x': -0.2, 'y': 0.3}, color=(0.5,0.5,0.5,1)))
+					
+					
+		btn_csv  = Button(text='Exporter',size_hint= (0.15,0.05),pos_hint={'x': 0.6, 'y': 0.075})
+		btn_csv.bind(on_release=self.exp_csv_thread)
+							
+		btn_ac_val  = Button(text='Charger',size_hint= (0.15,0.05),pos_hint={'x': 0.6, 'y': 0.34})
+		btn_ac_val.bind(on_release=self.valid_down)
+		self.btn_drop = Button(pos_hint={'x': 0.6, 'y': 0.4},text='Selectioner une Sauvegarde',size_hint= (0.2,0.05),color=(0,0,0,1),background_normal ='',background_color=(0.8,0.8,0.8,1))
+		self.btn_drop.bind(on_release= self.back_list_open)
+		self.normal_connection.add_widget(self.btn_drop)
+		self.normal_connection.add_widget(btn_ac)
+		self.normal_connection.add_widget(btn_ac_val)
+		self.normal_connection.add_widget(btn_csv)
+		self.normal_connection.add_widget(Label(text = 'Dernière Sauvegarde :',font_size = font_size_g ,pos_hint={'x': -0.2, 'y': 0.1}, color=(0.5,0.5,0.5,1)))
+		self.normal_connection.add_widget(Label(text = 'Dernière Sauvegarde :',font_size = font_size_g ,pos_hint={'x': -0.2, 'y': 0.1}, color=(0.5,0.5,0.5,1)))
+		self.normal_connection.add_widget(Label(text = 'Charger une Sauvegarde :',font_size = font_size_g ,pos_hint={'x': -0.2, 'y': -0.07}, color=(0.5,0.5,0.5,1)))
+		self.normal_connection.add_widget(Label(text = 'Mise a jour automatique :',font_size = font_size_g,pos_hint={'x': -0.2, 'y': -0.2}, color=(0.5,0.5,0.5,1)))
+		self.normal_connection.add_widget(Label(text = 'Exportation :',font_size = font_size_g + 6,pos_hint={'x': -0.3, 'y': 0.-0.3}, color=(0,0,0,1)))
+		self.normal_connection.add_widget(Label(text = 'Exporter en CSV :',font_size = font_size_g,pos_hint={'x': -0.2, 'y': -0.4}, color=(0.5,0.5,0.5,1)))
+		
+	def sauvegarde_loading(self):
 					with open('data.json', 'r') as json_file:
 						self.data= json.load(json_file)
-					
-					btn_ac  = Button(text='Faire une Sauvegarde',size_hint= (0.4,0.05),pos_hint={'x': 0.5, 'y': 0.5})
-					btn_ac.bind(on_release=self.backup)
-
-					self.screen.ids.LO.ids.lay.add_widget(Label(text = 'Profile:',font_size = font_size_g + 6,pos_hint={'x': -0.3, 'y': 0.4}, color=(0,0,0,1)))
-					self.screen.ids.LO.ids.lay.add_widget(Label(text = 'Sauvegarde:',font_size = font_size_g + 6,pos_hint={'x': -0.3, 'y': 0.2}, color=(0,0,0,1)))
-					
-					self.screen.ids.LO.ids.lay.add_widget(Label(text = 'Identifiant :',font_size = font_size_g ,pos_hint={'x': -0.2, 'y': 0.3}, color=(0.5,0.5,0.5,1)))
+					self.screen.ids.LO.ids.lay.add_widget(self.normal_connection)
 					self.screen.ids.LO.ids.lay.add_widget(Label(text = self.data['login_name'],font_size = font_size_g ,pos_hint={'x': 0.1, 'y': 0.3}, color=(0,0,0,1)))
 
-					self.screen.ids.LO.ids.lay.add_widget(Label(text = 'Dernière Sauvegarde :',font_size = font_size_g ,pos_hint={'x': -0.2, 'y': 0.1}, color=(0.5,0.5,0.5,1)))
 					self.screen.ids.LO.ids.lay.add_widget(Label(text = self.data['version'],font_size = font_size_g ,pos_hint={'x': 0.1, 'y': 0.1}, color=(0,0,0,1)))
 
-					self.screen.ids.LO.ids.lay.add_widget(Label(text = 'Charger une Sauvegarde :',font_size = font_size_g ,pos_hint={'x': -0.2, 'y': -0.07}, color=(0.5,0.5,0.5,1)))
 					
-					self.screen.ids.LO.ids.lay.add_widget(Label(text = 'Mise a jour automatique :',font_size = font_size_g,pos_hint={'x': -0.2, 'y': -0.2}, color=(0.5,0.5,0.5,1)))
-					
-					self.screen.ids.LO.ids.lay.add_widget(Label(text = 'Exportation :',font_size = font_size_g + 6,pos_hint={'x': -0.3, 'y': 0.-0.3}, color=(0,0,0,1)))
-					self.screen.ids.LO.ids.lay.add_widget(Label(text = 'Exporter en CSV :',font_size = font_size_g,pos_hint={'x': -0.2, 'y': -0.4}, color=(0.5,0.5,0.5,1)))
-					
-					btn_csv  = Button(text='Exporter',size_hint= (0.15,0.05),pos_hint={'x': 0.6, 'y': 0.075})
-					btn_csv.bind(on_release=self.exp_csv_thread)
-					self.screen.ids.LO.ids.lay.add_widget(btn_csv)					
-
-					btn_ac_val  = Button(text='Charger',size_hint= (0.15,0.05),pos_hint={'x': 0.6, 'y': 0.34})
-					btn_ac_val.bind(on_release=self.valid_down)
 					if self.data['auto_update'] == 'False':
 						check_LU = MDCheckbox(pos_hint={'x': 0.6, 'y': 0.25}, size_hint = (0.1,0.1))
 					else:
@@ -1173,27 +1175,27 @@ class MainApp(MDApp):
 					check_LU.bind(on_release=self.auto_update_status)
 					
 					self.screen.ids.LO.ids.lay.add_widget(check_LU)
-					self.screen.ids.LO.ids.lay.add_widget(btn_ac)
-					
-					self.screen.ids.LO.ids.lay.add_widget(btn_ac_val)
-					#print(self.screen.ids.LO.ids.btn_drop.pos_hint)
-					
-					self.screen.ids.LO.ids.btn_drop.pos_hint={'x': 0.6, 'y': 0.4}
-					self.screen.ids.LO.ids.btn_drop.size_hint = (0.2,0.05)
-					
-					#self.screen.ids.LO.ids.btn_drop.text = 'Selectioner une Sauvegarde'
-					#print(self.screen.ids.LO.ids.lay.children)
-					
-					
+					load = service.files().list(q="'"+str(self.id_folder)+"' in parents", fields="files(name)").execute()['files']
+					if len(load) !=0:
+						self.btn_drop.text= str(load[0]['name'][:-4])
+					else:
+						self.btn_drop.text= str('None')
 
-					#btn_ac_drop  = Button(text='Selectioner une Sauvegarde',size_hint= (0.3,0.1),pos_hint={'x': 0.6, 'y': 0.6}, color=(0,0,0,1),background_normal ='', background_color=(0.8,0.8,0.8,1))
-					#btn_ac_drop.bind(on_release=self.back_list.open)
-					#self.screen.ids.LO.ids.lay.add_widget(btn_ac_drop)
+					print(self.screen.ids.LO.ids.lay.children)
+					#print("ici",self.screen.current)
+					self.back_list = MDDropdownMenu(
+						caller=self.btn_drop,
+						items=list_to_drop_down_zip(load),
+						position="auto",
+						callback=self.select_back,
+						width_mult=4,
+					)
 
-					
 
-					#self.back_list.open()
-					
+	def set_item_ac(self, instance):
+			global font_size_g
+			#print("service used")
+			#print("self.login_satus",self.login_satus)
 		
 
 			self.menu_list_ac.dismiss()
@@ -1207,25 +1209,20 @@ class MainApp(MDApp):
 			if instance.text == 'se connecter':
 					#print(self.screen)
 					#print("ici",self.screen.current)
+					self.screen.ids.LO.ids.lay.clear_widgets()
+					self.screen.ids.LO.ids.lay.add_widget(self.new_connection)
 					self.screen.current="LO"
 
 			if instance.text == 'Sauvegarde':
-					load = service.files().list(q="'"+str(self.id_folder)+"' in parents", fields="files(name)").execute()['files']
-					if len(load) !=0:
-						self.screen.ids.LO.ids.btn_drop.text= str(load[0]['name'][:-4])
-					else:
-						self.screen.ids.LO.ids.btn_drop.text= str('None')
-
-					print(self.screen.ids.LO.ids.lay.children)
-					#print("ici",self.screen.current)
-					self.back_list = MDDropdownMenu(
-						caller=self.screen.ids.LO.ids.lay.children[1],
-						items=list_to_drop_down_zip(load),
-						position="auto",
-						callback=self.select_back,
-						width_mult=4,
-					)
+					l = Loading(self.screen.ids.LO.ids.lay, self.sauvegarde_loading)
+					
+					self.screen.ids.LO.ids.lay.clear_widgets()
+					
 					self.screen.current="LO"
+					l.build()
+					
+
+					
 			if instance.text == 'edit':
 				edit_table(self)
 			
@@ -1438,14 +1435,14 @@ class MainApp(MDApp):
 		#print(self.screen.ids.LO.ids.mdfield.text)
 		with open('data.json', 'r') as json_file:
 			self.data= json.load(json_file)
-		self.data['login_name'] = str(self.screen.ids.LO.ids.mdfield.text)
+		self.data['login_name'] = str(self.mdfield.text)
 		#open('log.'+str(self.screen.ids.LO.ids.lay.children[1].text),'w')
 		found =  False
 		results = service.files().list(
         	pageSize=10, fields="files(id, name)").execute()
 		for i in results['files']:
 			#print(i['name'])
-			if i['name'] ==self.screen.ids.LO.ids.mdfield.text:
+			if i['name'] ==self.mdfield.text:
 				found = True
 
 				self.id_folder = i['id']
@@ -1454,7 +1451,7 @@ class MainApp(MDApp):
 		if found== False:
 			print("[INFO   ] [MOI         ] Nouveau compte")
 			file_metadata = {
-	            'name':str(self.screen.ids.LO.ids.mdfield.text),
+	            'name':str(self.mdfield.text),
 	            'mimeType': 'application/vnd.google-apps.folder'
 	        }
 			file = service.files().create(body=file_metadata,fields='id').execute()
@@ -1463,24 +1460,21 @@ class MainApp(MDApp):
 		#open('id.'+str(self.id_folder),'w')
 		self.menu_list_ac = MDDropdownMenu(
 				caller=self.screen.ids.main.ids.Home_tool,
-				items=[{"text":"Sauvegarde"}],
+				items=[{"text":"Sauvegarde"},{"text":"edit"}],
 				position="auto",
 				callback=self.set_item_ac,
 				width_mult=4,
 			)
-		self.login_satus=[{"text":"Sauvegarde"}]
+		self.login_satus=[{"text":"Sauvegarde"},{"text":"edit"}]
 		self.currentLO("main")
-		#print(self.screen.ids.LO.ids.btn_drop.pos_hint)
-		self.screen.ids.LO.ids.btn_drop.pos_hint={'x': 0.6, 'y': 0.6}
-		self.screen.ids.LO.ids.btn_drop.text = 'Selectioner une Sauvegarde'
-		#print(self.screen.ids.LO.ids.btn_drop.pos_hint)
+		
 		
 		self.data['login_satus'] = 'True'
 		
 
 		with open('data.json', 'w') as outfile:
 			json.dump(self.data, outfile)
-		self.screen.ids.LO.ids.mdfield.pos_hint = {'x': -1.3, 'y': 0.75}
+		#self.mdfield.pos_hint = {'x': -1.3, 'y': 0.75}
 		self.Snac("connecter")
 	def currentLO(self, text):
 		#print(self.screen.ids.LO.ids.lay.children)

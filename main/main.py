@@ -709,6 +709,7 @@ class MainApp(MDApp):
 		self.creds = None
 		self.service = None
 		self.dialog = None
+		self.connection = True
 		##date_selectionneur= ObjectProperty(None)
 		up_glo_list()
 		ranger_csv("data_couv")
@@ -1063,42 +1064,50 @@ class MainApp(MDApp):
 	def valid_down(self, instance):
 		global list_table
 		#print("service used")
-		rep = service.files().list(q="'"+str(self.id_folder)+"' in parents", fields="files(name, id)").execute()['files']
-		found = False
-		for i in rep:
-			
-			#print(i['name'][:len(i)-6])
-
-			if i['name'][:len(i)-6] == self.btn_drop.text:
-				#print('found')
-				found = True
-				break
-		#print(i)
-		self.down(i['id'],i['name'])
-		zip = ZipFile(i['name'])
-		zip.extractall()
-
-		with open('data.json', 'r') as json_file:
-			data= json.load(json_file)
-
-		data['version']=str(i['name'][:len(i)-6])
-
-		with open('data.json', 'w') as outfile:
-		    json.dump(data, outfile)
-
-		#self.screen.ids.LO.ids.btn_drop.text = 'Selectioner une Sauvegarde'
-
-		self.Snac('Charger!')
-		up_glo_list()
-		table(self)
-		#self.back(False)
-		self.ST.update_t()
-		
-		self.ST.build()
 		try:
-			os.remove(i['name'])
-		except:
-			print("[FAIL   ][MOI         ] Suppression annulé")
+			rep = service.files().list(q="'"+str(self.id_folder)+"' in parents", fields="files(name, id)").execute()['files']
+			self.connection =True
+		except Exception as e:
+			print(e, "Hors connection")
+			self.connection = False
+		if self.connection == True:
+			found = False
+			for i in rep:
+				
+				#print(i['name'][:len(i)-6])
+
+				if i['name'][:len(i)-6] == self.btn_drop.text:
+					#print('found')
+					found = True
+					break
+			#print(i)
+			self.down(i['id'],i['name'])
+			zip = ZipFile(i['name'])
+			zip.extractall()
+
+			with open('data.json', 'r') as json_file:
+				data= json.load(json_file)
+
+			data['version']=str(i['name'][:len(i)-6])
+
+			with open('data.json', 'w') as outfile:
+			    json.dump(data, outfile)
+
+			#self.screen.ids.LO.ids.btn_drop.text = 'Selectioner une Sauvegarde'
+
+			self.Snac('Charger!')
+			up_glo_list()
+			table(self)
+			#self.back(False)
+			self.ST.update_t()
+			
+			self.ST.build()
+			try:
+				os.remove(i['name'])
+			except:
+				print("[FAIL   ][MOI         ] Suppression annulé")
+		else:
+			self.Snac("Hors Connection")
 
 	def set_item_list_pg(self, instance):
 
@@ -1175,7 +1184,11 @@ class MainApp(MDApp):
 					check_LU.bind(on_release=self.auto_update_status)
 					
 					self.screen.ids.LO.ids.lay.add_widget(check_LU)
-					load = service.files().list(q="'"+str(self.id_folder)+"' in parents", fields="files(name)").execute()['files']
+					if self.connection == True:
+						load = service.files().list(q="'"+str(self.id_folder)+"' in parents", fields="files(name)").execute()['files']
+					else:
+						load = [{'name':"None.zip"}]
+						self.Snac("Hors Connection")
 					if len(load) !=0:
 						self.btn_drop.text= str(load[0]['name'][:-4])
 					else:
@@ -1204,7 +1217,12 @@ class MainApp(MDApp):
 				creds = pickle.load(token)
 			    
 			global service
-			service = build('drive', 'v3', credentials=creds)
+			try:
+				service = build('drive', 'v3', credentials=creds)
+				self.connection = True
+			except Exception as e:
+				print(e ," hors connection")
+				self.connection = False
 		       
 			if instance.text == 'se connecter':
 					#print(self.screen)
@@ -1495,20 +1513,28 @@ class MainApp(MDApp):
 				creds = pickle.load(token)
 				    
 			global service
-			service = build('drive', 'v3', credentials=creds)
-			
-			zip_back = ZipFile(str(date.today())+'.zip','w')
-			zip_back.write('data_couv.csv')
-			zip_back.write('Flist.txt')
-			zip_back.write('Mlist.txt')
-			zip_back.close()
-			
-			file_metadata = {'name': str(date.today())+'.zip', 'parents':[self.id_folder]}	
-			media = MediaFileUpload(str(date.today())+'.zip', mimetype='file/zip')
-			file = service.files().create(body=file_metadata,
-		                                        media_body=media,
-		                                        fields='id').execute()
-			self.Snac("Sauvegarde Effectué")
+			try:
+
+				service = build('drive', 'v3', credentials=creds)
+				self.connection = True
+			except Exception as e:
+				print(e, "hors connecttion")
+				self.connection = False
+			if self.connection == True:
+				zip_back = ZipFile(str(date.today())+'.zip','w')
+				zip_back.write('data_couv.csv')
+				zip_back.write('Flist.txt')
+				zip_back.write('Mlist.txt')
+				zip_back.close()
+				
+				file_metadata = {'name': str(date.today())+'.zip', 'parents':[self.id_folder]}	
+				media = MediaFileUpload(str(date.today())+'.zip', mimetype='file/zip')
+				file = service.files().create(body=file_metadata,
+			                                        media_body=media,
+			                                        fields='id').execute()
+				self.Snac("Sauvegarde Effectué")
+			else:
+				self.Snac("Hors Connection")
 	    
 
 	def btn_valide(self):

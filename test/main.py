@@ -751,12 +751,15 @@ class MainApp(MDApp):
 		with open('data.json', 'r') as json_file:
 			self.data= json.load(json_file)
 
+
 		if self.data['login_satus'] == 'False':
 			self.login_satus=[{"text":"se connecter"},{"text":"edit"}]
 		else:
 			self.login_name = self.data['login_name']
 			self.login_satus = [{"text":"Sauvegarde"},{"text":"edit"}]
 			self.id_folder = self.data['id_folder']
+		if self.data['need_to_up'] == 'True':
+			thr.Thread(target = self.backup).start()
 		global font_size_g
 		global size_g
 
@@ -1532,9 +1535,24 @@ class MainApp(MDApp):
 				file = service.files().create(body=file_metadata,
 			                                        media_body=media,
 			                                        fields='id').execute()
+				with open('data.json', 'r') as json_file:
+					self.data= json.load(json_file)
+				self.data['need_to_up'] = 'False'
+			
+
+				with open('data.json', 'w') as outfile:
+					json.dump(self.data, outfile)
 				self.Snac("Sauvegarde Effectué")
 			else:
 				self.Snac("Hors Connection")
+				with open('data.json', 'r') as json_file:
+					self.data= json.load(json_file)
+				self.data['need_to_up'] = 'True'
+			
+
+				with open('data.json', 'w') as outfile:
+					json.dump(self.data, outfile)
+
 	    
 
 	def btn_valide(self):

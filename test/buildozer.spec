@@ -7,7 +7,7 @@ title = Cochon
 package.name = pgos
 
 # (str) Package domain (needed for android/ios packaging)
-package.domain = maeght
+package.domain = maeght_cochon
 
 # (str) Source code where the main.py live
 source.dir = .

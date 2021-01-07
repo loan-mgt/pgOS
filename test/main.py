@@ -36,7 +36,7 @@ from kivy.uix.scrollview import ScrollView
 import shutil
 
 
-from datetime import date
+from datetime import date,timedelta,datetime
 
 from kivy.utils import platform
 from kivy.app import App
@@ -109,7 +109,7 @@ WindowManager:
 								        MDToolbar:
 									            id: edit_menu
 									            pos_hint: {'x': 0, 'y': 0.93}
-									            title: "Liste des Pigeons"
+									            title: "Liste des Cochons"
 									            right_action_items: [["dots-vertical", lambda x: app.menu_list.open()]]
 									            md_bg_color: (0.5,0.5,0.5,1)
 
@@ -157,7 +157,7 @@ WindowManager:
 										Label:
 												color: (0, 0, 0, 1)
 												font_size: font_size_g+15
-												text: "Couvaison"
+												text: "Insemination"
 												pos_hint: {'x':0, 'y': 0.3}
 										Button:
 												id: date_selectionneur
@@ -206,12 +206,12 @@ WindowManager:
 						MDToolbar:
 					            id: tool_AP
 					            pos_hint: {'x': 0, 'y': 0.93}
-					            title: "Ajouter un Pigeon"
+					            title: "Ajouter un Cochon"
 					            left_action_items: [["window-close", lambda x: app.current("main")]]
 					            md_bg_color: (0.5,0.5,0.5,1)
 
 						Button:
-								text: 'Ajouter le Pigeon'
+								text: 'Ajouter le Cochon'
 								size_hint: (0.4, 0.1)
 
 								font_size: 40
@@ -225,7 +225,7 @@ WindowManager:
 								font_size : 40
 								size_hint: (0.2,0.08)
 								pos_hint:{'x': 0.25, 'y': 0.5}
-								hint_text: "Nom du Pigeon"
+								hint_text: "Nom du Cochon"
 						MDTextField:
 								id: num
 								required: True
@@ -303,7 +303,7 @@ WindowManager:
 		        MDToolbar:
 			            id: edit_menu
 			            pos_hint: {'x': 0, 'y': 0.93}
-			            title: "Liste des Pigeons"
+			            title: "Liste des Cochons"
 			            right_action_items: [["dots-vertical", lambda x: app.menu.open()]]
 			            md_bg_color: (0.5,0.5,0.5,1)
 
@@ -322,7 +322,7 @@ WindowManager:
 		        MDToolbar:
 			            id: edit_menu
 			            pos_hint: {'x': 0, 'y': 0.93}
-			            title: "Liste des Couvaison"
+			            title: "Liste des Gestations"
 			            left_action_items: [["window-close", lambda x: app.back_TPG()]]
 			            right_action_items: [["trash-can-outline", lambda x: app.Deleter_TPG()]]
 			            md_bg_color: (0.5,0.5,0.5,1)
@@ -417,16 +417,23 @@ def table(self):
 						
 						colorr = (0.8,0.8,0.8,1)
 						tempp = int((temps_restant(list_table[i][0])))
-						#print(tempp)
+						print("pour couleur",tempp)
 						
 						if tempp < 0:
+								print("1")
 								colorr = (0,0,0,0.4)
 
-						elif tempp <= 3:
+						elif tempp <= 2:
+								print("2")
 								colorr = (1,0.8,0.8,1)
-						elif tempp <= 6:
+						elif tempp <= 4:
+								print("3")
+								colorr = (1,0.9,0.8,1)
+						elif tempp <= 12:
+								print("4")
 								colorr = (1,1,0.8,1)
 						else:
+								print('5')
 								colorr = (0.8,1,0.8,1)
 
 
@@ -485,13 +492,20 @@ def edit_table(self):
 						#print(tempp)
 						
 						if tempp < 0:
+								print("1")
 								colorr = (0,0,0,0.4)
 
-						elif tempp <= 3:
+						elif tempp <= 2:
+								print("2")
 								colorr = (1,0.8,0.8,1)
-						elif tempp <= 6:
+						elif tempp <= 4:
+								print("3")
+								colorr = (1,0.9,0.8,1)
+						elif tempp <= 12:
+								print("4")
 								colorr = (1,1,0.8,1)
 						else:
+								print('5')
 								colorr = (0.8,1,0.8,1)
 
 
@@ -729,13 +743,13 @@ class MainApp(MDApp):
 		self.PF_select = 'Aucun'
 
 		if len(self.ffList) == 0:
-			self.ff_select = "Aucun Pigeon"
+			self.ff_select = "Aucun Cochon"
 
 		else: 
 			self.ff_select = self.ffList[0]['name']+'\n'+ self.ffList[0]['num']
 
 		if len(self.fmList) == 0:
-			self.fm_select = "Aucun Pigeon"
+			self.fm_select = "Aucun Cochon"
 		else: 
 			self.fm_select = self.fmList[0]['name']+'\n'+ self.fmList[0]['num']
 
@@ -791,11 +805,11 @@ class MainApp(MDApp):
 		if fmList != {}:
 			menu_items = [{'text': fmList[i]['name']+'\n'+fmList[i]['num']} for i in range(len(fmList))]
 		else:
-			menu_items = list_to_drop_down(dic_to_list({"Aucun Pigeon":""}))
+			menu_items = list_to_drop_down(dic_to_list({"Aucun Cochon":""}))
 		if ffList != {}:
 			menu_items2 = [{'text': ffList[i]['name']+'\n'+ffList[i]['num']} for i in range(len(ffList))]
 		else:
-			menu_items2 = list_to_drop_down(dic_to_list({"Aucun Pigeon":""}))
+			menu_items2 = list_to_drop_down(dic_to_list({"Aucun Cochon":""}))
 		self.menu2 = MDDropdownMenu(
 			caller=self.screen.ids.main.ids.field2,
 			items=menu_items2,
@@ -894,6 +908,7 @@ class MainApp(MDApp):
 		if type(label_date) != type(StringProperty('')):
 			print(label_date)
 			self.write_csv_classe(label_date,fm_select,ff_select)
+
 			self.Snac("Date ajouter")	
 		else:
 			self.Snac("Veuillez choisir une date")	
@@ -948,7 +963,7 @@ class MainApp(MDApp):
 			Msource = next(item for item in self.fmList if item['name'] == M and item['num'] == NM)
 			Fsource = next(item for item in self.ffList if item['name'] == F and item['num'] == NF)
 		except Exception as e :
-			print(e, "verssion ansicein pigeon pas touver")
+			print(e, "old version Cochon pas touvé")
 			self.Snac("Erreur version ancienne")
 			erreur = True
 		if erreur == False:
@@ -1391,11 +1406,11 @@ class MainApp(MDApp):
 		if fmList != []:
 			menu_items = [{'text': fmList[i]['name']+' '+fmList[i]['num']} for i in range(len(fmList))]
 		else:
-			menu_items = list_to_drop_down(dic_to_list([{"Aucun Pigeon":""}]))
+			menu_items = list_to_drop_down(dic_to_list([{"Aucun Cochon":""}]))
 		if ffList != []:
 			menu_items2 = [{'text': ffList[i]['name']+' '+ffList[i]['num']} for i in range(len(ffList))]
 		else:
-			menu_items2 = list_to_drop_down(dic_to_list([{"Aucun Pigeon":""}]))
+			menu_items2 = list_to_drop_down(dic_to_list([{"Aucun Cochon":""}]))
 
 		
 		self.Snac("Suppression Réussie")
@@ -1586,15 +1601,15 @@ class MainApp(MDApp):
 			self.ffList = ffList
 			self.fmList = fmList
 
-			print("[INFO   ] [MOI         ] Pigeon ajouté")
+			print("[INFO   ] [MOI         ] Cochon ajouté")
 			if fmList != []:
 				menu_items = [{'text': fmList[i]['name']+' '+fmList[i]['num']} for i in range(len(fmList))]
 			else:
-				menu_items = list_to_drop_down(dic_to_list([{"Aucun Pigeon":""}]))
+				menu_items = list_to_drop_down(dic_to_list([{"Aucun Cochon":""}]))
 			if ffList != []:
 				menu_items2 = [{'text': ffList[i]['name']+' '+ffList[i]['num']} for i in range(len(ffList))]
 			else:
-				menu_items2 = list_to_drop_down(dic_to_list([{"Aucun Pigeon":""}]))
+				menu_items2 = list_to_drop_down(dic_to_list([{"Aucun Cochon":""}]))
 			
 			self.menu2 = MDDropdownMenu(
 					caller=self.screen.ids.main.ids.field,
@@ -1630,7 +1645,7 @@ class MainApp(MDApp):
 			self.screen.ids.AP.ids.num.text = ''
 			self.screen.ids.AP.ids.checpk_F.active = False
 			self.screen.ids.AP.ids.check_M.active = False
-			self.Snac("Un Pigeon a était Ajouter")
+			self.Snac("Un Cochon a était Ajouter")
 			up_glo_list()
 			self.ST.build()
 			#self.back(False)
@@ -1653,7 +1668,7 @@ class MainApp(MDApp):
 
 
 		write_csv(date,M[:MI],F[:FI], M[MI+1:], F[FI+1:])
-		
+		ranger_csv_sans_r("")
 		table(self)
 		self.Snac("L'événement a été ajouté")
 		self.screen.ids.main.ids.MDN.switch_tab("screnn2")

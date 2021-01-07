@@ -1,13 +1,13 @@
 [app]
 
 # (str) Title of your application
-title = Pigeonnier
+title = Cochon
 
 # (str) Package name
 package.name = pgos
 
 # (str) Package domain (needed for android/ios packaging)
-package.domain = maeght___
+package.domain = maeght
 
 # (str) Source code where the main.py live
 source.dir = .

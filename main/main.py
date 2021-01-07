@@ -76,6 +76,8 @@ Window.clearcolor = (1, 1, 1, 1)
 
 KV = '''
 #: import font_size_g __main__.font_size_g
+#: import tool_bar_pos __main__.tool_bar_pos
+
 
 WindowManager:
 		MainWin:
@@ -108,8 +110,10 @@ WindowManager:
 
 								        MDToolbar:
 									            id: edit_menu
-									            pos_hint: {'x': 0, 'y': 0.93}
+
+									            pos_hint: {'x': 0, 'y': tool_bar_pos}
 									            title: "Liste des Pigeons"
+
 									            right_action_items: [["dots-vertical", lambda x: app.menu_list.open()]]
 									            md_bg_color: (0.5,0.5,0.5,1)
 
@@ -117,7 +121,7 @@ WindowManager:
 
 								        FloatLayout:
 									            pos_hint: {'x': 0, 'y': 0}
-									            size_hint: 1, 0.93
+									            size_hint: 1, tool_bar_pos
 									            id: scroll_pg
 										                
 
@@ -131,7 +135,7 @@ WindowManager:
 								FloatLayout:
 										MDToolbar:
 									            id: Home_tool
-									            pos_hint: {'x': 0, 'y': 0.93}
+									            pos_hint: {'x': 0, 'y': tool_bar_pos}
 									            title: "Acceuil"
 									            right_action_items: [["dots-vertical", lambda x: app.menu_list_ac.open()]]
 									            md_bg_color: (0.5,0.5,0.5,1)
@@ -141,7 +145,7 @@ WindowManager:
 										
 										ScrollView:
 												pos_hint: {'x': 0, 'y': 0}
-												size_hint: 1, 0.93
+												size_hint: 1, tool_bar_pos
 												id: scroll_main
 
 
@@ -205,7 +209,7 @@ WindowManager:
 				FloatLayout:
 						MDToolbar:
 					            id: tool_AP
-					            pos_hint: {'x': 0, 'y': 0.93}
+					            pos_hint: {'x': 0, 'y': tool_bar_pos}
 					            title: "Ajouter un Pigeon"
 					            left_action_items: [["window-close", lambda x: app.current("main")]]
 					            md_bg_color: (0.5,0.5,0.5,1)
@@ -302,7 +306,7 @@ WindowManager:
 
 		        MDToolbar:
 			            id: edit_menu
-			            pos_hint: {'x': 0, 'y': 0.93}
+			            pos_hint: {'x': 0, 'y': tool_bar_pos}
 			            title: "Liste des Pigeons"
 			            right_action_items: [["dots-vertical", lambda x: app.menu.open()]]
 			            md_bg_color: (0.5,0.5,0.5,1)
@@ -310,7 +314,7 @@ WindowManager:
 
 		        FloatLayout:
 			            pos_hint: {'x': 0, 'y': 0}
-			            size_hint: 1, 0.93
+			            size_hint: 1, tool_bar_pos
 			            id:scroll_edit
 <TablePige>:
 	    name: "TPG"
@@ -321,8 +325,8 @@ WindowManager:
 
 		        MDToolbar:
 			            id: edit_menu
-			            pos_hint: {'x': 0, 'y': 0.93}
-			            title: "Liste des Couvaison"
+			            pos_hint: {'x': 0, 'y':tool_bar_pos}
+			            title: "Liste des Couvaisons"
 			            left_action_items: [["window-close", lambda x: app.back_TPG()]]
 			            right_action_items: [["trash-can-outline", lambda x: app.Deleter_TPG()]]
 			            md_bg_color: (0.5,0.5,0.5,1)
@@ -330,7 +334,7 @@ WindowManager:
 
 		        FloatLayout:
 			            pos_hint: {'x': 0, 'y': 0}
-			            size_hint: 1, 0.93
+			            size_hint: 1, tool_bar_pos
 			            id:scroll_edit
 <Login>:
 	    name: "LO"
@@ -341,13 +345,13 @@ WindowManager:
 
 		        MDToolbar:
 			            id: tool__log
-			            pos_hint: {'x': 0, 'y': 0.93}
+			            pos_hint: {'x': 0, 'y': tool_bar_pos}
 			            title: "Régalge"
 			            left_action_items: [["window-close", lambda x:app.currentLO("main") ]]
 			            md_bg_color: (0.5,0.5,0.5,1)
 			    ScrollView:
 			            pos_hint: {'x': 0, 'y': 0}
-			            size_hint: 1, 0.93
+			            size_hint: 1, tool_bar_pos
 		        		id:lay_drop_scroll
 		        		FloatLayout:
 		        				id: lay
@@ -369,7 +373,7 @@ WindowManager:
 #############"Google
 #ADMIN_UPDATE
 
-
+tool_bar_pos = 0.91
 print("[INFO   ] [MOI         ]","Platform", platform)
 if platform != "win":
 	size_g = 0.16
@@ -761,6 +765,8 @@ class MainApp(MDApp):
 		if self.data['need_to_up'] == 'True':
 			thr.Thread(target = self.backup).start()
 		global font_size_g
+		#global tool_bar_pos
+		#self.tool_bar_pos = 0.90 
 		global size_g
 
 

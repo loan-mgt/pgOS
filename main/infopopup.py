@@ -145,10 +145,10 @@ class InfoPopup(FloatLayout):
 
 		
 		if 'NBP' in source  and source['NBP'] != []:
-			#print("scollview", len(source['NBP']), 'size', len(source['NBP'])*0.25 )
+			#print("scollview", len(source['NBP']), 'size', len(source['NBP'])*0.35 )
 			s = ScrollView(size_hint =(0.5,0.1) ,do_scroll_y=False,do_scroll_x=True, pos_hint=  {'center_x': .6, 'center_y': .2})
 			sizex = 0.25 
-			g = FloatLayout( size_hint=(len(source['NBP'])*0.25,1))
+			g = FloatLayout( size_hint=(len(source['NBP'])*0.35,1))
 			COUNT = 0
 			for i in range(len(source['NBP'])):
 				COUNT += int(source['NBP'][i]['nombre'])
@@ -318,9 +318,9 @@ class InfoPopup(FloatLayout):
 		#if 'NBP' in source  and source['NBP'] != []:
 		self.s.clear_widgets()
 		if 'NBP' in source  :
-			#print("scollview", len(source['NBP']), 'size', len(source['NBP'])*0.25 )
+			#print("scollview", len(source['NBP']), 'size', len(source['NBP'])*0.35 )
 			sizex = 0.25 
-			g = FloatLayout( size_hint=(len(source['NBP'])*0.25,1))
+			g = FloatLayout( size_hint=(len(source['NBP'])*0.35,1))
 			COUNT = 0
 			self.cross = {}
 			for i in range(len(source['NBP'])):
@@ -378,6 +378,8 @@ class InfoPopup(FloatLayout):
 		
 		source = {'name':'','num':'','PF': 'Aucun', 'PM': 'Aucun', 'NBP':[] }
 		self.source =source
+		self.source_old = self.source
+
 		#print("source ",source)
 		self.f = FloatLayout()
 		back = Button(disabled = True,pos_hint={'x': 0, 'y': 0}, size_hint=(1, 1),text ="",background_normal ='', background_color=(0,0,0,0.5))
@@ -397,17 +399,23 @@ class InfoPopup(FloatLayout):
 		
 
 
-		fermer = Button(pos_hint={'x': 0.8, 'y': 0.7}, size_hint=(0.1, 0.1),text ="FERMER",background_normal ='',color=(0,0,0,1), background_color=(1,1,1,0))
+		fermer = Button(pos_hint={'x': 0.75, 'y': 0.8}, size_hint=(0.1, 0.1),text ="FERMER",background_normal ='',color=(0,0,0,1), background_color=(1,1,1,0))
 		fermer.bind(on_release=self.fermer)
 		Genre_data = 'Femmelle'
 
+		for i in range(len(self.fmList)):
+				#print(self.fmList[i]['name'] ,'vs', self.source['name'] ,'and', self.fmList[i]['num'] ,'vs', self.source['num'])
+				if self.fmList[i]['name'] == self.source['name'] and self.fmList[i]['num'] == self.source['num']:
+					Genre_data = 'Mâle'
+					break
 
 
+		self.genre_old = Genre_data
 
-		self.Nom = MDTextField(text=source['name'],font_size=self.font_size, size_hint=(0.2,0.1),pos_hint= {'center_x': .35, 'center_y': .45})
-		self.Num =  MDTextField(text=source['num'],font_size=self.font_size,size_hint=(0.1,0.1), pos_hint= {'center_x': .25, 'center_y': .4} )
+		self.Nom = MDTextField(text=source['name'],font_size=self.font_size, size_hint=(0.4,0.1),pos_hint= {'center_x': .4, 'center_y': .45})
+		self.Num =  MDTextField(text=source['num'],font_size=self.font_size,size_hint=(0.32,0.1), pos_hint= {'center_x': .36, 'center_y': .4} )
 		
-		Genre = MDDropDownItem(font_size=self.font_size-5, pos_hint= {'center_x': .7, 'center_y': .4})
+		Genre = MDDropDownItem(font_size=self.font_size-3, pos_hint= {'center_x': .76, 'center_y': .405})
 		Genre.text=Genre_data
 
 		self.Genre =Genre
@@ -424,13 +432,13 @@ class InfoPopup(FloatLayout):
 
 		Nom_i = Label(text='Nom',font_size=self.font_size-1, pos_hint= {'center_x': .15, 'center_y': .45},color=(0,0,0,0.8) )
 		Num_i =  Label(text='Num',font_size=self.font_size-1, pos_hint= {'center_x': .15, 'center_y': .4},color=(0,0,0,0.8) )
-		Genre_i =  Label(text='Genre',font_size=self.font_size-1, pos_hint= {'center_x': .53, 'center_y': .4},color=(0,0,0,0.8) )
-		Nb_petits = Label(text='Total petits',font_size=self.font_size, pos_hint= {'center_x': .2, 'center_y': .3},color=(0,0,0,0.8) )
-		Nb_petits_ans = Label(text='Petits par ans',font_size=self.font_size, pos_hint= {'center_x': .45, 'center_y': .3},color=(0,0,0,0.8) )
+		Genre_i =  Label(text='Genre',font_size=self.font_size-1, pos_hint= {'center_x': .59, 'center_y': .4},color=(0,0,0,0.8) )
+		Nb_petits = Label(text='Total petits',font_size=self.font_size, pos_hint= {'center_x': .25, 'center_y': .35},color=(0,0,0,0.8) )
+		Nb_petits_ans = Label(text='Petits par ans',font_size=self.font_size, pos_hint= {'center_x': .5, 'center_y': .35},color=(0,0,0,0.8) )
 
 		
-		modifier = Button(pos_hint={'x': 0.55, 'y': 0.8}, size_hint=(0.1, 0.1),text ="VALIDER",background_normal ='',color=(0,0,0,1), background_color=(1,1,1,0))
-		modifier.bind(on_release=self.new_valider)
+		modifier = Button(pos_hint={'x': 0.55, 'y': 0.8},font_size = self.font_size, size_hint=(0.1, 0.1),text ="VALIDER",background_normal ='',color=(0,0,0,1), background_color=(1,1,1,0))
+		modifier.bind(on_release=self.edit_valider)
 		
 		self.f.add_widget(back)
 		self.f.add_widget(layer_w)
@@ -478,9 +486,9 @@ class InfoPopup(FloatLayout):
 
 
 
-		self.anne = MDTextField(size_hint=(0.09,0.1),font_size=self.font_size, pos_hint= {'center_x': .8, 'center_y': .3} )
+		self.anne = MDTextField(size_hint=(0.2,0.1),font_size=self.font_size-2, pos_hint= {'center_x': .65, 'center_y': .29} )
 		self.anne.hint_text='Année'
-		self.nb =  MDTextField(size_hint=(0.09,0.1),font_size=self.font_size, pos_hint= {'center_x': .65, 'center_y': .3} )
+		self.nb =  MDTextField(size_hint=(0.2,0.1),font_size=self.font_size-2, pos_hint= {'center_x': .3, 'center_y': .29} )
 		self.nb.hint_text='Nombre'
 		add  = MDIconButton(icon= "plus",pos_hint= {"center_x": .875, "center_y": .3})
 		add.bind(on_release=self.add_NBP)
@@ -493,6 +501,18 @@ class InfoPopup(FloatLayout):
 
 
 
+		if 'PM' in source and source['PM'] != 'Aucun':
+			DM.text=str(source['PM']['name'])+'\n'+str(source['PM']['num'])
+			
+		else:
+			DM.text=str('Aucun')
+			
+
+		if 'PF' in source  and source['PF'] != 'Aucun':
+			DF.text=str(source['PF']['name'])+'\n'+str(source['PF']['num'])
+		else:
+			DF.text=str('Aucun')
+
 		s = ScrollView(size_hint =(0.5,0.1) ,do_scroll_y=False,do_scroll_x=True, pos_hint=  {'center_x': .6, 'center_y': .2})
 		self.s =s
 		self.total = Label(text=str(0),font_size=self.font_size-5, pos_hint= {'center_x': .2, 'center_y': .2},color=(0,0,0,1) )
@@ -500,9 +520,9 @@ class InfoPopup(FloatLayout):
 		#if 'NBP' in source  and source['NBP'] != []:
 		self.s.clear_widgets()
 		if 'NBP' in source  :
-			#print("scollview", len(source['NBP']), 'size', len(source['NBP'])*0.25 )
+			#print("scollview", len(source['NBP']), 'size', len(source['NBP'])*0.35 )
 			sizex = 0.25 
-			g = FloatLayout( size_hint=(len(source['NBP'])*0.25,1))
+			g = FloatLayout( size_hint=(len(source['NBP'])*0.35,1))
 			COUNT = 0
 			self.cross = {}
 			for i in range(len(source['NBP'])):

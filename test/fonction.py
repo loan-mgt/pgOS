@@ -480,7 +480,7 @@ def write_csv(indate,M,F,NM, NF):
 
     file = open("data_couv.csv", "a")
 
-    file.write(str(cleandate(today))+","+str(114)+","+sommedate((dateclean),int(114))+","+"V"+','+str(M)+","+str(NM)+","+str(F)+","+str(NF)+','+''+"\n")
+    file.write(str(cleandate(today))+","+str(18)+","+sommedate((dateclean),int(18))+","+"V"+','+str(M)+","+str(NM)+","+str(F)+","+str(NF)+','+''+"\n")
     file.flush()
     file.close()
 

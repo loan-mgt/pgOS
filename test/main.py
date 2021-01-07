@@ -112,7 +112,7 @@ WindowManager:
 									            id: edit_menu
 
 									            pos_hint: {'x': 0, 'y': tool_bar_pos}
-									            title: "Liste des Cochons"
+									            title: "Liste des Pigeons"
 
 									            right_action_items: [["dots-vertical", lambda x: app.menu_list.open()]]
 									            md_bg_color: (0.5,0.5,0.5,1)
@@ -210,7 +210,7 @@ WindowManager:
 						MDToolbar:
 					            id: tool_AP
 					            pos_hint: {'x': 0, 'y': tool_bar_pos}
-					            title: "Ajouter un Cochon"
+					            title: "Ajouter un Pigeon"
 					            left_action_items: [["window-close", lambda x: app.current("main")]]
 					            md_bg_color: (0.5,0.5,0.5,1)
 
@@ -307,7 +307,7 @@ WindowManager:
 		        MDToolbar:
 			            id: edit_menu
 			            pos_hint: {'x': 0, 'y': tool_bar_pos}
-			            title: "Liste des Cochons"
+			            title: "Liste des Pigeons"
 			            right_action_items: [["dots-vertical", lambda x: app.menu.open()]]
 			            md_bg_color: (0.5,0.5,0.5,1)
 
@@ -326,7 +326,7 @@ WindowManager:
 		        MDToolbar:
 			            id: edit_menu
 			            pos_hint: {'x': 0, 'y':tool_bar_pos}
-			            title: "Liste des Gestations"
+			            title: "Liste des Couvaisons"
 			            left_action_items: [["window-close", lambda x: app.back_TPG()]]
 			            right_action_items: [["trash-can-outline", lambda x: app.Deleter_TPG()]]
 			            md_bg_color: (0.5,0.5,0.5,1)

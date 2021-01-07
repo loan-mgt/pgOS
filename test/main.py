@@ -110,13 +110,10 @@ WindowManager:
 
 								        MDToolbar:
 									            id: edit_menu
-<<<<<<< Updated upstream
-									            pos_hint: {'x': 0, 'y': 0.93}
-									            title: "Liste des Pigeons"
-=======
+
 									            pos_hint: {'x': 0, 'y': tool_bar_pos}
 									            title: "Liste des Cochons"
->>>>>>> Stashed changes
+
 									            right_action_items: [["dots-vertical", lambda x: app.menu_list.open()]]
 									            md_bg_color: (0.5,0.5,0.5,1)
 
@@ -212,13 +209,8 @@ WindowManager:
 				FloatLayout:
 						MDToolbar:
 					            id: tool_AP
-<<<<<<< Updated upstream
-					            pos_hint: {'x': 0, 'y': 0.93}
-					            title: "Ajouter un Pigeon"
-=======
 					            pos_hint: {'x': 0, 'y': tool_bar_pos}
 					            title: "Ajouter un Cochon"
->>>>>>> Stashed changes
 					            left_action_items: [["window-close", lambda x: app.current("main")]]
 					            md_bg_color: (0.5,0.5,0.5,1)
 
@@ -314,13 +306,8 @@ WindowManager:
 
 		        MDToolbar:
 			            id: edit_menu
-<<<<<<< Updated upstream
-			            pos_hint: {'x': 0, 'y': 0.93}
-			            title: "Liste des Pigeons"
-=======
 			            pos_hint: {'x': 0, 'y': tool_bar_pos}
 			            title: "Liste des Cochons"
->>>>>>> Stashed changes
 			            right_action_items: [["dots-vertical", lambda x: app.menu.open()]]
 			            md_bg_color: (0.5,0.5,0.5,1)
 
@@ -338,13 +325,8 @@ WindowManager:
 
 		        MDToolbar:
 			            id: edit_menu
-<<<<<<< Updated upstream
-			            pos_hint: {'x': 0, 'y': 0.93}
-			            title: "Liste des Couvaison"
-=======
 			            pos_hint: {'x': 0, 'y':tool_bar_pos}
 			            title: "Liste des Gestations"
->>>>>>> Stashed changes
 			            left_action_items: [["window-close", lambda x: app.back_TPG()]]
 			            right_action_items: [["trash-can-outline", lambda x: app.Deleter_TPG()]]
 			            md_bg_color: (0.5,0.5,0.5,1)
@@ -391,7 +373,7 @@ WindowManager:
 #############"Google
 #ADMIN_UPDATE
 
-tool_bar_pos = 0.90
+tool_bar_pos = 0.91
 print("[INFO   ] [MOI         ]","Platform", platform)
 if platform != "win":
 	size_g = 0.16

@@ -440,7 +440,7 @@ class InfoPopup(FloatLayout):
 
 		
 		modifier = Button(pos_hint={'x': 0.55, 'y': 0.8},font_size = self.font_size, size_hint=(0.1, 0.1),text ="VALIDER",background_normal ='',color=(0,0,0,1), background_color=(1,1,1,0))
-		modifier.bind(on_release=self.new_valider)
+		modifier.bind(on_release=self.edit_valider)
 		
 		self.f.add_widget(back)
 		self.f.add_widget(layer_w)
@@ -602,43 +602,59 @@ class InfoPopup(FloatLayout):
 		
 		self.total.text = str(COUNT)
 	def add_NBP(self, instance=None):
-		found = False
-		if 'NBP' not in self.source:
-			self.source['NBP'] =[]
-		for i in range(len(self.source['NBP'])):
-			#print('NBP' in self.source, int(self.anne.text) == self.source['NBP'][i]['anne'])
-			if 'NBP' in self.source and int(self.anne.text) == self.source['NBP'][i]['anne']:
-				self.source['NBP'][i]['nombre'] += int(self.nb.text)
-				found = True
-				break
-		if 'NBP' in self.source and found == False:
-			self.source['NBP'].append({'anne':int(self.anne.text),'nombre':int(self.nb.text)})
-		elif found == False: 
-			self.source['NBP']=[{'anne':int(self.anne.text),'nombre':int(self.nb.text)}]
-		
-		s =self.s
-		s.clear_widgets()
-		sizex = 0.25 
-		#print(len(self.source['NBP']),len(self.source['NBP'])*0.35, )
-		g = FloatLayout( size_hint=(len(self.source['NBP'])*0.35,1))
-		COUNT =0
-		self.cross = {}
-		for i in range(len(self.source['NBP'])):
-			COUNT += int(self.source['NBP'][i]['nombre'])
-			#print(sizex*i,sizex)
-			y = MDIconButton(icon= 'close-outline', pos_hint = {'x':1/len(self.source['NBP'])*i+0.2*(1/len(self.source['NBP'])), 'y':-0.15}, size_hint =(1/len(self.source['NBP']),1) )
-			y.bind(on_release=  self.delete_date)
+		print(self.anne.text)
+		chiffre = True
+		if self.anne.text != '' and self.nb.text != '':
 
-			self.cross[y] = i
+
+			try:
+				x = int(self.anne.text)
+				x = int(self.nb.text)
+				
+			except Exception as e:
+				print(e, 'pas chiffre')
+				self.origine.Snac("Assurez-vous d'entrer des chiffres")
+				chiffre = False
+			if chiffre == True:
+				found = False
+				if 'NBP' not in self.source:
+					self.source['NBP'] =[]
+				for i in range(len(self.source['NBP'])):
+					#print('NBP' in self.source, int(self.anne.text) == self.source['NBP'][i]['anne'])
+					if 'NBP' in self.source and int(self.anne.text) == self.source['NBP'][i]['anne']:
+						self.source['NBP'][i]['nombre'] += int(self.nb.text)
+						found = True
+						break
+				if 'NBP' in self.source and found == False:
+					self.source['NBP'].append({'anne':int(self.anne.text),'nombre':int(self.nb.text)})
+				elif found == False: 
+					self.source['NBP']=[{'anne':int(self.anne.text),'nombre':int(self.nb.text)}]
+				
+				s =self.s
+				s.clear_widgets()
+				sizex = 0.25 
+				#print(len(self.source['NBP']),len(self.source['NBP'])*0.35, )
+				g = FloatLayout( size_hint=(len(self.source['NBP'])*0.35,1))
+				COUNT =0
+				self.cross = {}
+				for i in range(len(self.source['NBP'])):
+					COUNT += int(self.source['NBP'][i]['nombre'])
+					#print(sizex*i,sizex)
+					y = MDIconButton(icon= 'close-outline', pos_hint = {'x':1/len(self.source['NBP'])*i+0.2*(1/len(self.source['NBP'])), 'y':-0.15}, size_hint =(1/len(self.source['NBP']),1) )
+					y.bind(on_release=  self.delete_date)
+
+					self.cross[y] = i
+					
 			
-	
-			g.add_widget(Button(background_normal='',background_color=(0,0,0,0.4),text=str(self.source['NBP'][i]['anne']) +'\n'+str(self.source['NBP'][i]['nombre']), color =(0,0,0,1),pos_hint = {'x':1/len(self.source['NBP'])*i}, size_hint =(1/len(self.source['NBP']),1)))
-			g.add_widget(y)
+					g.add_widget(Button(background_normal='',background_color=(0,0,0,0.4),text=str(self.source['NBP'][i]['anne']) +'\n'+str(self.source['NBP'][i]['nombre']), color =(0,0,0,1),pos_hint = {'x':1/len(self.source['NBP'])*i}, size_hint =(1/len(self.source['NBP']),1)))
+					g.add_widget(y)
 
-		s.add_widget(g)
-		#self.s =s
-		
-		self.total.text = str(COUNT)
+				s.add_widget(g)
+				#self.s =s
+				
+				self.total.text = str(COUNT)
+		else:
+			self.origine.Snac("Veuillez remplir les champs")
 		
 	def new_valider(self, instance=None):
 		

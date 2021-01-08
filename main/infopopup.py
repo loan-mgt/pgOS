@@ -153,7 +153,7 @@ class InfoPopup(FloatLayout):
 			for i in range(len(source['NBP'])):
 				COUNT += int(source['NBP'][i]['nombre'])
 				print(sizex*i,sizex)
-				g.add_widget(Button(text=str(source['NBP'][i]['anne']) +'\n'+str(source['NBP'][i]['nombre']), color =(0,0,0,1),pos_hint = {'x':1/len(self.source['NBP'])*i}, size_hint =(1/len(source['NBP']),1)))
+				g.add_widget(Button(background_normal='',background_color=(0,0,0,0.4),text=str(source['NBP'][i]['anne']) +'\n'+str(source['NBP'][i]['nombre']), color =(0,0,0,1),pos_hint = {'x':1/len(self.source['NBP'])*i}, size_hint =(1/len(source['NBP']),1)))
 			s.add_widget(g)
 			self.f.add_widget(s)
 			total = Label(text=str(COUNT),font_size=self.font_size-5, pos_hint= {'center_x': .2, 'center_y': .2},color=(0,0,0,1) )
@@ -331,7 +331,7 @@ class InfoPopup(FloatLayout):
 				y.bind(on_release=  self.delete_date)
 
 				self.cross[y] = i
-				g.add_widget(Button(text=str(source['NBP'][i]['anne']) +'\n'+str(source['NBP'][i]['nombre']), color =(0,0,0,1),pos_hint = {'x':1/len(self.source['NBP'])*i}, size_hint =(1/len(source['NBP']),1)))
+				g.add_widget(Button(background_normal='',background_color=(0,0,0,0.4),text=str(source['NBP'][i]['anne']) +'\n'+str(source['NBP'][i]['nombre']), color =(0,0,0,1),pos_hint = {'x':1/len(self.source['NBP'])*i}, size_hint =(1/len(source['NBP']),1)))
 				g.add_widget(y)
 			s.add_widget(g)
 			
@@ -533,7 +533,7 @@ class InfoPopup(FloatLayout):
 				y.bind(on_release=  self.delete_date)
 
 				self.cross[y] = i
-				g.add_widget(Button(text=str(source['NBP'][i]['anne']) +'\n'+str(source['NBP'][i]['nombre']), color =(0,0,0,1),pos_hint = {'x':1/len(self.source['NBP'])*i}, size_hint =(1/len(source['NBP']),1)))
+				g.add_widget(Button(background_normal='',background_color=(0,0,0,0.4),text=str(source['NBP'][i]['anne']) +'\n'+str(source['NBP'][i]['nombre']), color =(0,0,0,1),pos_hint = {'x':1/len(self.source['NBP'])*i}, size_hint =(1/len(source['NBP']),1)))
 				g.add_widget(y)
 			s.add_widget(g)
 			
@@ -579,8 +579,8 @@ class InfoPopup(FloatLayout):
 		s =self.s
 		s.clear_widgets()
 		sizex = 0.25 
-		#print(len(self.source['NBP']),len(self.source['NBP'])*0.25, )
-		g = FloatLayout( size_hint=(len(self.source['NBP'])*0.25,1))
+		#print(len(self.source['NBP']),len(self.source['NBP'])*0.35, )
+		g = FloatLayout( size_hint=(len(self.source['NBP'])*0.35,1))
 		COUNT =0
 		self.cross = {}
 		for i in range(len(self.source['NBP'])):
@@ -592,7 +592,7 @@ class InfoPopup(FloatLayout):
 			self.cross[y] = i
 			
 	
-			g.add_widget(Button(text=str(self.source['NBP'][i]['anne']) +'\n'+str(self.source['NBP'][i]['nombre']), color =(0,0,0,1),pos_hint = {'x':1/len(self.source['NBP'])*i}, size_hint =(1/len(self.source['NBP']),1)))
+			g.add_widget(Button(background_normal='',background_color=(0,0,0,0.4),text=str(self.source['NBP'][i]['anne']) +'\n'+str(self.source['NBP'][i]['nombre']), color =(0,0,0,1),pos_hint = {'x':1/len(self.source['NBP'])*i}, size_hint =(1/len(self.source['NBP']),1)))
 			g.add_widget(y)
 
 		s.add_widget(g)
@@ -617,8 +617,8 @@ class InfoPopup(FloatLayout):
 		s =self.s
 		s.clear_widgets()
 		sizex = 0.25 
-		#print(len(self.source['NBP']),len(self.source['NBP'])*0.25, )
-		g = FloatLayout( size_hint=(len(self.source['NBP'])*0.25,1))
+		#print(len(self.source['NBP']),len(self.source['NBP'])*0.35, )
+		g = FloatLayout( size_hint=(len(self.source['NBP'])*0.35,1))
 		COUNT =0
 		self.cross = {}
 		for i in range(len(self.source['NBP'])):
@@ -630,7 +630,7 @@ class InfoPopup(FloatLayout):
 			self.cross[y] = i
 			
 	
-			g.add_widget(Button(text=str(self.source['NBP'][i]['anne']) +'\n'+str(self.source['NBP'][i]['nombre']), color =(0,0,0,1),pos_hint = {'x':1/len(self.source['NBP'])*i}, size_hint =(1/len(self.source['NBP']),1)))
+			g.add_widget(Button(background_normal='',background_color=(0,0,0,0.4),text=str(self.source['NBP'][i]['anne']) +'\n'+str(self.source['NBP'][i]['nombre']), color =(0,0,0,1),pos_hint = {'x':1/len(self.source['NBP'])*i}, size_hint =(1/len(self.source['NBP']),1)))
 			g.add_widget(y)
 
 		s.add_widget(g)

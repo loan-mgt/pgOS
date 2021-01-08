@@ -373,7 +373,7 @@ WindowManager:
 #############"Google
 #ADMIN_UPDATE
 
-tool_bar_pos = 0.91
+tool_bar_pos = 0.92
 print("[INFO   ] [MOI         ]","Platform", platform)
 if platform != "win":
 	size_g = 0.16

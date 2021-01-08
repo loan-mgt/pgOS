@@ -136,7 +136,7 @@ WindowManager:
 										MDToolbar:
 									            id: Home_tool
 									            pos_hint: {'x': 0, 'y': tool_bar_pos}
-									            title: "Acceuil"
+									            title: "Accueil"
 									            right_action_items: [["dots-vertical", lambda x: app.menu_list_ac.open()]]
 									            md_bg_color: (0.5,0.5,0.5,1)
 									

@@ -440,7 +440,7 @@ class InfoPopup(FloatLayout):
 
 		
 		modifier = Button(pos_hint={'x': 0.55, 'y': 0.8},font_size = self.font_size, size_hint=(0.1, 0.1),text ="VALIDER",background_normal ='',color=(0,0,0,1), background_color=(1,1,1,0))
-		modifier.bind(on_release=self.edit_valider)
+		modifier.bind(on_release=self.new_valider)
 		
 		self.f.add_widget(back)
 		self.f.add_widget(layer_w)

@@ -21,6 +21,7 @@ from kivy.uix.screenmanager import ScreenManager, Screen ,FadeTransition
 from kivy.core.window import Window
 from kivymd.app import MDApp
 
+import threading as thr
 
 
 from random import randint
@@ -55,6 +56,7 @@ class InfoPopup(FloatLayout):
 		self.ffList = kwargs.pop('ffList', None)
 		self.fmList = kwargs.pop('fmList', None)
 		self.root = kwargs.pop('root', None)
+		self.origine = kwargs.pop('origine', None)
 		if self.ffList == None:
 			self.ffList = updatelist()[0]
 			self.fmList = updatelist()[1]	
@@ -438,7 +440,7 @@ class InfoPopup(FloatLayout):
 
 		
 		modifier = Button(pos_hint={'x': 0.55, 'y': 0.8},font_size = self.font_size, size_hint=(0.1, 0.1),text ="VALIDER",background_normal ='',color=(0,0,0,1), background_color=(1,1,1,0))
-		modifier.bind(on_release=self.edit_valider)
+		modifier.bind(on_release=self.new_valider)
 		
 		self.f.add_widget(back)
 		self.f.add_widget(layer_w)
@@ -667,6 +669,7 @@ class InfoPopup(FloatLayout):
 		self.ffList = updatelist()[0]
 		self.fmList = updatelist()[1]
 		self.up.update_t()
+		thr.Thread(target = self.origine.up_drop_down).start()
 
 	def edit_valider(self, instance=None):
 		#print('old', self.genre_old, self.source_old)
@@ -705,6 +708,7 @@ class InfoPopup(FloatLayout):
 		self.ffList = updatelist()[0]
 		self.fmList = updatelist()[1]
 		self.root.update_t()
+		thr.Thread(target = self.origine.up_drop_down).start()
 		#self.ad.ST.build()
 
 	def DM_OPEN(self, instance):

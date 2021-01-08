@@ -22,6 +22,7 @@ from kivy.core.window import Window
 from kivymd.app import MDApp
 
 
+import threading as thr
 
 from random import randint
 
@@ -55,6 +56,7 @@ class InfoPopup(FloatLayout):
 		self.ffList = kwargs.pop('ffList', None)
 		self.fmList = kwargs.pop('fmList', None)
 		self.root = kwargs.pop('root', None)
+		self.origine = kwargs.pop('origine', None)
 		if self.ffList == None:
 			self.ffList = updatelist()[0]
 			self.fmList = updatelist()[1]	
@@ -667,6 +669,7 @@ class InfoPopup(FloatLayout):
 		self.ffList = updatelist()[0]
 		self.fmList = updatelist()[1]
 		self.up.update_t()
+		thr.Thread(target = self.origine.up_drop_down).start()
 
 	def edit_valider(self, instance=None):
 		#print('old', self.genre_old, self.source_old)
@@ -706,6 +709,7 @@ class InfoPopup(FloatLayout):
 		self.fmList = updatelist()[1]
 		self.root.update_t()
 		#self.ad.ST.build()
+		thr.Thread(target = self.origine.up_drop_down).start()
 
 	def DM_OPEN(self, instance):
 		self.menuM.open()

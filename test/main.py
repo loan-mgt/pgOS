@@ -860,7 +860,7 @@ class MainApp(MDApp):
 		ta = [[i['name']  for i in ta],[i['num']  for i in ta]]
 		
 		self.ST = SuperTable( address= self.screen.ids.main.ids.scroll_pg, table= ta, font_size=font_size_g , ligne_size= size_g,
-			pos_hint = {'x': 0, 'y': 0}, size_hint = (1,1), color=(0.8,0.8,0.8,1))
+			pos_hint = {'x': 0, 'y': 0}, size_hint = (1,1), color=(0.8,0.8,0.8,1), origine =self)
 
 		#self.back(False)
 		self.ST.build()
@@ -877,6 +877,64 @@ class MainApp(MDApp):
 			super().__init__(**kwargs)
 			self.screen = Builder.load_string(KV)
 			thr.Thread(target = self.boot).start()
+	def up_drop_down(self):
+		self.ffList = updatelist()[0]
+		self.fmList = updatelist()[1]
+		fmList =self.fmList 
+		ffList = self.ffList
+		if fmList != {}:
+			menu_items = [{'text': fmList[i]['name']+'\n'+fmList[i]['num']} for i in range(len(fmList))]
+		else:
+			menu_items = list_to_drop_down(dic_to_list({"Aucun Pigeon":""}))
+		if ffList != {}:
+			menu_items2 = [{'text': ffList[i]['name']+'\n'+ffList[i]['num']} for i in range(len(ffList))]
+		else:
+			menu_items2 = list_to_drop_down(dic_to_list({"Aucun Pigeon":""}))
+		self.menu2 = MDDropdownMenu(
+			caller=self.screen.ids.main.ids.field2,
+			items=menu_items2,
+			position="auto",
+			callback=self.set_item2,
+			width_mult=20,
+		)
+		self.menu = MDDropdownMenu(
+			caller=self.screen.ids.main.ids.field,
+			items=menu_items,
+			position="auto",
+			callback=self.set_item,
+			width_mult=20,
+		)
+		self.menu_list_ac = MDDropdownMenu(
+			caller=self.screen.ids.main.ids.Home_tool,
+			items=self.login_satus,
+			position="auto",
+			callback=self.set_item_ac,
+			width_mult=4,
+		)
+		self.menu_PF = MDDropdownMenu(
+			caller=self.screen.ids.AP.ids.PF,
+			items=menu_items2,
+			position="auto",
+			callback=self.menu_PF_ac,
+			width_mult=4,
+			
+		)
+		self.menu_PM = MDDropdownMenu(
+			caller=self.screen.ids.AP.ids.PF,
+			items=menu_items,
+			position="auto",
+			width_mult=4,
+			callback=self.menu_PM_ac,
+			
+		)
+		#width_mult=4,
+		self.menu_list = MDDropdownMenu(
+	                caller=self.screen.ids.main.ids.edit_menu,
+	                items=[{"text":"add"},{"text":"edit"}],
+	                position="auto",
+	                callback=self.set_item_list_pg,
+	                width_mult=4,
+	            	)
 	def checker_TPG(self, instance):
 		print(self, instance)
 		print(self.add_nb_petit_TPG[instance])

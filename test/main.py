@@ -36,7 +36,7 @@ from kivy.uix.scrollview import ScrollView
 import shutil
 
 
-from datetime import date,timedelta,datetime
+from datetime import date
 
 from kivy.utils import platform
 from kivy.app import App
@@ -76,6 +76,8 @@ Window.clearcolor = (1, 1, 1, 1)
 
 KV = '''
 #: import font_size_g __main__.font_size_g
+#: import tool_bar_pos __main__.tool_bar_pos
+
 
 WindowManager:
 		MainWin:
@@ -108,8 +110,10 @@ WindowManager:
 
 								        MDToolbar:
 									            id: edit_menu
-									            pos_hint: {'x': 0, 'y': 0.93}
+
+									            pos_hint: {'x': 0, 'y': tool_bar_pos}
 									            title: "Liste des Cochons"
+
 									            right_action_items: [["dots-vertical", lambda x: app.menu_list.open()]]
 									            md_bg_color: (0.5,0.5,0.5,1)
 
@@ -117,7 +121,7 @@ WindowManager:
 
 								        FloatLayout:
 									            pos_hint: {'x': 0, 'y': 0}
-									            size_hint: 1, 0.93
+									            size_hint: 1, tool_bar_pos
 									            id: scroll_pg
 										                
 
@@ -131,7 +135,7 @@ WindowManager:
 								FloatLayout:
 										MDToolbar:
 									            id: Home_tool
-									            pos_hint: {'x': 0, 'y': 0.93}
+									            pos_hint: {'x': 0, 'y': tool_bar_pos}
 									            title: "Acceuil"
 									            right_action_items: [["dots-vertical", lambda x: app.menu_list_ac.open()]]
 									            md_bg_color: (0.5,0.5,0.5,1)
@@ -141,7 +145,7 @@ WindowManager:
 										
 										ScrollView:
 												pos_hint: {'x': 0, 'y': 0}
-												size_hint: 1, 0.93
+												size_hint: 1, tool_bar_pos
 												id: scroll_main
 
 
@@ -157,11 +161,11 @@ WindowManager:
 										Label:
 												color: (0, 0, 0, 1)
 												font_size: font_size_g+15
-												text: "Insemination"
+												text: "Gesation"
 												pos_hint: {'x':0, 'y': 0.3}
 										Button:
 												id: date_selectionneur
-												text: 'Date de Ponte'
+												text: "Date d'Insémination"
 												size_hint: (0.4, 0.1)
 												font_size: font_size_g
 												
@@ -205,7 +209,7 @@ WindowManager:
 				FloatLayout:
 						MDToolbar:
 					            id: tool_AP
-					            pos_hint: {'x': 0, 'y': 0.93}
+					            pos_hint: {'x': 0, 'y': tool_bar_pos}
 					            title: "Ajouter un Cochon"
 					            left_action_items: [["window-close", lambda x: app.current("main")]]
 					            md_bg_color: (0.5,0.5,0.5,1)
@@ -302,7 +306,7 @@ WindowManager:
 
 		        MDToolbar:
 			            id: edit_menu
-			            pos_hint: {'x': 0, 'y': 0.93}
+			            pos_hint: {'x': 0, 'y': tool_bar_pos}
 			            title: "Liste des Cochons"
 			            right_action_items: [["dots-vertical", lambda x: app.menu.open()]]
 			            md_bg_color: (0.5,0.5,0.5,1)
@@ -310,7 +314,7 @@ WindowManager:
 
 		        FloatLayout:
 			            pos_hint: {'x': 0, 'y': 0}
-			            size_hint: 1, 0.93
+			            size_hint: 1, tool_bar_pos
 			            id:scroll_edit
 <TablePige>:
 	    name: "TPG"
@@ -321,7 +325,7 @@ WindowManager:
 
 		        MDToolbar:
 			            id: edit_menu
-			            pos_hint: {'x': 0, 'y': 0.93}
+			            pos_hint: {'x': 0, 'y':tool_bar_pos}
 			            title: "Liste des Gestations"
 			            left_action_items: [["window-close", lambda x: app.back_TPG()]]
 			            right_action_items: [["trash-can-outline", lambda x: app.Deleter_TPG()]]
@@ -330,7 +334,7 @@ WindowManager:
 
 		        FloatLayout:
 			            pos_hint: {'x': 0, 'y': 0}
-			            size_hint: 1, 0.93
+			            size_hint: 1, tool_bar_pos
 			            id:scroll_edit
 <Login>:
 	    name: "LO"
@@ -341,13 +345,13 @@ WindowManager:
 
 		        MDToolbar:
 			            id: tool__log
-			            pos_hint: {'x': 0, 'y': 0.93}
+			            pos_hint: {'x': 0, 'y': tool_bar_pos}
 			            title: "Régalge"
 			            left_action_items: [["window-close", lambda x:app.currentLO("main") ]]
 			            md_bg_color: (0.5,0.5,0.5,1)
 			    ScrollView:
 			            pos_hint: {'x': 0, 'y': 0}
-			            size_hint: 1, 0.93
+			            size_hint: 1, tool_bar_pos
 		        		id:lay_drop_scroll
 		        		FloatLayout:
 		        				id: lay
@@ -369,7 +373,7 @@ WindowManager:
 #############"Google
 #ADMIN_UPDATE
 
-
+tool_bar_pos = 0.91
 print("[INFO   ] [MOI         ]","Platform", platform)
 if platform != "win":
 	size_g = 0.16
@@ -417,7 +421,7 @@ def table(self):
 						
 						colorr = (0.8,0.8,0.8,1)
 						tempp = int((temps_restant(list_table[i][0])))
-						print("pour couleur",tempp)
+						#print(tempp)
 						
 						if tempp < 0:
 								print("1")
@@ -492,20 +496,13 @@ def edit_table(self):
 						#print(tempp)
 						
 						if tempp < 0:
-								print("1")
 								colorr = (0,0,0,0.4)
 
-						elif tempp <= 2:
-								print("2")
+						elif tempp <= 3:
 								colorr = (1,0.8,0.8,1)
-						elif tempp <= 4:
-								print("3")
-								colorr = (1,0.9,0.8,1)
-						elif tempp <= 12:
-								print("4")
+						elif tempp <= 6:
 								colorr = (1,1,0.8,1)
 						else:
-								print('5')
 								colorr = (0.8,1,0.8,1)
 
 
@@ -775,6 +772,8 @@ class MainApp(MDApp):
 		if self.data['need_to_up'] == 'True':
 			thr.Thread(target = self.backup).start()
 		global font_size_g
+		#global tool_bar_pos
+		#self.tool_bar_pos = 0.90 
 		global size_g
 
 
@@ -908,7 +907,6 @@ class MainApp(MDApp):
 		if type(label_date) != type(StringProperty('')):
 			print(label_date)
 			self.write_csv_classe(label_date,fm_select,ff_select)
-
 			self.Snac("Date ajouter")	
 		else:
 			self.Snac("Veuillez choisir une date")	
@@ -963,7 +961,7 @@ class MainApp(MDApp):
 			Msource = next(item for item in self.fmList if item['name'] == M and item['num'] == NM)
 			Fsource = next(item for item in self.ffList if item['name'] == F and item['num'] == NF)
 		except Exception as e :
-			print(e, "old version Cochon pas touvé")
+			print(e, "verssion ansicein Cochon pas touver")
 			self.Snac("Erreur version ancienne")
 			erreur = True
 		if erreur == False:
@@ -1668,7 +1666,7 @@ class MainApp(MDApp):
 
 
 		write_csv(date,M[:MI],F[:FI], M[MI+1:], F[FI+1:])
-		ranger_csv_sans_r("")
+		
 		table(self)
 		self.Snac("L'événement a été ajouté")
 		self.screen.ids.main.ids.MDN.switch_tab("screnn2")

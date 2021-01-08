@@ -1,4 +1,5 @@
 import csv
+from datetime import date,timedelta,datetime
 def num(nbr):
     nbr = str(nbr)
     liste = ["0","1", "2", "3", "4", "5", "6", "7", "8", "9"]
@@ -91,41 +92,11 @@ def verif(nbr):
     
     return False
 def sommedate(date,temp):
-    mois_en_j=dict({"01":31,"02":28,"03":31,"04":30,"05":31,"06":30,"07":31,"08":31,"09":30,"10":31,"11":30,"12":31})
-    z=date[3:5]
-    if (int(date[6:10]))%4 == 0:
-        mois_en_j=dict({"01":31,"02":29,"03":31,"04":30,"05":31,"06":30,"07":31,"08":31,"09":30,"10":31,"11":30,"12":31})
-    else:
-        mois_en_j=dict({"01":31,"02":28,"03":31,"04":30,"05":31,"06":30,"07":31,"08":31,"09":30,"10":31,"11":30,"12":31})
-        
-    nbr_de_jour= mois_en_j[date[3:5]]
-    j_total= temp+int(date[0:2])
-    if j_total/nbr_de_jour <= 1:
-        
-        if j_total<10:
-            j_total= "0"+str(j_total)
-        ret= str(j_total)+str(date[2:10])
-        return ret
-    else:
-        while int(j_total)/int(nbr_de_jour) > 1:
-            if (int(date[6:10]))%4 == 0:
-                mois_en_j=dict({"01":31,"02":29,"03":31,"04":30,"05":31,"06":30,"07":31,"08":31,"09":30,"10":31,"11":30,"12":31})
-            else:
-                mois_en_j=dict({"01":31,"02":28,"03":31,"04":30,"05":31,"06":30,"07":31,"08":31,"09":30,"10":31,"11":30,"12":31})
-        
-            j_total= j_total-int(nbr_de_jour)
-            
-            if j_total<10:
-                j_total="0"+str(j_total)
-            mois= str(int(date[3:5])+1)
-            if int(mois)<10:
-                mois= "0"+str(mois[len(mois)-1])
-            date=str(j_total)+"/"+mois+date[5:10]
-            if int(date[3:5]) > int(12):
-                innt=int(date[6:10])+1
-                date= str(date[0:3])+"01/"+str(innt)
-
-        return date
+    print(date,"+",temp)
+    new_date = datetime(int(date[6:10]), int(date[3:5]), int(date[:2])) + timedelta(temp)
+    dt_string = new_date.strftime("%d/%m/%Y")
+    print(dt_string)
+    return dt_string
 
 
 
@@ -394,6 +365,7 @@ def CLE_Fin(ligne):
     return int( temps_restant(ligne['Fin']))
 
 def ranger_csv(csv_name):
+    print("ranger")
     f = open('data_couv.csv', 'r')
     
     reader = csv.reader(f)
@@ -422,6 +394,30 @@ def ranger_csv(csv_name):
 
 
 #ranger_csv("D:\pgOS\data_couv")
+def ranger_csv_sans_r(L):
+    f = open('data_couv.csv', 'r')
+    
+    reader = csv.reader(f)
+    LD = []
+    x = 0
+    header = None
+    for row in reader:
+        if len(row) == 9:
+            if x != 0:
+            
+                LD.append({'time':row[2],'row':row})
+            else:
+                header = row
+                x=1
+    f.close()
+    LD =  sorted(LD, key=lambda k: int( temps_restant(k['time'])))
+
+    new = open('data_couv.csv', "w")
+    new.write(','.join(header)+'\n')
+    for i in LD:
+        
+        new.write(','.join(i['row'])+'\n')
+    new.close()
 
 def remove_csv(L):
     print('L', L)
@@ -435,10 +431,10 @@ def remove_csv(L):
         if len(row) == 9:
             if x != 0:
                 #print(row[2],int( temps_restant(row[2])))
-                if int( temps_restant(row[2]))<=-7:
-                    row[3] = 'F'
-                else: 
-                    row[3] = 'V'
+                #if int( temps_restant(row[2]))<=-7:
+                    #row[3] = 'F'
+                #else: 
+                    #row[3] = 'V'
 
                 LD.append({'time':row[2],'row':row})
             else:
@@ -446,14 +442,13 @@ def remove_csv(L):
                 x=1
     f.close()
     print('LD',LD)
+    #LD =  sorted(LD, key=lambda k: int( temps_restant(k['time'])))
     for i in L:
         for z in range(len(LD)):
            
             w = LD[z]['row']
-            print("i",i)
-            print("\n","i ",w[2], i['D'] , w[4],i['M'] , w[5],i['NM'] , w[6],i['F'] , w[7],i['NF'])
             if w[2] == i['D'] and w[4]==i['M'] and w[5]==i['NM'] and w[6]==i['F'] and w[7]==i['NF'] and w[3] == 'V':
-                print("\n","i founnnnnnnnnnd",w[2], i['D'] and w[4],i['M'] and w[5],i['NM'] and w[6],i['F'] and w[7],i['NF'])
+                #print("\n","i founnnnnnnnnnd",w[2], i['D'] and w[4],i['M'] and w[5],i['NM'] and w[6],i['F'] and w[7],i['NF'])
                 LD.pop(z)
                 break
 

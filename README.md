@@ -7,7 +7,7 @@ Avant de commencer je voudrais vous remercier de vous intéresser à ce projet
 
 ## Comment télécharger l’application:
 
-Si vous-êtes sur mobile cliquer sur 'voir code'/'view code'
+Si vous êtes sur mobile cliquer sur 'voir code'/'view code'
 
 <img src="https://github.com/Qypol342/pgOS/blob/master/file/images/viewcode.jpg" width="48%">
 
@@ -49,7 +49,7 @@ l'application se divise en trois parties:
 
 - La première permet de controler sa population de spécimen
 - La deuxième permet de visualiser les évènements à venir
-- La dernière permet d'ajouter un nouvel évenement
+- La dernière permet d'ajouter un nouvel évènement
 
 <img src="https://github.com/Qypol342/pgOS/blob/master/file/images/menu.jpg" width="48%">
 	
@@ -67,7 +67,7 @@ remplissez les champs puis cliquez sur "VALIDER"
 
 <img src="https://github.com/Qypol342/pgOS/blob/master/file/images/add3.jpg" width="48%">
 
-# Ajouter un evenement:
+# Ajouter un évènement:
 
 selectionnez une date et deux individus puis cliquez sur "Valider"
 

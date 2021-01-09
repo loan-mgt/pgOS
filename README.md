@@ -8,7 +8,7 @@ Avant de commencer je voudrai vous remercier de vous intéresser à ce projet
 ## Comment télécharger l’application:
 
 Si vous-êtes sur mobile cliquer sur 'voir code'/'view code'
-![drawing](https://github.com/Qypol342/pgOS/blob/master/file/images/viewcode.jpg ){ width=50% }
+![drawing](https://github.com/Qypol342/pgOS/blob/master/file/images/viewcode.jpg | width=100)
 
 Cliquez sur le fichier .apk si vous etes sur mobile vous devez d'abord 
 

@@ -27,7 +27,7 @@ le téléchargement peut prendre du temps
 
 <img src="https://github.com/Qypol342/pgOS/blob/master/file/images/telecharger3.jpg" width="48%">
 
-une fois l’application téléchargée naviguez à vos téléchargements et exécutez le fichier .apk
+une fois l’application téléchargée naviguez dans vos téléchargements et exécutez le fichier .apk
 
 <img src="https://github.com/Qypol342/pgOS/blob/master/file/images/install.jpg" width="48%">
 
@@ -53,7 +53,7 @@ l'application se divise en trois parties:
 
 <img src="https://github.com/Qypol342/pgOS/blob/master/file/images/menu.jpg" width="48%">
 	
-# Ajouter un individues:
+# Ajouter un individus:
 
 navigez à l'icône le plus à droite
 
@@ -82,7 +82,7 @@ voici un exemple:
 
 
 
-## Créer votre compte::
+## Créer votre compte:
 
 à partir de l'accueil ( le bouton en forme de maison au centre bas de votre écran)
 

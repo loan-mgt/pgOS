@@ -325,7 +325,7 @@ WindowManager:
 
 		        MDToolbar:
 			            id: edit_menu
-			            pos_hint: {'x': 0, 'y':tool_bar_pos}
+			            pos_hint: {'x': 0, 'y':tool_bar_pos-0.01}
 			            title: "Liste des Gestations"
 			            left_action_items: [["window-close", lambda x: app.back_TPG()]]
 			            right_action_items: [["trash-can-outline", lambda x: app.Deleter_TPG()]]
@@ -496,13 +496,20 @@ def edit_table(self):
 						#print(tempp)
 						
 						if tempp < 0:
+								print("1")
 								colorr = (0,0,0,0.4)
 
-						elif tempp <= 3:
+						elif tempp <= 2:
+								print("2")
 								colorr = (1,0.8,0.8,1)
-						elif tempp <= 6:
+						elif tempp <= 4:
+								print("3")
+								colorr = (1,0.9,0.8,1)
+						elif tempp <= 12:
+								print("4")
 								colorr = (1,1,0.8,1)
 						else:
+								print('5')
 								colorr = (0.8,1,0.8,1)
 
 

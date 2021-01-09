@@ -33,7 +33,7 @@ une fois l’application téléchargée naviguez à vos téléchargements et ex�
 
 il est possible que vous deviez autoriser votre navigateur à installer des applications
 
-confirmer que vous voulez bien installer l'application
+confirmez que vous voulez bien installer l'application
 
 <img src="https://github.com/Qypol342/pgOS/blob/master/file/images/install2.jpg" width="48%">
 
@@ -47,19 +47,19 @@ il est possible qu'à la première ouverture l'application plante
 
 l'application se divise en trois parties:
 
-	- La première permet de controler sa population d'individues
-	- La deuxième permet de visualiser les eventments avenir
-	- Le dernière permet d'ajouter un nouvel évenement
+- La première permet de controler sa population de spécimen
+- La deuxième permet de visualiser les évènements à venir
+- La dernière permet d'ajouter un nouvel évenement
 
 <img src="https://github.com/Qypol342/pgOS/blob/master/file/images/menu.jpg" width="48%">
 	
 # Ajouter un individues:
 
-navigez à l'icon le plus à droite
+navigez à l'icône le plus à droite
 
 <img src="https://github.com/Qypol342/pgOS/blob/master/file/images/add.jpg" width="48%">
 
-cliquez sur les trois petits point en haut à droite puis sur "add"
+cliquez sur les trois petits points en haut à droite puis sur "add"
 
 <img src="https://github.com/Qypol342/pgOS/blob/master/file/images/add2.jpg" width="48%">
 
@@ -69,9 +69,9 @@ remplissez les champs puis cliquez sur "VALIDER"
 
 # Ajouter un evenement:
 
-selectionner une date et deux individus puis cliquez sur "Valider"
+selectionnez une date et deux individus puis cliquez sur "Valider"
 
-l'evenement sera alors ajouter au tableau d'accueil
+l'évènement sera alors ajouté au tableau d'accueil
 
 <img src="https://github.com/Qypol342/pgOS/blob/master/file/images/event.jpg" width="48%">
 
@@ -84,27 +84,27 @@ voici un exemple:
 
 ## Créer votre compte::
 
-à partir de l'accueil ( le bouton en from de maison au centre das de votre écran)
+à partir de l'accueil ( le bouton en forme de maison au centre bas de votre écran)
 
-appuyer sur les trois petits points en haut à droite
+appuyez sur les trois petits points en haut à droite
 
 puis sur le bouton "se connecter" 
 
 <img src="https://github.com/Qypol342/pgOS/blob/master/file/images/connection.jpg" width="48%">
 
-un nouveau menu va apparaître ou vous pouvez entrer votre identifiant choisi par vos soin
+un nouveau menu va apparaître où vous pouvez entrer votre identifiant choisi par vos soin
 
-un fois choisi cliquer sur le bouton valider l’application va vous créer un compte ou vous connectez
+une fois choisi cliquez sur le bouton "valider", l’application va vous créer un compte ou vous connecter
 
 <img src="https://github.com/Qypol342/pgOS/blob/master/file/images/connection2.jpg" width="48%">
 
-vous pouvez maintenant avoir accès à tout les réglage de votre profile et sauvegarde en cliquant sur les mêmes trois petits point puis sauvegarder
+vous pouvez maintenant avoir accès à tout les réglages de votre profil et sauvegarde en cliquant sur les mêmes trois petits points puis "sauvegarder"
 
 <img src="https://github.com/Qypol342/pgOS/blob/master/file/images/sauvgarde.jpg" width="48%">
 
 <img src="https://github.com/Qypol342/pgOS/blob/master/file/images/sauvgarde2.jpg" width="48%">
 
-vous pouvez depuis se menu exporter les données
+vous pouvez depuis ce menu exporter les données
 
 <img src="https://github.com/Qypol342/pgOS/blob/master/file/images/export.jpg" width="48%">
 

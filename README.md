@@ -30,3 +30,4 @@ vous pouvez maintenant avoir accès à tout les réglage de votre profile et sau
 
 
 profitez de l'expérience
+![Alt text](https://github.com/Qypol342/pgOS/blob/master/main/appicon.png)

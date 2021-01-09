@@ -1724,7 +1724,7 @@ class MainApp(MDApp):
 
 
 		write_csv(date,M[:MI],F[:FI], M[MI+1:], F[FI+1:])
-		
+		ranger_csv_sans_r("")
 		table(self)
 		self.Snac("L'événement a été ajouté")
 		self.screen.ids.main.ids.MDN.switch_tab("screnn2")

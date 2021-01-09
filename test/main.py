@@ -161,7 +161,7 @@ WindowManager:
 										Label:
 												color: (0, 0, 0, 1)
 												font_size: font_size_g+15
-												text: "Gesation"
+												text: "Gestation"
 												pos_hint: {'x':0, 'y': 0.3}
 										Button:
 												id: date_selectionneur

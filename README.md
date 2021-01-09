@@ -11,7 +11,9 @@ Si vous-êtes sur mobile cliquer sur 'voir code'/'view code'
 
 <img src="https://github.com/Qypol342/pgOS/blob/master/file/images/viewcode.jpg" width="48%">
 
-Cliquez sur le fichier .apk si vous etes sur mobile vous devez d'abord 
+Cliquez sur le fichier .apk qui correspond à vos besoin s
+
+<img src="https://github.com/Qypol342/pgOS/blob/master/file/images/apk.jpg" width="48%">
 
 une fois dessus cliquez télécharger
 

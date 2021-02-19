@@ -1,1 +1,0 @@
-[{'name': 'new', 'num': 'new', 'PF': 'Aucun', 'PM': 'Aucun', 'NBP': []}, {'name': 'hg', 'num': 'sd', 'PF': 'Aucun', 'PM': 'Aucun', 'NBP': []}, {'name': 'GHN', 'num': 'GBN', 'PF': 'Aucun', 'PM': 'Aucun', 'NBP': []}, {'name': 'GH', 'num': 'VBN', 'PF': 'Aucun', 'PM': 'Aucun', 'NBP': []}, {'name': 'FGH', 'num': 'GBH', 'PF': 'Aucun', 'PM': 'Aucun', 'NBP': []}]
